@@ -1,0 +1,23 @@
+{
+  "name": "try-tailwind",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/css/input.css -o ./public/css/style.css --watch, npx tailwindcss -i ./src/css/input.css -o ./public/css/style1.css --watch, npx tailwindcss -i ./src/css/input.css -o ./public/css/style2.css --watch, npx tailwindcss -i ./src/css/input.css -o ./public/css/style3.css --watch, npx tailwindcss -i ./src/css/input.css -o ./public/css/style4.css --watch, npx tailwindcss -i ./src/css/input.css -o ./public/css/style5.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.14"
+  },
+  "dependencies": {
+    "consolidate": "^0.16.0",
+    "express": "^4.21.1",
+    "path": "^0.12.7",
+    "res": "^0.4.0",
+    "swig": "^1.4.2",
+    "try-tailwind": "file:"
+  }
+}
