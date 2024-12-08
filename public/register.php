@@ -84,17 +84,7 @@
 
                 <label style="padding-bottom: 0.5rem;" for="password">Password:</label>
                 <input style="margin-bottom: 0.3rem;" type="password" id="password" name="password" required
-                value="<?php echo $_POST['Password'] ?? '';?>" style="margin-bottom: 0;">
-                <script>
-                    function showpassword($idname) {
-                        var x = document.getElementById($idname);
-                        if (x.type === "password") {
-                            x.type = "text";
-                        } else {
-                            x.type = "password";
-                        }
-                    }
-                </script>  
+                value="<?php echo $_POST['Password'] ?? '';?>" style="margin-bottom: 0;">  
                 <div class="checkbox-container" style="margin-bottom: 1rem;">
                     <input type="checkbox" id="togglePassword" style="margin-right: 0.3rem;" onclick="showpassword('password')"> 
                     <label for="togglePassword" >Show Password</label>

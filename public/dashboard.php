@@ -1,12 +1,9 @@
 <?php
-    require_once "./sess.php";
-    
+    require "./sess.php";
+    if (!isset($_POST['login']) || $_POST['login'] === 'false') {
+        header('Location: login.php');
+    }
     $query = "SELECT * FROM produk NATURAL JOIN kategori";
-    $result = $conn->query($query);
-    $qcount = "SELECT COUNT(*) AS sum FROM produk";
-    $assoc = $conn->query($qcount);
-    $assocc = $assoc->fetch_assoc();
-    $sum = $assocc["sum"];
     $pallete = ['bg-orange-400','bg-teal-500','bg-yellow-400','bg-red-500'];
 ?>
 
@@ -59,10 +56,10 @@
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4">
         <button onclick="filterProducts('all')" class="px-6 py-2 text-white bg-gray-400 rounded-lg">All</button>
-        <button onclick="filterProducts('gaming')" class="px-6 py-2 text-white bg-orange-400 rounded-lg">Gaming</button>
-        <button onclick="filterProducts('food')" class="px-6 py-2 text-white bg-teal-500 rounded-lg">Food</button>
-        <button onclick="filterProducts('clothes')" class="px-6 py-2 text-white bg-red-500 rounded-lg">Clothes</button>
-        <button onclick="filterProducts('topup')" class="px-6 py-2 text-white bg-yellow-400 rounded-lg">Top-up</button>
+        <button onclick="filterProducts('Gaming')" class="px-6 py-2 text-white bg-orange-400 rounded-lg">Gaming</button>
+        <button onclick="filterProducts('Food')" class="px-6 py-2 text-white bg-teal-500 rounded-lg">Food</button>
+        <button onclick="filterProducts('Clothes')" class="px-6 py-2 text-white bg-red-500 rounded-lg">Clothes</button>
+        <button onclick="filterProducts('Topup')" class="px-6 py-2 text-white bg-yellow-400 rounded-lg">Top-up</button>
     </div>
 
     <!-- Category Label -->
@@ -70,7 +67,7 @@
 
     <!-- Product Grid -->
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
-    <?php $row= $result->fetch_assoc();
+    <?php $result = $conn->query($query); $row= $result->fetch_assoc();
         while($row != null) { 
             $palnum = ($row['ID_kategori'] - 1) % 4;?>
         <!-- Product Card 1 -->
@@ -113,17 +110,28 @@
         });
         // Function to filter products by category
         function filterProducts(category) {
-            const products = document.querySelectorAll('.product-card');
-            const categoryLabel = document.getElementById('category-label');
-            products.forEach(product => {
-                if (category === 'all' || product.dataset.category === category) {
-                    product.classList.remove('hidden');
-                } else {
-                    product.classList.add('hidden');
-                }
-            });
-            categoryLabel.textContent = `Category: ${category.charAt(0).toUpperCase() + category.slice(1)}`;
-        }
+                const products = document.querySelectorAll('.product-card');
+                const categoryLabel = document.getElementById('category-label');
+
+                // Update the category label text
+                const categoryMap = {
+                    all: "All",
+                    gaming: "Gaming",
+                    food: "Food",
+                    clothes: "Clothes",
+                    topup: "Top-up"
+                };
+                categoryLabel.textContent = `Category: ${categoryMap[category.toLowerCase()] || "Unknown"}`;
+
+                // Filter products by category
+                products.forEach(product => {
+                    if (category === 'all' || product.getAttribute('data-category') === category) {
+                        product.style.display = 'flex'; // Show matching products
+                    } else {
+                        product.style.display = 'none'; // Hide non-matching products
+                    }
+                });
+            }
     </script>
 </body>
 </html>
