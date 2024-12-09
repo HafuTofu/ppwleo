@@ -1,3 +1,20 @@
+<?php 
+  require './sess.php';
+
+  if($_SESSION['login'] === 'false'){
+    header('Location: login.php');
+  }else if($_SESSION['login'] === 'trueadmin'){
+    header('Location: admin.php');
+  }
+
+  $iduser = $_SESSION['id'];
+  $query = 'SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ?';
+
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param('i', $iduser);
+  $stmt->execute();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,14 +35,23 @@
     </a>
     
     <!-- Search Bar -->
-    <div class="relative bg-gray-100 p-2 rounded-full flex items-center w-3/4 max-w-xl mx-auto">
-      <form action="" class="flex items-center w-full">
-        <input type="text" placeholder="Search" class="bg-transparent outline-none w-full text-center text-lg">
-        <button type="submit" class="p-2">
-          <img src="./photo/search.png" width="20" height="20" alt="Search">
-        </button>
-      </form>
-    </div>
+    <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
+        <form action="" class="flex items-center w-full">
+                <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
+                    echo $_GET['search'];
+                } ?>"
+                    placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
+                        alt="Search"></button>
+            </form>
+            <?php if (isset($_GET['search'])){
+                $filtervalues = $_GET['search'];
+                $query = 'SELECT * FROM cart NATURAL JOIN produk WHERE (ID_user = ?) AND (CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%')';
+                $stmt = $mysqli->prepare($query);
+                $stmt->bind_param('i', $iduser);
+                $stmt->execute();
+            } ?>
+        </div>
 
     <!-- User and Cart Icons -->
     <div class="flex items-center space-x-6 mr-6">
@@ -60,31 +86,35 @@
           </div>
         </div>
 
-        <!-- Item 1 -->
-        <div class="bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4">
-          <input type="checkbox" class="itemCheckbox self-start" >
-          <img src="./photo/JACKET.png" alt="Jacket" class="w-28 h-28 rounded-md object-cover">
-          <div class="flex-1">
-            <h2 class="font-semibold">T1 Worlds Jacket 2024</h2>
-            <div class="flex items-center mt-2 gap-4 py-4">
-              <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="decrease">-</button>
-              <span class="quantity">1</span>
-              <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="increase">+</button>
+
+        <?php $result = $stmt->get_result(); $row= $result->fetch_assoc(); 
+          while($row!=null){ ?>
+            <!-- Item 1 -->
+            <div class="bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4">
+              <input type="checkbox" class="itemCheckbox self-start">
+              <img src="./products/<?php echo $row['foto']; ?>" alt="Jacket" class="w-28 h-28 rounded-md object-cover">
+              <div class="flex-1">
+                <h2 class="font-semibold"><?php echo $row['nama']; ?></h2>
+                <div class="flex items-center mt-2 gap-4 py-4">
+                  <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="decrease">-</button>
+                  <span class="quantity"><?php echo $row['qty'] ;?></span>
+                  <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="increase">+</button>
+                </div>
+              </div>
+              <div class="text-right flex items-center gap-4">
+                <button>
+                  <i class="fas fa-trash text-gray-600"></i>
+                </button>
+                <button id="loveButton1">
+                  <i id="heartIcon1" class="far fa-heart text-red-600"></i>
+                </button>
+                <p class="font-semibold price">Rp. <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
+              </div>
             </div>
-          </div>
-          <div class="text-right flex items-center gap-4">
-            <button>
-              <i class="fas fa-trash text-gray-600"></i>
-            </button>
-            <button id="loveButton1">
-              <i id="heartIcon1" class="far fa-heart text-red-600"></i>
-            </button>
-            <p class="font-semibold price">Rp. 1.700.000</p>
-          </div>
-        </div>
+          <?php $row = $result->fetch_assoc(); } ?>
 
         <!-- Item 2 -->
-        <div class="bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4 cursor-help">
+        <div class="bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4">
           <input type="checkbox" class="itemCheckbox self-start">
           <img src="./photo/superlight.jpeg" alt="Mouse" class="w-28 h-28 rounded-md object-cover">
           <div class="flex-1">

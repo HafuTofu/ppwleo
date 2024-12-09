@@ -4,13 +4,9 @@
 
     if(!isset($_SESSION['login'])){
         $_SESSION['login'] = 'false';
-    }
-
-    if($_SESSION['login'] === 'trueguess'){
+    }else if($_SESSION['login'] === 'trueguess'){
         header('Location: dashboard.php');
-    }
-
-    if($_SESSION['login'] === 'trueadmin'){
+    }else if($_SESSION['login'] === 'trueadmin'){
         header('Location: admin.php');
     }
 

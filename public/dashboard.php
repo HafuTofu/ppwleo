@@ -1,10 +1,49 @@
 <?php
     require "./sess.php";
-    if (!isset($_POST['login']) || $_POST['login'] === 'false') {
+    if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
         header('Location: login.php');
     }
     $query = "SELECT * FROM produk NATURAL JOIN kategori";
     $pallete = ['bg-orange-400','bg-teal-500','bg-yellow-400','bg-red-500'];
+
+    if (!empty($_POST)) {
+        $iduser = $_POST['iduser'];
+        $idprod = $_POST['idprod'];
+        $harga = $_POST['harga'];
+        $total_harga = $_POST['total_harga'];
+
+        $conn->begin_transaction();
+
+        try {
+            $stmt = $conn->prepare("SELECT * FROM cart WHERE ID_produk = ? AND ID_user = ?");
+            $stmt->bind_param("ii", $idprod, $iduser);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $rowsearch = $result->fetch_assoc();
+
+            if ($rowsearch != null) {
+                // Update the quantity and total price
+                $curqty = $rowsearch['qty'] + 1;
+                $newtotal = $curqty * $harga;
+
+                $stmt = $conn->prepare("UPDATE cart SET qty = ?, total_harga = ? WHERE ID_produk = ? AND ID_user = ?");
+                $stmt->bind_param("idii", $curqty, $newtotal, $idprod, $iduser);
+                $stmt->execute();
+            } else {
+                // Insert a new row into the cart
+                $stmt = $conn->prepare("INSERT INTO cart (ID_user, ID_produk, qty, total_harga) VALUES (?, ?, 1, ?)");
+                $stmt->bind_param("iid", $iduser, $idprod, $total_harga);
+                $stmt->execute();
+            }
+
+            $conn->commit();
+
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        } catch (Exception $e) {
+            $conn->rollback();
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +79,7 @@
 
         <!-- User and Cart Icons -->
         <div class="flex items-center mr-6 space-x-6">
-            <a href="#"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
+            <a href="./cart.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
             <div class="relative">
                 <img src="./photouser/<?php echo $_SESSION['fotouser'];?>" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">            
                 <!-- Dropdown menu -->
@@ -79,9 +118,15 @@
                     <p class="text-sm text-gray-600 font-semibold">Rp. <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+                <form method="POST" >
+                    <input type="hidden" name = "iduser" value = <?php echo $_SESSION['id'];?>>
+                    <input type="hidden" name = "idprod" value = <?php echo $row['ID_produk'];?>>
+                    <input type="hidden" name = "harga" value = <?php echo $row['harga'] ;?> >
+                    <input type="hidden" name = "total_harga" value = <?php echo $row['harga'] ;?>>
+                    <button type="submit" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75 w-full">Add to Cart</button>
+                </form>
             </div>
-        <?php $row = $result->fetch_assoc();}?>
+        <?php $row = $result->fetch_assoc();} ?>
 
     <!-- Dropdown Menu -->
     <script>
