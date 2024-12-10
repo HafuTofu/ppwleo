@@ -22,7 +22,6 @@
             $rowsearch = $result->fetch_assoc();
 
             if ($rowsearch != null) {
-                // Update the quantity and total price
                 $curqty = $rowsearch['qty'] + 1;
                 $newtotal = $curqty * $harga;
 
@@ -30,7 +29,6 @@
                 $stmt->bind_param("idii", $curqty, $newtotal, $idprod, $iduser);
                 $stmt->execute();
             } else {
-                // Insert a new row into the cart
                 $stmt = $conn->prepare("INSERT INTO cart (ID_user, ID_produk, qty, total_harga) VALUES (?, ?, 1, ?)");
                 $stmt->bind_param("iid", $iduser, $idprod, $total_harga);
                 $stmt->execute();
@@ -110,12 +108,13 @@
         while($row != null) { 
             $palnum = ($row['ID_kategori'] - 1) % 4;?>
         <!-- Product Card 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card" data-category="<?php echo $row["nama_kategori"];?>">
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card" data-category="<?php echo $row["nama_kategori"];?>" onclick="
+            <?php $_SESSION['idprod'] = $row['ID_produk'] ; ?> window.location.href = 'detailprod.php';">
                 <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                 <div class="p-4">
                     <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum];?> rounded-full"><?php echo $row["nama_kategori"];?></span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"];?></h1>
-                    <p class="text-sm text-gray-600 font-semibold">Rp. <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
+                    <p class="text-sm font-semibold text-gray-600">Rp. <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
                 <form method="POST" >
@@ -123,7 +122,7 @@
                     <input type="hidden" name = "idprod" value = <?php echo $row['ID_produk'];?>>
                     <input type="hidden" name = "harga" value = <?php echo $row['harga'] ;?> >
                     <input type="hidden" name = "total_harga" value = <?php echo $row['harga'] ;?>>
-                    <button type="submit" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75 w-full">Add to Cart</button>
+                    <button type="submit" class="w-full py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</button>
                 </form>
             </div>
         <?php $row = $result->fetch_assoc();} ?>
@@ -170,7 +169,7 @@
 
                 // Filter products by category
                 products.forEach(product => {
-                    if (category === 'all' || product.getAttribute('data-category') === category) {
+                    if (category === 'all' || product.getAttribute('data-category') === category.toLowerCase()) {
                         product.style.display = 'flex'; // Show matching products
                     } else {
                         product.style.display = 'none'; // Hide non-matching products

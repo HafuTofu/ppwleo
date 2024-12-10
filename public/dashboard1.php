@@ -48,9 +48,9 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <div class="flex justify-center my-4 space-x-4">
         <button onclick="filterProducts('all')" class="px-6 py-2 text-white bg-gray-400 rounded-lg">All</button>
         <button onclick="filterProducts('Gaming')" class="px-6 py-2 text-white bg-orange-400 rounded-lg">Gaming</button>
-        <button onclick="filterProducts('food')" class="px-6 py-2 text-white bg-teal-500 rounded-lg">Food</button>
-        <button onclick="filterProducts('clothes')" class="px-6 py-2 text-white bg-red-500 rounded-lg">Clothes</button>
-        <button onclick="filterProducts('topup')" class="px-6 py-2 text-white bg-yellow-400 rounded-lg">Top-up</button>
+        <button onclick="filterProducts('Food')" class="px-6 py-2 text-white bg-teal-500 rounded-lg">Food</button>
+        <button onclick="filterProducts('Clothes')" class="px-6 py-2 text-white bg-red-500 rounded-lg">Clothes</button>
+        <button onclick="filterProducts('Topup')" class="px-6 py-2 text-white bg-yellow-400 rounded-lg">Top-up</button>
     </div>
 
     <!-- Category Label -->
@@ -69,12 +69,11 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                     <span
                         class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
-                    <p class="text-gray-600 font-semibold text-sm">Rp.
+                    <p class="text-sm font-semibold text-gray-600">Rp.
                         <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add
-                    to Cart</a>
+                <a href="login.php" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
             </div>
             <?php $row = $result->fetch_assoc();
         } ?>
@@ -98,7 +97,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
                 // Filter products by category
                 products.forEach(product => {
-                    if (category === 'all' || product.getAttribute('data-category') === category) {
+                    if (category === 'all' || product.getAttribute('data-category') === category.toLowerCase()) {
                         product.style.display = 'flex'; // Show matching products
                     } else {
                         product.style.display = 'none'; // Hide non-matching products
