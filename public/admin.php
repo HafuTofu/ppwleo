@@ -1,15 +1,30 @@
 <?php
-require "./sess.php";
+  require "./sess.php";
 
-$query = "SELECT * FROM produk";
-$result = $conn->query($query);
+  if(!isset($_SESSION['login'])){
+    session_destroy();
+    header('Location: login.php');
+  }
+  
+  if($_SESSION['login'] === 'trueguess'){
+    session_destroy();
+    header('Location: dashboard.php');
+  }
 
-if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
-  $prodid = $_POST['hapus'];
-  $queryhapus = "DELETE FROM produk WHERE ID_produk = $prodid";
-  mysqli_query($conn, $queryhapus);
-  echo "<meta http-equiv='refresh' content='2; url=admin.php'>";
-}
+  if($_SESSION['login'] === 'false'){
+    session_destroy();
+    header('Location: login.php');
+  }
+
+  $query = "SELECT * FROM produk";
+  $result = $conn->query($query);
+
+  if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
+    $prodid = $_POST['hapus'];
+    $queryhapus = "DELETE FROM produk WHERE ID_produk = $prodid";
+    mysqli_query($conn, $queryhapus);
+    echo "<meta http-equiv='refresh' content='2; url=admin.php'>";
+  }
 ?>
 
 <!DOCTYPE html>

@@ -1,6 +1,15 @@
 <?php
     include '../connect.php';
     include "./functions.php";
+
+    if(!isset($_SESSION['login'])){
+        $_SESSION['login'] = 'false';
+    }else if($_SESSION['login'] === 'trueguess'){
+        header('Location: dashboard.php');
+    }else if($_SESSION['login'] === 'trueadmin'){
+        header('Location: admin.php');
+    }
+
     $source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $generator = str_shuffle($source);
     $simplifier = substr($generator,0,6);    
@@ -79,16 +88,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="icon" href="./photo/ciG.png">
-    <script>
-        function showpassword() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
-    </script>
     <link rel="stylesheet" href="./css/style2.css">
 </head>
 
@@ -122,7 +121,7 @@
                     <input type="password" id="password" name="password" required 
                            class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
                     <div class="flex items-center mt-2">
-                        <input type="checkbox" id="togglePassword" class="mr-2" onclick="showpassword()">
+                        <input type="checkbox" id="togglePassword" class="mr-2" onclick="showpassword('password')">
                         <label for="togglePassword" class="text-sm text-black">Show Password</label>
                     </div>
                 </div>
