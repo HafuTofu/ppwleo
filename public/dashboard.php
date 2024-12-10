@@ -83,7 +83,7 @@
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                    <a href="#wishlist" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                    <a href="wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
                     <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
@@ -108,8 +108,7 @@
         while($row != null) { 
             $palnum = ($row['ID_kategori'] - 1) % 4;?>
         <!-- Product Card 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card" data-category="<?php echo $row["nama_kategori"];?>" onclick="
-            <?php $_SESSION['idprod'] = $row['ID_produk'] ; ?> window.location.href = 'detailprod.php';">
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card" data-category="<?php echo $row["nama_kategori"];?>" onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                 <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                 <div class="p-4">
                     <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum];?> rounded-full"><?php echo $row["nama_kategori"];?></span>

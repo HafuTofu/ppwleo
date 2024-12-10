@@ -1,11 +1,8 @@
 <?php
     include '../connect.php';
     require_once 'sess.php';
-    $combinedQuery = "SELECT * FROM wishlist
-        LEFT JOIN produk ON wishlist.ID_produk=produk.ID_produk
-        LEFT JOIN userdata ON wishlist.ID_user=userdata.ID_user
-        ORDER BY produk.nama";
-    $resultCombined = $conn->query($combinedQuery);
+    $iduser = $_SESSION['id'];
+    $query = "SELECT * FROM wishlist NATURAL JOIN produk WHERE ID_user = ? ";
 ?>
 
 <!DOCTYPE html>
@@ -21,15 +18,23 @@
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="dashboard.html"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+        <a href="dashboard.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
     <!-- Search Bar -->
     <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
         <form action="" class="flex items-center w-full">
-            <input type="text" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
-            <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
-        </form>
-    </div>
+                <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
+                    echo $_GET['search'];
+                } ?>"
+                    placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
+                        alt="Search"></button>
+            </form>
+            <?php if (isset($_GET['search'])){
+                $filtervalues = $_GET['search'];
+                $query = "SELECT * FROM wishlist NATURAL JOIN kategori WHERE ID_user = ? AND CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+            } ?>
+        </div>
 
         <!-- User and Cart Icons -->
         <div class="flex items-center mr-6 space-x-6">

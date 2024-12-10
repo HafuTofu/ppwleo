@@ -1,9 +1,9 @@
 <?php
 require './sess.php';
-if (!isset($_SESSION['idprod'])) {
+if (!isset($_GET['idprod'])) {
   header('Location: dashboard.php');
 }
-$idprod = $_SESSION['idprod'];
+$idprod = $_GET['idprod'];
 $query = "SELECT * FROM produk WHERE ID_produk = ? ";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $idprod);
@@ -60,8 +60,9 @@ $inwl = $resultwl->num_rows > 0;
             alt="Search"></button>
       </form>
       <?php if (isset($_GET['search'])) {
-        $filtervalues = $_GET['search'];
-        $query = "SELECT * FROM produk NATURAL JOIN kategori WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+        $searched = urlencode($_GET['search']);
+        header("Location: dashboard.php?search={$searched}");
+        exit();
       } ?>
     </div>
 
