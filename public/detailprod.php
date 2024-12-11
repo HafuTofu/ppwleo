@@ -73,9 +73,9 @@ $inwl = $resultwl->num_rows > 0;
         <img src="./photo/pfp.png" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-          <a href="#profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-          <a href="#wishlist" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-          <a href="#Logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+          <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+          <a href="wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+          <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
         </div>
       </div>
     </div>
