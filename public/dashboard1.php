@@ -62,7 +62,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
         while ($row != null) {
             $palnum = $row['ID_kategori'] - 1 % 4; ?>
             <!-- Product Card 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card"
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer" onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';"
                 data-category="<?php echo $row["nama_kategori"]; ?>">
                 <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                 <div class="p-4">
