@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link rel="stylesheet" href="profiles.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+    <link rel="icon" href="ciG.png">
+</head>
+
+<body>
+
+<?php include "header.html"; ?>
+
+<div class="container">
+    <h1>Profile</h1>
+
+    <div class="profile-header">
+        <img src="imgs/user_pfp.png" id="pfp"> <!-- profile picture -->
+
+        <div class="personal-info">
+            <h2>Username</h2> <!-- SQL username -->
+            <p>email</p> <!-- SQL email -->
+        </div>
+
+        <div class="edit-profile"> <!-- tombol edit profile -->
+            <a href="edit-profile.html" ><img src="imgs/edit.png" style="width: 40px; height:40px;"></a>
+        </div>
+    </div>
+
+    <div class="more-info"> <!-- tombol2 lain lah -->
+        <div class="button">
+            <img src="imgs/cart.png">
+            <a class="profile-btn" href="logout.php" >Logout</a>
+        </div>
+        
+        <div class="button">
+            <img src="imgs/cart.png">
+            <a class="profile-btn" href="logout.php" >Logout</a>
+        </div>
+        
+        <div class="button">
+            <img src="imgs/cart.png">
+            <a class="profile-btn" href="logout.php" >Logout</a>
+        </div>
+        
+        <div class="button">
+            <a class="profile-btn" href="logout.php"><img src="imgs/cart.png">Logout</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

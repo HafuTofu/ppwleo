@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link rel="stylesheet" href="profiles.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+    <link rel="icon" href="ciG.png">
+</head>
+
+<body>
+
+<?php include "header.html"; ?>
+
+<div class="container">
+    <h1>Edit Profile</h1>
+
+    <div class="profile-header">
+        <img src="imgs/user_pfp.png" id="pfp"> <!-- profile picture -->
+        <button>Edit Picture</button>
+        <button>Remove Picture</button>
+    </div>
+        
+    <div class="personal-info">
+        <div class="box">
+            <label for="username">Username</label>
+            <input type="text" id="username" value="[current username]"> <!-- [] pake sql username:) -->
+        </div>
+
+        <div class="box">
+            <label for="edit-email">Email</label>
+            <input type="email" id="edit-email" value="[--****@gmail.com]"> <!-- [] pake sql :) -->
+        </div>
+
+        <div class="box">
+            <label for="edit-password">Password</label>
+            <input type="password" id="edit-password" value="[********]"> <!-- [] pake sql :) -->
+        </div>
+
+        <div class="box">
+            <label for="edit-phoneNum">Phone Number</label>
+            <input type="text" id="edit-phoneNum" value="[**********--]"> <!-- [] pake sql :) -->
+        </div>
+
+        <div class="box">
+            <label for="edit-address">Address</label>
+            <input type="text" id="edit-address" value="[current Address]"> <!-- [] pake sql :) -->
+        </div>
+        
+        <div class="box">
+            <label for="edit-bio">Bio</label>
+            <textarea id="edit-bio" placeholder="Tell us more about yourself!">[Bio]</textarea> <!-- [] pake sql :) -->  
+        </div>
+    </div>
+
+    <div class="save-button">
+        <button id="save-btn" style="width: 80px;">Save</button>
+        <button id="reset-btn" style="width: 80px;">Reset</button>
+    </div>
+</div>
+
+</body>
+</html>
