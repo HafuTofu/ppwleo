@@ -68,9 +68,9 @@ $inwl = $resultwl->num_rows > 0;
 
     <!-- User and Cart Icons -->
     <div class="flex items-center mr-6 space-x-6">
-      <a href="#"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
+      <a href="cart.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
       <div class="relative">
-        <img src="./photo/pfp.png" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
+        <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
           <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>

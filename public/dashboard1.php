@@ -97,7 +97,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
                 // Filter products by category
                 products.forEach(product => {
-                    if (category === 'all' || product.getAttribute('data-category') === category.toLowerCase()) {
+                    if (category === 'all' || product.getAttribute('data-category') === category) {
                         product.style.display = 'flex'; // Show matching products
                     } else {
                         product.style.display = 'none'; // Hide non-matching products

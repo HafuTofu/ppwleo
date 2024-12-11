@@ -1,8 +1,13 @@
 <?php
     require './sess.php';
+    if(!isset($_SESSION['id'])){
+        header('Location: login.php');
+    }
+
     $iduser = $_SESSION['id'];
     $query = "SELECT * FROM wishlist NATURAL JOIN produk NATURAL JOIN kategori WHERE ID_user = ? ";
-    
+    $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
+
 ?>
 
 <!DOCTYPE html>

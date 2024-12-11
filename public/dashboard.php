@@ -108,7 +108,7 @@
         while($row != null) { 
             $palnum = ($row['ID_kategori'] - 1) % 4;?>
         <!-- Product Card 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card" data-category="<?php echo $row["nama_kategori"];?>" onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer" data-category="<?php echo $row["nama_kategori"];?>" onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                 <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                 <div class="p-4">
                     <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum];?> rounded-full"><?php echo $row["nama_kategori"];?></span>
@@ -168,7 +168,7 @@
 
                 // Filter products by category
                 products.forEach(product => {
-                    if (category === 'all' || product.getAttribute('data-category') === category.toLowerCase()) {
+                    if (category === 'all' || product.getAttribute('data-category') === category) {
                         product.style.display = 'flex'; // Show matching products
                     } else {
                         product.style.display = 'none'; // Hide non-matching products
