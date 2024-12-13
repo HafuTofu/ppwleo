@@ -1,22 +1,23 @@
-<?php 
-  require './sess.php';
+<?php
+require './sess.php';
 
-  if($_SESSION['login'] === 'false'){
-    header('Location: login.php');
-  }else if($_SESSION['login'] === 'trueadmin'){
-    header('Location: admin.php');
-  }
+if ($_SESSION['login'] === 'false') {
+  header('Location: login.php');
+} else if ($_SESSION['login'] === 'trueadmin') {
+  header('Location: admin.php');
+}
 
-  $iduser = $_SESSION['id'];
-  $query = 'SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ?';
+$iduser = $_SESSION['id'];
+$query = 'SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ?';
 
-  $stmt = $conn->prepare($query);
-  $stmt->bind_param('i', $iduser);
-  $stmt->execute();
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $iduser);
+$stmt->execute();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,25 +34,23 @@
     <a href="dashboard.html">
       <img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
     </a>
-    
+
     <!-- Search Bar -->
     <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
-        <form action="" class="flex items-center w-full">
-                <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
-                    echo $_GET['search'];
-                } ?>"
-                    placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
-                <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
-                        alt="Search"></button>
-            </form>
-            <?php if (isset($_GET['search'])){
-                $filtervalues = $_GET['search'];
-                $query = 'SELECT * FROM cart NATURAL JOIN produk WHERE (ID_user = ?) AND (CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%')';
-                $stmt = $mysqli->prepare($query);
-                $stmt->bind_param('i', $iduser);
-                $stmt->execute();
-            } ?>
-        </div>
+      <form action="" class="flex items-center w-full">
+        <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
+          echo $_GET['search'];
+        } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+        <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
+      </form>
+      <?php if (isset($_GET['search'])) {
+        $filtervalues = $_GET['search'];
+        $query = 'SELECT * FROM cart NATURAL JOIN produk WHERE (ID_user = ?) AND (CONCAT(nama, nama_kategori, deskripsi) LIKE ' % $filtervalues % ')';
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param('i', $iduser);
+        $stmt->execute();
+      } ?>
+    </div>
 
     <!-- User and Cart Icons -->
     <div class="flex items-center space-x-6 mr-6">
@@ -86,54 +85,37 @@
         </div>
 
 
-        <?php $result = $stmt->get_result(); $row= $result->fetch_assoc(); 
-          while($row!=null){ ?>
-            <!-- Item 1 -->
-            <div class="bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4">
-              <input type="checkbox" class="itemCheckbox self-start">
-              <img src="./products/<?php echo $row['foto']; ?>" alt="Jacket" class="w-28 h-28 rounded-md object-cover">
-              <div class="flex-1">
-                <h2 class="font-semibold"><?php echo $row['nama']; ?></h2>
-                <div class="flex items-center mt-2 gap-4 py-4">
-                  <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="decrease">-</button>
-                  <span class="quantity"><?php echo $row['qty'] ;?></span>
-                  <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="increase">+</button>
-                </div>
-              </div>
-              <div class="text-right flex items-center gap-4">
-                <button>
-                  <i class="fas fa-trash text-gray-600"></i>
-                </button>
-                <button id="loveButton1">
-                  <i id="heartIcon1" class="far fa-heart text-red-600"></i>
-                </button>
-                <p class="font-semibold price">Rp. <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
-              </div>
-            </div>
-          <?php $row = $result->fetch_assoc(); } ?>
+        <?php
+        $total = 0;
+        $result = $stmt->get_result();
+        $items = $result->fetch_all(MYSQLI_ASSOC);
 
-        <!-- Item 2 -->
-        <div class="bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4">
-          <input type="checkbox" class="itemCheckbox self-start">
-          <img src="./photo/superlight.jpeg" alt="Mouse" class="w-28 h-28 rounded-md object-cover">
-          <div class="flex-1">
-            <h2 class="font-semibold">Logitech Superlight 2</h2>
-            <div class="flex items-center mt-2 gap-4 py-4">
-              <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="decrease">-</button>
-              <span class="quantity">1</span>
-              <button class="bg-gray-200 rounded-full px-2 quantity-button" data-action="increase">+</button>
+        foreach ($items as $product => $value) {
+          $sr = $product + 1;
+          $total += $value['harga'];
+          echo "
+          <div class='bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4'>
+            <input type='checkbox' class='itemCheckbox self-start'>
+            <img src='./products/$value[foto]' alt='Jacket' class='w-28 h-28 rounded-md object-cover'>
+            <div class='flex-1'>
+              <h2 class='font-semibold'> $value[nama]</h2>
+              <div class='flex items-center mt-2 gap-4 py-4'>
+                <button class='bg-gray-200 rounded-full px-2 quantity-button decrease onclick='updateSubtotal();''>-</button>
+                <span class='quantity'>1</span>
+                <button class='bg-gray-200 rounded-full px-2 quantity-button increase onclick='updateSubtotal();''>+</button>
+              </div>
             </div>
-          </div>
-          <div class="text-right flex items-center gap-4">
-            <button>
-              <i class="fas fa-trash text-gray-600"></i>
-            </button>
-            <button id="loveButton2">
-              <i id="heartIcon2" class="far fa-heart text-red-600"></i>
-            </button>
-            <p class="font-semibold price">Rp. 2.000.000</p>
-          </div>
-        </div>
+            <div class='text-right flex items-center gap-4'>
+              <button>
+                <i class='fas fa-trash text-gray-600'></i>
+              </button>
+              <button id='loveButton1'>
+                <i id='heartIcon1' class='far fa-heart text-red-600'></i>
+              </button>
+              <p class='font-semibold price'>Rp. " . number_format($value['harga'], 0, ',', '.') . "<input type='hidden' class='iprice' id='iprice' value='$value[harga]'></p>
+            </div>
+          </div>";
+        } ?>
       </div>
 
       <!-- Summary -->
@@ -142,7 +124,7 @@
           <h2 class="text-lg font-bold">Summary</h2>
           <div class="flex justify-between items-center mt-4">
             <span>Total</span>
-            <span id="totalPrice" class="font-semibold">Rp. 3.700.000</span>
+            <span id="totalPrice">Rp. 0</span>
           </div>
           <a href="#checkout">
             <button class="bg-red-600 text-white w-full py-2 mt-4 rounded-md shadow-md hover:bg-red-700">
@@ -153,6 +135,74 @@
       </div>
     </section>
   </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const decreaseButtons = document.querySelectorAll(".quantity-button.decrease"); // Select all decrease buttons
+      const increaseButtons = document.querySelectorAll(".quantity-button.increase"); // Select all increase buttons
+      const itemQuantities = document.querySelectorAll(".quantity"); // Quantity elements
+      const itemPrices = document.querySelectorAll(".iprice"); // Price elements
+      const subtotals = document.querySelectorAll(".price"); // Subtotal elements
+      const checkboxes = document.querySelectorAll(".itemCheckbox"); // Item checkboxes
+      const totalPriceElement = document.getElementById("totalPrice"); // Total price element
+      let totalPrice = 0;
+
+      // Function to update subtotal for an item
+      function updateSubtotal(index) {
+        const quantity = parseInt(itemQuantities[index].innerText); // Get current quantity
+        const price = parseInt(itemPrices[index].value); // Get item price
+        const subtotal = quantity * price; // Calculate subtotal
+        subtotals[index].innerText = `Rp. ${subtotal.toLocaleString("id-ID")}`; // Update subtotal in the DOM
+        updateTotalPrice(); // Update the total price
+      }
+
+      // Function to update the total price for selected items only
+      function updateTotalPrice() {
+        totalPrice = 0;
+        checkboxes.forEach((checkbox, index) => {
+          if (checkbox.checked) {
+            const subtotal = parseInt(subtotals[index].innerText.replace(/[^\d]/g, "")) || 0; // Extract number from text
+            totalPrice += subtotal;
+          }
+        });
+        totalPriceElement.innerText = `Rp. ${totalPrice.toLocaleString("id-ID")}`;
+      }
+
+      // Add event listeners to decrease buttons
+      decreaseButtons.forEach((button, index) => {
+        button.addEventListener("click", function () {
+          let quantity = parseInt(itemQuantities[index].innerText);
+          if (quantity > 1) {
+            quantity -= 1;
+            itemQuantities[index].innerText = quantity;
+            updateSubtotal(index);
+          }
+        });
+      });
+
+      // Add event listeners to increase buttons
+      increaseButtons.forEach((button, index) => {
+        button.addEventListener("click", function () {
+          let quantity = parseInt(itemQuantities[index].innerText);
+          quantity += 1;
+          itemQuantities[index].innerText = quantity;
+          updateSubtotal(index);
+        });
+      });
+
+      // Add event listeners to checkboxes to recalculate total price
+      checkboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener("change", function () {
+          updateTotalPrice(); // Update the total price when a checkbox is clicked
+        });
+      });
+
+      // Initialize the total price on page load
+      updateTotalPrice();
+    });
+
+
+  </script>
 
   <script>
     // Love Button Functionality
@@ -195,7 +245,7 @@
     // Select All Checkbox Functionality
     document.addEventListener("DOMContentLoaded", function () {
       const selectAllCheckbox = document.getElementById("selectAll");
-      const itemCheckboxes = document.querySelectorAll(".itemCheckbox");
+      const itemCheckboxes = document.querySelectorAll(".checkbox");
 
       // Toggle all item checkboxes when "All Items" is clicked
       selectAllCheckbox.addEventListener("change", function () {
@@ -203,6 +253,7 @@
         itemCheckboxes.forEach((checkbox) => {
           checkbox.checked = isChecked;
         });
+        updateTotalPrice();
       });
 
       // Update "All Items" checkbox state based on individual item checkboxes
@@ -211,8 +262,11 @@
           const allChecked = Array.from(itemCheckboxes).every((cb) => cb.checked);
           selectAllCheckbox.checked = allChecked;
         });
+        updateTotalPrice();
       });
+
     });
   </script>
 </body>
+
 </html>
