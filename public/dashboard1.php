@@ -13,6 +13,40 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/style1.css">
     <link rel="icon" href="./photo/ciG.png">
+    <style>
+        /* Carousel styles */
+        .carousel {
+            position: relative;
+            width: 80%;
+            height: 300px;
+            margin: 0 auto;
+            margin-top: 40px; /* Prevent overlapping with navbar */
+            overflow: hidden;
+            border: 4px solid #ddd;
+            border-radius: 12px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 300px;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Ensure navbar is above other elements */
+        .sticky {
+            z-index: 1000;
+        }
+    </style>
 </head>
 
 <body class="font-sans bg-yellow-50">
@@ -43,6 +77,23 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             <a href="register.php" class="font-semibold text-gray-700">SIGN UP</a>
         </div>
     </header>
+
+    <div class="carousel my-6">
+        <div class="carousel-track">
+            <div class="carousel-slide">
+                <img src="./photo/FM1.png" alt="Slide 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="./photo/FM2.png" alt="Slide 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="./photo/FM3.png" alt="Slide 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="./photo/FM4.png" alt="Slide 4">
+            </div>
+        </div>
+    </div>
 
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4">
