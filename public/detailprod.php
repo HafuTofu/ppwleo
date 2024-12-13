@@ -91,25 +91,6 @@ $inwl = $resultwl->num_rows > 0;
           alt="Jacket"
           class="rounded-lg shadow-md" />
         <!-- Wishlist Heart Icon -->
-        <button
-          id="heartButton"
-          onclick="toggleHeart()"
-          class="absolute p-2 bg-white rounded-full shadow-md top-3 right-6 hover:bg-gray-100 heart-transition ">
-          <svg
-            id="heartIcon"
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-6 h-6 <?php echo $inwl ? 'text-red-600 fill-current' : 'text-gray-600 fill-none'; ?>"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4.318 6.318C5.084 5.553 6.048 5 7.05 5c1.003 0 1.967.553 2.733 1.318L12 8.536l2.217-2.218C15.953 5.553 16.917 5 17.919 5c1.003 0 1.967.553 2.733 1.318 1.466 1.467 1.466 3.843 0 5.31L12 21l-8.652-8.672c-1.466-1.467-1.466-3.843 0-5.31z" />
-          </svg>
-        </button>
-      </div>
 
       <!-- Product Info -->
       <div class="flex flex-col justify-between lg:w-2/3">
@@ -120,6 +101,8 @@ $inwl = $resultwl->num_rows > 0;
             <?php echo $row['deskripsi']; ?>
           </p>
           <hr class="my-6 border-gray-300">
+
+          
         </div>
 
         <!-- Quantity and Cart -->
