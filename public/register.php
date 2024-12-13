@@ -2,6 +2,15 @@
 //udahan
     include 'functions.php';
     include '../connect.php';
+
+    if($_SESSION['login'] === 'trueguess'){
+        header('Location: dashboard.php');
+    }else if($_SESSION['login'] === 'trueadmin'){
+        header('Location: admin.php');
+    }else{
+        header('Location: dashboard1.php');
+    }
+
     $error = '';
     if(!empty($_POST)){
         $username = $_POST['username'];
