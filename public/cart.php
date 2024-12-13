@@ -13,6 +13,7 @@ $query = 'SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ?';
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $iduser);
 $stmt->execute();
+
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +93,13 @@ $stmt->execute();
 
         foreach ($items as $product => $value) {
           $sr = $product + 1;
-          $total += $value['harga'];
+          $total += $value['harga'];$inwl = false;
+          $idprod = $value['ID_produk'];
+          $stmtwl = $conn->prepare("SELECT * FROM wishlist WHERE ID_user = ? AND ID_produk = ?");
+          $stmtwl->bind_param("ii", $iduser, $idprod);
+          $stmtwl->execute();
+          $resultwl = $stmtwl->get_result();
+          $inwl = $resultwl->num_rows > 0;
           echo "
           <div class='bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4'>
             <input type='checkbox' class='itemCheckbox self-start'>
@@ -100,18 +107,19 @@ $stmt->execute();
             <div class='flex-1'>
               <h2 class='font-semibold'> $value[nama]</h2>
               <div class='flex items-center mt-2 gap-4 py-4'>
-                <button class='bg-gray-200 rounded-full px-2 quantity-button decrease onclick='updateSubtotal();''>-</button>
+                <button class='bg-gray-200 rounded-full px-2 quantity-button decrease onclick='updateSubtotal();' data-action='decrease''>-</button>
                 <span class='quantity'>1</span>
-                <button class='bg-gray-200 rounded-full px-2 quantity-button increase onclick='updateSubtotal();''>+</button>
+                <button class='bg-gray-200 rounded-full px-2 quantity-button increase onclick='updateSubtotal();' data-action='increase''>+</button>
               </div>
             </div>
             <div class='text-right flex items-center gap-4'>
               <button>
                 <i class='fas fa-trash text-gray-600'></i>
               </button>
-              <button id='loveButton1'>
-                <i id='heartIcon1' class='far fa-heart text-red-600'></i>
-              </button>
+              <button id='loveButton$sr' data-product-id='$value[ID_produk]' onclick='toggleHeart($value[ID_produk])'>
+  <i id='heartIcon$sr' class='". ($inwl ? 'fas' : 'far') ." fa-heart text-red-600  '></i>
+</button>
+
               <p class='font-semibold price'>Rp. " . number_format($value['harga'], 0, ',', '.') . "<input type='hidden' class='iprice' id='iprice' value='$value[harga]'></p>
             </div>
           </div>";
@@ -138,69 +146,54 @@ $stmt->execute();
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const decreaseButtons = document.querySelectorAll(".quantity-button.decrease"); // Select all decrease buttons
-      const increaseButtons = document.querySelectorAll(".quantity-button.increase"); // Select all increase buttons
-      const itemQuantities = document.querySelectorAll(".quantity"); // Quantity elements
-      const itemPrices = document.querySelectorAll(".iprice"); // Price elements
-      const subtotals = document.querySelectorAll(".price"); // Subtotal elements
-      const checkboxes = document.querySelectorAll(".itemCheckbox"); // Item checkboxes
-      const totalPriceElement = document.getElementById("totalPrice"); // Total price element
-      let totalPrice = 0;
+      const selectAllCheckbox = document.getElementById("selectAll");
+      const itemCheckboxes = document.querySelectorAll(".itemCheckbox");
+      const iprice = document.getElementsByClassName("iprice");
+      const iquantity = document.getElementsByClassName("quantity");
+      const subtotal = document.getElementById("totalPrice");
 
-      // Function to update subtotal for an item
-      function updateSubtotal(index) {
-        const quantity = parseInt(itemQuantities[index].innerText); // Get current quantity
-        const price = parseInt(itemPrices[index].value); // Get item price
-        const subtotal = quantity * price; // Calculate subtotal
-        subtotals[index].innerText = `Rp. ${subtotal.toLocaleString("id-ID")}`; // Update subtotal in the DOM
-        updateTotalPrice(); // Update the total price
+      // Function to calculate the subtotal for selected items
+      function calculateSubtotal() {
+        let total = 0;
+        for (let i = 0; i < itemCheckboxes.length; i++) {
+          if (itemCheckboxes[i].checked) {
+            total += iprice[i].value * iquantity[i].innerText;
+          }
+        }
+        subtotal.innerText = `Rp. ${total.toLocaleString("id-ID")}`;
       }
 
-      // Function to update the total price for selected items only
-      function updateTotalPrice() {
-        totalPrice = 0;
-        checkboxes.forEach((checkbox, index) => {
-          if (checkbox.checked) {
-            const subtotal = parseInt(subtotals[index].innerText.replace(/[^\d]/g, "")) || 0; // Extract number from text
-            totalPrice += subtotal;
-          }
+      // Select All Checkbox functionality
+      selectAllCheckbox.addEventListener("change", function () {
+        const isChecked = selectAllCheckbox.checked;
+        itemCheckboxes.forEach((checkbox) => {
+          checkbox.checked = isChecked;
         });
-        totalPriceElement.innerText = `Rp. ${totalPrice.toLocaleString("id-ID")}`;
-      }
+        calculateSubtotal();
+      });
 
-      // Add event listeners to decrease buttons
-      decreaseButtons.forEach((button, index) => {
+      // Individual Item Checkbox functionality
+      itemCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", calculateSubtotal);
+      });
+
+      // Increase and Decrease Quantity Buttons
+      document.querySelectorAll(".quantity-button").forEach((button) => {
         button.addEventListener("click", function () {
-          let quantity = parseInt(itemQuantities[index].innerText);
-          if (quantity > 1) {
-            quantity -= 1;
-            itemQuantities[index].innerText = quantity;
-            updateSubtotal(index);
+          const action = this.getAttribute("data-action");
+          const parentDiv = this.closest(".flex.items-center");
+          const quantityElement = parentDiv.querySelector(".quantity");
+          const quantity = parseInt(quantityElement.innerText, 10);
+
+          if (action === "increase") {
+            quantityElement.innerText = quantity + 1;
+          } else if (action === "decrease" && quantity > 1) {
+            quantityElement.innerText = quantity - 1;
           }
+          calculateSubtotal();
         });
       });
-
-      // Add event listeners to increase buttons
-      increaseButtons.forEach((button, index) => {
-        button.addEventListener("click", function () {
-          let quantity = parseInt(itemQuantities[index].innerText);
-          quantity += 1;
-          itemQuantities[index].innerText = quantity;
-          updateSubtotal(index);
-        });
-      });
-
-      // Add event listeners to checkboxes to recalculate total price
-      checkboxes.forEach((checkbox, index) => {
-        checkbox.addEventListener("change", function () {
-          updateTotalPrice(); // Update the total price when a checkbox is clicked
-        });
-      });
-
-      // Initialize the total price on page load
-      updateTotalPrice();
     });
-
 
   </script>
 
@@ -216,6 +209,18 @@ $stmt->execute();
         });
       });
     });
+
+    function toggleHeart(idprodd) {
+      fetch('add_to_wishlist.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            idprod: idprodd
+          }),
+        });
+    }
 
     // Profile Dropdown Menu
     document.addEventListener('DOMContentLoaded', function () {

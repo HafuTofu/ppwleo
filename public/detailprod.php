@@ -95,7 +95,7 @@ $inwl = $resultwl->num_rows > 0;
           <h1 class="text-2xl font-bold text-gray-800"><?php echo $row['nama']; ?></h1>
           <button id="heartButton" onclick="toggleHeart()"
             class="ml-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 heart-transition">
-            <svg id="heartIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none"
+            <svg id="heartIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 <?php echo $inwl ? 'text-red-600 fill-current' : 'text-gray-600' ?>" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4.318 6.318C5.084 5.553 6.048 5 7.05 5c1.003 0 1.967.553 2.733 1.318L12 8.536l2.217-2.218C15.953 5.553 16.917 5 17.919 5c1.003 0 1.967.553 2.733 1.318 1.466 1.467 1.466 3.843 0 5.31L12 21l-8.652-8.672c-1.466-1.467-1.466-3.843 0-5.31z" />
@@ -224,12 +224,6 @@ $inwl = $resultwl->num_rows > 0;
       // Update quantity and subtotal
       quantityElement.textContent = quantity;
       subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
-    }
-    
-    function checkwl() {
-      const hearticon = document.getElementById('heartIcon');
-      hearticon.classList.toggle('text-red-600');
-      hearticon.classList.toggle('fill-current');
     }
 
     function toggleHeart() {
