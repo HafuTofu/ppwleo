@@ -17,7 +17,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
-    <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
+    <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
         <a href="dashboard1.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
         <!-- Search Bar -->
@@ -42,7 +42,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             <span class="text-gray-400">|</span>
             <a href="register.php" class="font-semibold text-gray-700">SIGN UP</a>
         </div>
-    </div>
+    </header>
 
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4">
