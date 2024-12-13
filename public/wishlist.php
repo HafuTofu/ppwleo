@@ -1,12 +1,12 @@
 <?php
-    require './sess.php';
-    if(!isset($_SESSION['id'])){
-        header('Location: login.php');
-    }
+require './sess.php';
+if (!isset($_SESSION['id'])) {
+    header('Location: login.php');
+}
 
-    $iduser = $_SESSION['id'];
-    $query = "SELECT * FROM wishlist NATURAL JOIN produk NATURAL JOIN kategori WHERE ID_user = ? ";
-    $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
+$iduser = $_SESSION['id'];
+$query = "SELECT * FROM wishlist NATURAL JOIN produk NATURAL JOIN kategori WHERE ID_user = ? ";
+$pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
 ?>
 
@@ -35,7 +35,7 @@
                 <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
-            <?php if (isset($_GET['search'])){
+            <?php if (isset($_GET['search'])) {
                 $filtervalues = $_GET['search'];
                 $query = "SELECT * FROM wishlist NATURAL JOIN produk NATURAL JOIN kategori WHERE ID_user = ? AND CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
             } ?>
@@ -132,70 +132,72 @@
             <section class="grid grid-cols-3 col-span-9 gap-6" id="productGrid">
 
                 <?php $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $iduser);
-            $stmt->execute();
-            $result = $stmt->get_result(); $row = $result->fetch_assoc();
+                $stmt->bind_param("i", $iduser);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
                 while ($row != null) {
                     $palnum = $row['ID_kategori'] - 1 % 4; ?>
-                <!-- Product Cards -->
-                <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card"
-                    data-category="<?php echo $row["nama_kategori"];?>"
-                    onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
-                    <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
-                    <div class="p-4">
-                        <span
-                            class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum];?> rounded-full"><?php echo $row["nama_kategori"];?></span>
-                        <h1 class="text-lg font-semibold"><?php echo $row["nama"];?></h1>
-                        <p class="text-sm font-semibold text-gray-600">Rp.
-                            <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
-                        <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
+                    <!-- Product Cards -->
+                    <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card"
+                        data-category="<?php echo $row["nama_kategori"]; ?>"
+                        onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
+                        <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
+                        <div class="p-4">
+                            <span
+                                class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
+                            <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
+                            <p class="text-sm font-semibold text-gray-600">Rp.
+                                <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+                            </p>
+                            <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
+                        </div>
+                        <form method="POST">
+                            <input type="hidden" name="iduser" value=<?php echo $_SESSION['id']; ?>>
+                            <input type="hidden" name="idprod" value=<?php echo $row['ID_produk']; ?>>
+                            <input type="hidden" name="harga" value=<?php echo $row['harga']; ?>>
+                            <input type="hidden" name="total_harga" value=<?php echo $row['harga']; ?>>
+                            <button type="submit"
+                                class="w-full py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add
+                                to Cart</button>
+                        </form>
                     </div>
-                    <form method="POST">
-                        <input type="hidden" name="iduser" value=<?php echo $_SESSION['id'];?>>
-                        <input type="hidden" name="idprod" value=<?php echo $row['ID_produk'];?>>
-                        <input type="hidden" name="harga" value=<?php echo $row['harga'] ;?>>
-                        <input type="hidden" name="total_harga" value=<?php echo $row['harga'] ;?>>
-                        <button type="submit"
-                            class="w-full py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add
-                            to Cart</button>
-                    </form>
-                </div>
-                <?php $row = $result->fetch_assoc();
-            } ?>
+                    <?php $row = $result->fetch_assoc();
+                } ?>
             </section>
         </div>
     </main>
 
     <script>
-    // Dropdown Menu for Profile
-    const profileIcon = document.getElementById('profileIcon');
-    const dropdownMenu = document.getElementById('dropdownMenu');
+        // Dropdown Menu for Profile
+        const profileIcon = document.getElementById('profileIcon');
+        const dropdownMenu = document.getElementById('dropdownMenu');
 
-    profileIcon.addEventListener('mouseover', function() {
-        dropdownMenu.classList.remove('hidden');
-    });
+        profileIcon.addEventListener('mouseover', function () {
+            dropdownMenu.classList.remove('hidden');
+        });
 
-    profileIcon.addEventListener('mouseout', function() {
-        dropdownMenu.classList.add('hidden');
-    });
+        profileIcon.addEventListener('mouseout', function () {
+            dropdownMenu.classList.add('hidden');
+        });
 
-    // Category Filter Logic
-    const categoryFilter = document.querySelectorAll('.category-filter');
-    const productCards = document.querySelectorAll('.product-card');
+        // Category Filter Logic
+        const categoryFilter = document.querySelectorAll('.category-filter');
+        const productCards = document.querySelectorAll('.product-card');
 
-    categoryFilter.forEach(filter => {
-        filter.addEventListener('change', function() {
-            const selectedCategory = this.value;
-            productCards.forEach(card => {
-                if (selectedCategory === 'all' || card.getAttribute('data-category').toLowerCase() ===
-                    selectedCategory) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
+        categoryFilter.forEach(filter => {
+            filter.addEventListener('change', function () {
+                const selectedCategory = this.value;
+                productCards.forEach(card => {
+                    if (selectedCategory === 'all' || card.getAttribute('data-category').toLowerCase() ===
+                        selectedCategory) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
             });
         });
-    });
     </script>
 </body>
 
