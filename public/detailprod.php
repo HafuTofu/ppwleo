@@ -61,7 +61,7 @@ $inwl = $resultwl->num_rows > 0;
       </form>
       <?php if (isset($_GET['search'])) {
         $searched = urlencode($_GET['search']);
-        header("Location: dashboard.php?search={$searched}");
+        header("Location: search.php?search={$searched}");
         exit();
       } ?>
     </div>

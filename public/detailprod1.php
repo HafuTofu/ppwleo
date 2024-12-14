@@ -60,7 +60,7 @@ $row = $result->fetch_assoc();
       </form>
       <?php if (isset($_GET['search'])) {
         $searched = urlencode($_GET['search']);
-        header("Location: dashboard1.php?search={$searched}");
+        header("Location: search1.php?search={$searched}");
         exit();
       } ?>
     </div>

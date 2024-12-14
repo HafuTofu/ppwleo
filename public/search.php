@@ -52,40 +52,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/style1.css">
     <link rel="icon" href="./photo/ciG.png">
-    <style>
-        /* Carousel styles */
-        .carousel {
-            position: relative;
-            width: 80%;
-            height: 300px;
-            margin: 0 auto;
-            margin-top: 40px; /* Prevent overlapping with navbar */
-            overflow: hidden;
-            border: 4px solid #ddd;
-            border-radius: 12px;
-        }
-
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            height: 300px;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Ensure navbar is above other elements */
-        .sticky {
-            z-index: 1000;
-        }
-    </style>
 </head>
 
 <body class="font-sans bg-yellow-50">
@@ -103,10 +69,9 @@
                 <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
-            <?php if (isset($_GET['search'])) {
-                $searched = urlencode($_GET['search']);
-                header("Location: search.php?search={$searched}");
-                exit();
+            <?php if (isset($_GET['search'])){
+                $filtervalues = $_GET['search'];
+                $query = "SELECT * FROM produk NATURAL JOIN kategori WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
             } ?>
         </div>
 
@@ -124,23 +89,6 @@
             </div>
         </div>
     </header>
-
-    <div class="carousel my-6">
-        <div class="carousel-track">
-            <div class="carousel-slide">
-                <img src="./photo/FM1.png" alt="Slide 1">
-            </div>
-            <div class="carousel-slide">
-                <img src="./photo/FM2.png" alt="Slide 2">
-            </div>
-            <div class="carousel-slide">
-                <img src="./photo/FM3.png" alt="Slide 3">
-            </div>
-            <div class="carousel-slide">
-                <img src="./photo/FM4.png" alt="Slide 4">
-            </div>
-        </div>
-    </div>
 
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4">
@@ -227,19 +175,6 @@
                     }
                 });
             }
-
-            document.addEventListener('DOMContentLoaded', function () {
-            const track = document.querySelector('.carousel-track');
-            const slides = document.querySelectorAll('.carousel-slide');
-            let index = 0;
-
-            function moveCarousel() {
-                index = (index + 1) % slides.length;
-                track.style.transform = `translateX(-${index * 100}%)`;
-            }
-
-            setInterval(moveCarousel, 3000); // Change slide every 3 seconds
-        });
     </script>
 </body>
 </html>
