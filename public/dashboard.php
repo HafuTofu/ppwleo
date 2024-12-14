@@ -208,7 +208,7 @@
                 const categoryLabel = document.getElementById('category-label');
 
                 // Update the category label text
-                const categoryMap = {
+                const categoryMap = { 
                     all: "All",
                     gaming: "Gaming",
                     food: "Food",

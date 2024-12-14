@@ -135,7 +135,7 @@ $inwl = $resultwl->num_rows > 0;
             <span class="text-gray-600">Subtotal</span>
             <span id="subtotal" class="text-green-600 font-semibold">Rp. 0,00</span>
           </div>
-          <button class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700" onclick="window.location.href= 'login.php';">
+          <button class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700" onclick="addtocart()">
             Tambahkan ke Keranjang
           </button>
         </div>
