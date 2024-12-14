@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Waktu pembuatan: 14 Des 2024 pada 22.28
+-- Waktu pembuatan: 14 Des 2024 pada 22.46
 -- Versi server: 9.1.0
 -- Versi PHP: 8.3.14
 
@@ -97,27 +97,17 @@ INSERT INTO `produk` (`ID_produk`, `ID_kategori`, `nama`, `deskripsi`, `harga`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ratings`
+-- Struktur dari tabel `rating`
 --
 
-DROP TABLE IF EXISTS `ratings`;
-CREATE TABLE IF NOT EXISTS `ratings` (
+DROP TABLE IF EXISTS `rating`;
+CREATE TABLE IF NOT EXISTS `rating` (
   `ID_rating` int NOT NULL AUTO_INCREMENT,
-  `ID_produk` int NOT NULL,
-  `ID_user` int NOT NULL,
-  `rate` smallint NOT NULL,
-  `ID_transaksi` int NOT NULL,
   `komentar` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID_rating`),
-  UNIQUE KEY `ID_transaksi` (`ID_transaksi`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data untuk tabel `ratings`
---
-
-INSERT INTO `ratings` (`ID_rating`, `ID_produk`, `ID_user`, `rate`, `ID_transaksi`, `komentar`) VALUES
-(1, 57, 39, 5, 1, 'Bagus banget sesuai deskripsi ciGG');
+  `ID_transaksi` int NOT NULL,
+  `rate` int NOT NULL,
+  PRIMARY KEY (`ID_rating`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -127,12 +117,11 @@ INSERT INTO `ratings` (`ID_rating`, `ID_produk`, `ID_user`, `rate`, `ID_transaks
 
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE IF NOT EXISTS `transactions` (
-  `ID_transaksi` int NOT NULL AUTO_INCREMENT,
+  `ID_transaksi` int NOT NULL,
   `ID_produk` int NOT NULL,
   `ID_user` int NOT NULL,
-  `order_status` enum('Waiting Confirmation','On Process','On Delivery','Delivered','Rate This Product') NOT NULL DEFAULT 'Waiting Confirmation',
-  PRIMARY KEY (`ID_transaksi`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `order_status` enum('Confirmed','Packing Process','Delivering','Delivered','Need Rate','Done.','Canceled') NOT NULL DEFAULT 'Confirmed'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
