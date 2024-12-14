@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../connect.php'; // Your database connection file
+include '../connect.php';
 
 header('Content-Type: application/json');
 

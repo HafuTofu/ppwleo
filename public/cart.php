@@ -79,7 +79,7 @@ $stmt->execute();
               <input type="checkbox" id="selectAll" class="mr-2">
               <span class="font-semibold">All Items</span>
             </label>
-            <button class="text-gray-500">Delete..</button>
+            <button id="deleteSelected" class="text-gray-500">Delete..</button>
           </div>
         </div>
 
@@ -94,6 +94,7 @@ $stmt->execute();
           $total += $value['harga'];
           $inwl = false;
           $idprod = $value['ID_produk'];
+          $idcart = $value['ID_cart'];
           $stmtwl = $conn->prepare("SELECT * FROM wishlist WHERE ID_user = ? AND ID_produk = ?");
           $stmtwl->bind_param("ii", $iduser, $idprod);
           $stmtwl->execute();
@@ -101,7 +102,7 @@ $stmt->execute();
           $inwl = $resultwl->num_rows > 0;
           echo "
           <div class='bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4'>
-            <input type='checkbox' class='itemCheckbox self-start'>
+            <input type='checkbox' class='itemCheckbox self-start' value='$idcart'>
             <input type='hidden' class='idprod' value='$idprod'>
             <input type='hidden' id='iduser' value='$iduser'>
             <img src='./products/$value[foto]' alt='Jacket' class='w-28 h-28 rounded-md object-cover'>
@@ -114,8 +115,8 @@ $stmt->execute();
               </div>
             </div>
             <div class='text-right flex items-center gap-4'>
-              <button>
-                <i class='fas fa-trash text-gray-600'></i>
+              <button id='trashButton$sr' data-product-id='$value[ID_produk]' onclick='deleteCart($value[ID_cart])'>
+                <i id='trashIcon$sr' class='fas fa-trash text-gray-600'></i>
               </button>
               <button id='loveButton$sr' data-product-id='$value[ID_produk]' onclick='toggleHeart($value[ID_produk])'>
   <i id='heartIcon$sr' class='" . ($inwl ? 'fas' : 'far') . " fa-heart text-red-600  '></i>
@@ -169,6 +170,50 @@ $stmt->execute();
         }),
       });
     }
+
+    function deleteCart(cartID) {
+
+      fetch('delete_cart.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          idcart: cartID
+        }),
+      });
+
+      location.reload();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const deleteSelectedButton = document.getElementById("deleteSelected");
+      const itemCheckboxes = document.querySelectorAll(".itemCheckbox");
+
+      deleteSelectedButton.addEventListener("click", function () {
+        // Collect ID_cart values from checked checkboxes
+        const selectedItems = Array.from(itemCheckboxes)
+          .filter((checkbox) => checkbox.checked) // Only checked items
+          .map((checkbox) => parseInt(checkbox.value, 10)); // Extract the ID_cart value
+
+        if (selectedItems.length > 0) {
+          // Send the selected IDs to the server
+          fetch("delete_cart.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ selectedItems }),
+          });
+          location.reload();
+        } else {
+          alert("No items selected.");
+        }
+      });
+    });
+
+
+
 
     // Profile Dropdown Menu
     document.addEventListener('DOMContentLoaded', function () {
@@ -284,7 +329,6 @@ $stmt->execute();
         });
       });
     });
-
 
 
   </script>

@@ -96,13 +96,24 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     </div>
 
     <!-- Categories -->
-    <div class="flex justify-center my-4 space-x-4">
-        <button onclick="filterProducts('all')" class="px-6 py-2 text-white bg-gray-400 rounded-lg">All</button>
-        <button onclick="filterProducts('Gaming')" class="px-6 py-2 text-white bg-orange-400 rounded-lg">Gaming</button>
-        <button onclick="filterProducts('Food')" class="px-6 py-2 text-white bg-teal-500 rounded-lg">Food</button>
-        <button onclick="filterProducts('Clothes')" class="px-6 py-2 text-white bg-red-500 rounded-lg">Clothes</button>
-        <button onclick="filterProducts('Topup')" class="px-6 py-2 text-white bg-yellow-400 rounded-lg">Top-up</button>
+    <div class="flex justify-center my-4 space-x-4" id="category-buttons">
+        <button class="px-6 py-2 text-white bg-gray-400 rounded-lg category-button" data-category="all">All</button>
+        <?php
+        $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
+        $categories = [];
+        $idx=0;
+        while ($categoryRow = $categoriesResult->fetch_assoc()) {
+            $categories[] = $categoryRow['nama_kategori'];
+            $categoryName = $categoryRow['nama_kategori'];
+            $categoryColor = $pallete[($idx % 4)];
+            $idx ++;
+            echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
+        }
+        ?>
     </div>
+    <script>
+        const categories = <?php echo json_encode($categories); ?>;
+    </script>
 
     <!-- Category Label -->
     <div id="category-label" class="my-4 text-xl font-bold text-center">Category: All</div>
@@ -132,29 +143,39 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
         <!-- Filtering Products by Category -->
         <script>
-            function filterProducts(category) {
-                const products = document.querySelectorAll('.product-card');
+            document.addEventListener('DOMContentLoaded', function () {
                 const categoryLabel = document.getElementById('category-label');
+                const products = document.querySelectorAll('.product-card');
 
-                // Update the category label text
-                const categoryMap = {
-                    all: "All",
-                    gaming: "Gaming",
-                    food: "Food",
-                    clothes: "Clothes",
-                    topup: "Top-up"
-                };
-                categoryLabel.textContent = `Category: ${categoryMap[category.toLowerCase()] || "Unknown"}`;
+                const categoryMap = categories.reduce((map, category) => {
+                    map[category.toLowerCase()] = category;
+                    return map;
+                }, { all: 'All' });
 
-                // Filter products by category
-                products.forEach(product => {
-                    if (category === 'all' || product.getAttribute('data-category') === category) {
-                        product.style.display = 'flex'; // Show matching products
-                    } else {
-                        product.style.display = 'none'; // Hide non-matching products
+                // Function to filter products
+                function filterProducts(category) {
+                    const categoryName = categoryMap[category.toLowerCase()] || 'Unknown';
+                    categoryLabel.textContent = `Category: ${categoryName}`;
+
+                    products.forEach(product => {
+                        if (category === 'all' || product.getAttribute('data-category').toLowerCase() === category.toLowerCase()) {
+                            product.style.display = 'flex';
+                        } else {
+                            product.style.display = 'none';
+                        }
+                    });
+
+                    if (category !== 'all' && [...products].every(product => product.style.display === 'none')) {
+                        categoryLabel.textContent += ' (No products available)';
                     }
+                }
+
+                const categoryButtons = document.querySelectorAll('.category-button');
+                categoryButtons.forEach(button => {
+                    button.addEventListener('click', () => filterProducts(button.getAttribute('data-category')));
                 });
-            }
+            });
+
 
             document.addEventListener('DOMContentLoaded', function () {
             const track = document.querySelector('.carousel-track');
