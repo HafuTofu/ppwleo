@@ -226,6 +226,19 @@
                     }
                 });
             }
+
+            document.addEventListener('DOMContentLoaded', function () {
+            const track = document.querySelector('.carousel-track');
+            const slides = document.querySelectorAll('.carousel-slide');
+            let index = 0;
+
+            function moveCarousel() {
+                index = (index + 1) % slides.length;
+                track.style.transform = `translateX(-${index * 100}%)`;
+            }
+
+            setInterval(moveCarousel, 3000); // Change slide every 3 seconds
+        });
     </script>
 </body>
 </html>
