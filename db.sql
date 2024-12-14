@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Waktu pembuatan: 13 Des 2024 pada 21.00
+-- Waktu pembuatan: 14 Des 2024 pada 14.14
 -- Versi server: 9.1.0
 -- Versi PHP: 8.3.14
 
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `cart` (
 --
 
 INSERT INTO `cart` (`ID_cart`, `ID_user`, `ID_produk`, `qty`, `total_harga`) VALUES
-(1, 39, 56, 2, 2181804),
-(2, 39, 57, 1, 1090902);
+(1, 39, 56, 3, 3272706),
+(2, 39, 57, 1, 1000000);
 
 -- --------------------------------------------------------
 
@@ -97,8 +97,8 @@ CREATE TABLE IF NOT EXISTS `produk` (
 --
 
 INSERT INTO `produk` (`ID_produk`, `ID_kategori`, `nama`, `deskripsi`, `harga`, `foto`, `stok`, `terjual`, `waktuditambahkan`) VALUES
-(56, 1, 'Kentut', 'Kentut bau basmah', 1090902, '7b774effe4a349c6dd82ad4f4f21d34c.jpeg', 110, 0, '2024-12-13'),
-(57, 1, 'Kentut', 'Kentut bau basmah', 1090902, 'dd7536794b63bf90eccfd37f9b147d7f.jpeg', 1000, 0, '2024-12-13');
+(56, 2, 'PIGIR', 'bram', 1090902, '7b774effe4a349c6dd82ad4f4f21d34c.jpeg', 110, 0, '2024-12-13'),
+(57, 1, 'Kentut', 'Kentut bau basmah', 1000000, 'dd7536794b63bf90eccfd37f9b147d7f.jpeg', 1000, 0, '2024-12-13');
 
 -- --------------------------------------------------------
 
@@ -113,9 +113,17 @@ CREATE TABLE IF NOT EXISTS `ratings` (
   `ID_user` int NOT NULL,
   `rate` smallint NOT NULL,
   `ID_transaksi` int NOT NULL,
+  `komentar` varchar(255) NOT NULL,
   PRIMARY KEY (`ID_rating`),
   UNIQUE KEY `ID_transaksi` (`ID_transaksi`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `ratings`
+--
+
+INSERT INTO `ratings` (`ID_rating`, `ID_produk`, `ID_user`, `rate`, `ID_transaksi`, `komentar`) VALUES
+(1, 57, 39, 5, 1, 'Bagus banget sesuai deskripsi ciGG');
 
 -- --------------------------------------------------------
 
