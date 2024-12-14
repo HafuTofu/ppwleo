@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Waktu pembuatan: 14 Des 2024 pada 14.14
+-- Waktu pembuatan: 14 Des 2024 pada 22.28
 -- Versi server: 9.1.0
 -- Versi PHP: 8.3.14
 
@@ -37,15 +37,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
   PRIMARY KEY (`ID_cart`),
   KEY `user_cart` (`ID_user`),
   KEY `produk_cart` (`ID_produk`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `cart`
---
-
-INSERT INTO `cart` (`ID_cart`, `ID_user`, `ID_produk`, `qty`, `total_harga`) VALUES
-(1, 39, 56, 3, 3272706),
-(2, 39, 57, 1, 1000000);
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `kategori` (
   `ID_kategori` int NOT NULL AUTO_INCREMENT,
   `nama_kategori` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_kategori`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `kategori`
@@ -68,7 +60,8 @@ INSERT INTO `kategori` (`ID_kategori`, `nama_kategori`) VALUES
 (1, 'Gaming'),
 (2, 'Food'),
 (3, 'Topup'),
-(4, 'Clothes');
+(4, 'Clothes'),
+(5, 'Asdf');
 
 -- --------------------------------------------------------
 
@@ -87,18 +80,19 @@ CREATE TABLE IF NOT EXISTS `produk` (
   `stok` int DEFAULT NULL,
   `terjual` int DEFAULT NULL,
   `waktuditambahkan` date NOT NULL,
+  `statusproduk` enum('available','unavailable') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'available',
   PRIMARY KEY (`ID_produk`),
   KEY `nama` (`nama`),
   KEY `ID_kategori` (`ID_kategori`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `produk`
 --
 
-INSERT INTO `produk` (`ID_produk`, `ID_kategori`, `nama`, `deskripsi`, `harga`, `foto`, `stok`, `terjual`, `waktuditambahkan`) VALUES
-(56, 2, 'PIGIR', 'bram', 1090902, '7b774effe4a349c6dd82ad4f4f21d34c.jpeg', 110, 0, '2024-12-13'),
-(57, 1, 'Kentut', 'Kentut bau basmah', 1000000, 'dd7536794b63bf90eccfd37f9b147d7f.jpeg', 1000, 0, '2024-12-13');
+INSERT INTO `produk` (`ID_produk`, `ID_kategori`, `nama`, `deskripsi`, `harga`, `foto`, `stok`, `terjual`, `waktuditambahkan`, `statusproduk`) VALUES
+(57, 5, 'Apalah', 'Test1', 1000000, 'dd7536794b63bf90eccfd37f9b147d7f.jpeg', 1001, 5, '2024-12-13', 'available'),
+(58, 4, 'A Chill Guy', 'Just A Chill Guy *sfx: Chill Guy Theme Music*', 123456789, '8d39dd7eef115ea6975446ef4082951f.jpg', 9999, 0, '0000-00-00', 'available');
 
 -- --------------------------------------------------------
 
@@ -168,8 +162,8 @@ CREATE TABLE IF NOT EXISTS `userdata` (
 --
 
 INSERT INTO `userdata` (`ID_user`, `Username`, `Email`, `Password`, `gender`, `fotouser`, `status`, `address`, `fullname`, `phone`) VALUES
-(3, 'admin', 'admin@gmail.com', 'qwerty', 'Rather not say', 'pfp.png', 'active', '', '', ''),
-(39, 'asdwadw', 'asdw@asdsw', '123', 'Rather not say', 'monitor.jpg', 'active', '', '', '');
+(3, 'admin', 'admin@gmail.com', 'qwerty', 'Rather not say', 'pfp.png', 'active', 'asd', '', ''),
+(39, 'asdwadw', 'asdw@asdsw', '12345', 'Rather not say', 'monitor.jpg', 'active', 'Jl. Johar Baru IV A Gang L RT 4 RW 5 Nomor 10 A-B', 'Hafizh Laththuf Muhammad', '082110869384');
 
 -- --------------------------------------------------------
 
@@ -190,8 +184,7 @@ CREATE TABLE IF NOT EXISTS `wishlist` (
 --
 
 INSERT INTO `wishlist` (`ID_user`, `ID_produk`) VALUES
-(39, 57),
-(39, 56);
+(39, 57);
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
