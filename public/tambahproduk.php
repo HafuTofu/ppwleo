@@ -40,7 +40,7 @@ if (!empty($_POST)) {
                   VALUES ('$nama', '$deskripsi', '$harga', '$stok', '0', '$idkat', '$filename')";
         mysqli_query($conn, $query);
         move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
-        header("Location: admin.php");
+        header("Location: adminew.php");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
