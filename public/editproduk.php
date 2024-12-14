@@ -7,6 +7,11 @@ $result = $conn->query("SELECT nama_kategori FROM kategori");
         $categories[] = $row['nama_kategori'];
     }
 
+$idprod = $_GET['idprod'];
+$q = "SELECT * FROM produk WHERE ID_produk = $idprod";
+$r = $conn->query($q);
+$row = $r->fetch_assoc();
+
 if (!empty($_POST)) {
     try {
         $nama = $_POST['nama'];
@@ -14,6 +19,7 @@ if (!empty($_POST)) {
         $stok = $_POST['stok'];
         $harga = $_POST['harga'];
         $deskripsi = $_POST['deskripsi'];
+        $terjual = 0;
         $filename = '';
         $finfo = new finfo(FILEINFO_MIME_TYPE);
 
@@ -34,13 +40,17 @@ if (!empty($_POST)) {
 
             $filename = md5(random_bytes(1)) . '.' . pathinfo($_FILES['inputfoto']['name'], PATHINFO_EXTENSION);
             $filepath = './products/' . $filename;
+
         }
 
-        $query = "INSERT INTO produk (nama, deskripsi, harga, stok, terjual, ID_kategori, foto) 
-                  VALUES ('$nama', '$deskripsi', '$harga', '$stok', '0', '$idkat', '$filename')";
-        mysqli_query($conn, $query);
+        $oldphoto = './products/' . $row['foto'];
+        unlink($oldphoto);
+        $query = "UPDATE produk SET nama = ? , deskripsi = ? , harga = ? , stok = ? , terjual = ? , ID_kategori = ? , foto = ? 
+                  WHERE ID_produk = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ssiiiisi", $nama,$deskripsi,$harga, $stok,$terjual ,$idkat,$filename,$idprod);
         move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
-        header("Location: admin.php");
+        header("Location: adminew.php");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -61,7 +71,7 @@ if (!empty($_POST)) {
 <body>
     <div class="container">
         <div class="register-box">
-            <h2>Tambah Produk</h2>
+            <h2>Edit Produk</h2>
             <?php
             if ($error){
                 echo '<p class="alert">'.$error.'</p>';
@@ -69,12 +79,12 @@ if (!empty($_POST)) {
             ?>
             <form method="POST" action="" enctype="multipart/form-data">
                 <label style="padding-bottom: 0.5rem;"for="inputfoto">MasuGan Foto:</label>
-                <input style="margin-bottom: 1rem;" type="file" name="inputfoto" required
+                <input style="margin-bottom: 1rem;" type="file" name="inputfoto"
                 accept="image/png,image/jpeg,image/jpg">
 
                 <label style="padding-bottom: 0.5rem;" for="nama">Nama Barang:</label>
                 <input type="text" id="nama" name="nama" required
-                value="<?php echo $_POST['nama'] ?? ''?>">
+                value="<?php echo $_POST['nama'] ?? $row['nama']?>">
                 
                 <label for = "kategori" style="padding-bottom: 0.5rem;">Kategori:</label>
                 <select id="kategori" name="kategori" required>
@@ -86,17 +96,17 @@ if (!empty($_POST)) {
                 
                 <label style="padding-bottom: 0.5rem;" for="stok">Stok Barang:</label>
                 <input type="number" id="stok" name="stok" min='1' required
-                value="<?php echo $_POST['inputnumber'] ?? '1'?>">
+                value="<?php echo $_POST['inputnumber'] ?? $row['stok']?>">
 
                 <label for="harga" style="padding-bottom: 0.5rem;">Harga:</label>
                 <input   type="number" id="harga" name="harga" min='1000' required
-                value = "<?php echo $_POST['harga'] ?? '1000' ?>">
+                value = "<?php echo $_POST['harga'] ?? $row['harga'] ?>">
 
                 <label for="deskripsi" style="padding-bottom: 0.5rem;">Deskripsi:</label>
                 <textarea  style="max-width:100% !important; min-width:100%;"  id="deskripsi" name="deskripsi" required
-                value = "<?php echo $_POST['deskripsi'] ?? '' ?>"></textarea>
+                value = "<?php echo $_POST['deskripsi'] ?? $row['deskripsi'] ?>"><?php echo $_POST['deskripsi'] ?? $row['deskripsi'] ?></textarea>
 
-                <button type="submit">TambahGan</button>
+                <button type="submit">Update</button>
             </form>
         </div>
     </div>

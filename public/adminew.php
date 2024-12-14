@@ -18,6 +18,11 @@ if ($_SESSION['login'] === 'false') {
 
 $query = "SELECT * FROM produk NATURAL JOIN kategori";
 
+if (isset($_POST['edit']) && !empty($_POST['edit'])) {
+  $prodid = $_POST['edit'];
+  header('Location: editproduk.php');
+}
+
 if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
   $prodid = $_POST['hapus'];
   $queryhapus = "DELETE FROM produk WHERE ID_produk = $prodid";
@@ -136,18 +141,19 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
           <p class="text-sm"><?php echo $row['deskripsi']; ?></p>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-md text-center">
-          <button class="bg-blue-500 text-white py-1 px-4 rounded-lg hover:bg-blue-600">
+          <button type="submit" class="bg-blue-500 text-white py-1 px-4 rounded-lg hover:bg-blue-600" onclick="window.location.href = 'editproduk.php?idprod=<?php echo $row['ID_produk']; ?>'">
             <i class="fas fa-edit"></i> Edit
           </button>
-          <form action="" method="POST" class="table-column">  
-          <input type="hidden" name="hapus" value="<?php echo $row['ID_produk']; ?>">
-          <button type= "submit" class="bg-red-500 text-white py-1 px-4 rounded-lg hover:bg-red-600 mt-2">
-            <i class="fas fa-trash"></i> Delete
-          </button>
+          <form action="" method="POST" class="table-column">
+            <input type="hidden" name="hapus" value="<?php echo $row['ID_produk']; ?>">
+            <button type="submit" class="bg-red-500 text-white py-1 px-4 rounded-lg hover:bg-red-600 mt-2">
+              <i class="fas fa-trash"></i> Delete
+            </button>
           </form>
         </div>
       </div>
-    <?php $row = $result->fetch_assoc(); } ?>
+      <?php $row = $result->fetch_assoc();
+    } ?>
   </div>
 
   <!-- Dropdown Menu Script -->
