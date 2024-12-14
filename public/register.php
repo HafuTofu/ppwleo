@@ -89,7 +89,7 @@
                 <select style="margin-bottom:1rem;" id="gender" name="gender" required>
                     <option value="Rather not say">Rather not say</option>
                     <option value="Male">Male</option>
-                    <option alue="Female">Female</option>
+                    <option value="Female">Female</option>
                 </select>
 
                 <label style="padding-bottom: 0.5rem;" for="password">Password:</label>
