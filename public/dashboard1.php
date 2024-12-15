@@ -116,7 +116,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     </script>
 
     <!-- Category Label -->
-    <div id="category-label" class="my-4 text-xl font-bold text-center">Category: All</div>
+    <div id="category-label" class="my-4 text-2xl font-bold text-center">Category: All</div>
     <!-- Product Grid -->
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
 
