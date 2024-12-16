@@ -1,7 +1,7 @@
 <?php
 require "../public/sess.php";
 
-if (!isset($_SESSION['login'])) {
+if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
   session_destroy();
   header('Location: ../public/login.php');
 }
@@ -9,11 +9,6 @@ if (!isset($_SESSION['login'])) {
 if ($_SESSION['login'] === 'trueguess') {
   session_destroy();
   header('Location: dashboard.php');
-}
-
-if ($_SESSION['login'] === 'false') {
-  session_destroy();
-  header('Location: ../public/login.php');
 }
 
 $query = "SELECT * FROM produk NATURAL JOIN kategori";
@@ -69,9 +64,8 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
       <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
         id="profileIcon">
       <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
-        <a href="tambahproduk.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add New Product</a>
-        <a href="tambahkategori.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add New Category</a>
-        <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Discount Product</a>
+        <a href="admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category Page</a>
+        <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount Page</a>
         <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
       </div>
     </div>
