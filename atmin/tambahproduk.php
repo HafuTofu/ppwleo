@@ -1,5 +1,5 @@
 <?php
-require 'sess.php';
+require '../public/sess.php';
 $error = '';
 $categories = [];
 $result = $conn->query("SELECT nama_kategori FROM kategori");
@@ -33,14 +33,14 @@ if (!empty($_POST)) {
             }
 
             $filename = md5(random_bytes(1)) . '.' . pathinfo($_FILES['inputfoto']['name'], PATHINFO_EXTENSION);
-            $filepath = './products/' . $filename;
+            $filepath = '../public/products/' . $filename;
         }
 
         $query = "INSERT INTO produk (nama, deskripsi, harga, stok, terjual, ID_kategori, foto) 
                   VALUES ('$nama', '$deskripsi', '$harga', '$stok', '0', '$idkat', '$filename')";
         mysqli_query($conn, $query);
         move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
-        header("Location: adminew.php");
+        header("Location: index.php");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();

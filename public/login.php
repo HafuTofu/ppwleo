@@ -7,7 +7,7 @@
     }else if($_SESSION['login'] === 'trueguess'){
         header('Location: dashboard.php');
     }else if($_SESSION['login'] === 'trueadmin'){
-        header('Location: admin.php');
+        header('Location: ../atmin/index.php');
     }
 
     $source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -41,7 +41,7 @@
                             $_SESSION['login'] = 'trueadmin';
                             $_SESSION['id'] = $row1['ID_user'];
                             $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: admin.php");
+                            header("Location: ../atmin/index.php");
                         }else{
                             $_SESSION['login'] = 'trueguess';
                             $_SESSION['id'] = $row1['ID_user'];
@@ -59,7 +59,7 @@
                             $_SESSION['login'] = 'trueadmin';
                             $_SESSION['id'] = $row2['ID_user'];
                             $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: admin.php");
+                            header("Location: ../atmin/index.php");
                         }else{
                             $_SESSION['login'] = 'trueguess';
                             $_SESSION['id'] = $row2['ID_user'];

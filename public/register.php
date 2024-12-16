@@ -7,8 +7,6 @@
         header('Location: dashboard.php');
     }else if($_SESSION['login'] === 'trueadmin'){
         header('Location: admin.php');
-    }else{
-        header('Location: dashboard1.php');
     }
 
     $error = '';
@@ -39,12 +37,18 @@
                     
                     $filename = md5(random_bytes(1)) . '.' . pathinfo($_FILES['inputfoto']['name'], PATHINFO_EXTENSION);
                     $filepath = './photouser/' . $filename;
+                    move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
                 }
                 
-                $query = "INSERT INTO userdata (Username, Email, Password, gender, fotouser) 
+                if($filename != ''){
+
+                    $query = "INSERT INTO userdata (Username, Email, Password, gender, fotouser) 
                 VALUES ('$username', '$email', '$password', '$gender', '$filename')";
+                }else  {
+                    $query = "INSERT INTO userdata (Username, Email, Password, gender) 
+                VALUES ('$username', '$email', '$password', '$gender')";
+                }
                 mysqli_query($conn, $query);
-                move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
                 header("Location: login.php");
             }exit;
         }catch(Exception $e){
@@ -72,10 +76,10 @@
                 echo '<p class="alert">'.$error.'</p>';
             }
             ?>
-            <form method="POST" action="" >
+            <form method="POST" action="" enctype="multipart/form-data">
                 <label style="padding-bottom: 0.5rem;"for="inputfoto">MasuGan Foto:</label>
-                <input style="margin-bottom: 1rem;" type="file" name="inputfoto" required
-                accept="image/png,image/jpeg,image/jpg">
+                <input style="margin-bottom: 1rem;" type="file" name="inputfoto" id="inputfoto"
+                accept="image/png,image/jpeg">
                 
                 <label style="padding-bottom: 0.5rem;"for="username">Username:</label>
                 <input style="margin-bottom: 1rem;"type="text" id="username" name="username" required

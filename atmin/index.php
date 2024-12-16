@@ -1,19 +1,19 @@
 <?php
-require "./sess.php";
+require "../public/sess.php";
 
 if (!isset($_SESSION['login'])) {
   session_destroy();
-  header('Location: login.php');
+  header('Location: ../public/login.php');
 }
 
 if ($_SESSION['login'] === 'trueguess') {
   session_destroy();
-  header('Location: dashboard.php');
+  header('Location: ../public/dashboard.php');
 }
 
 if ($_SESSION['login'] === 'false') {
   session_destroy();
-  header('Location: login.php');
+  header('Location: ../public/login.php');
 }
 
 $query = "SELECT * FROM produk NATURAL JOIN kategori";
@@ -27,7 +27,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
   $prodid = $_POST['hapus'];
   $queryhapus = "DELETE FROM produk WHERE ID_produk = $prodid";
   mysqli_query($conn, $queryhapus);
-  echo "<meta http-equiv='refresh' content='1; url=adminew.php'>";
+  echo "<meta http-equiv='refresh' content='1; url='index.php'>";
 }
 ?>
 
@@ -47,7 +47,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
   <!-- Navbar -->
   <div class="bg-yellow-200 sticky top-0 flex justify-between items-center p-4">
     <a href="adminew.php">
-      <img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
+      <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
     </a>
 
     <!-- Search Bar -->
@@ -56,7 +56,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
         <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
           echo $_GET['search'];
         } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
-        <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
+        <button type="submit" class="p-2"><img src="../public/photo/search.png" width="20" height="20" alt="Search"></button>
       </form>
       <?php if (isset($_GET['search'])) {
         $filtervalues = $_GET['search'];
@@ -66,11 +66,11 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
 
     <!-- User and Dropdown Menu -->
     <div class="relative">
-      <img src="./photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
+      <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
         id="profileIcon">
       <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
-        <a href="tambahproduk.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add New Product</a>
-        <a href="tambahkategori.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add New Category</a>
+        <a href="tambahproduk.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category Page</a>
+        <a href="tambahkategori.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discounts Page</a>
         <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Discount Product</a>
         <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
       </div>
@@ -114,7 +114,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
 
         <!-- Product Card 1 -->
         <div class="flex items-center bg-white p-4 rounded-lg shadow-md">
-          <img src="./products/<?php echo $row['foto']; ?>" alt="Product Image" class="w-16 h-16 rounded-lg mx-auto">
+          <img src="../public/products/<?php echo $row['foto']; ?>" alt="Product Image" class="w-16 h-16 rounded-lg mx-auto">
         </div>
         <div class="bg-white p-4 rounded-lg shadow-md text-center">
           <p class="font-semibold text-lg"><?php echo $row['nama']; ?></p>
