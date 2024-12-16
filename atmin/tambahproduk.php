@@ -1,5 +1,5 @@
 <?php
-require "../public/sess.php";
+require '../public/sess.php';
 $error = '';
 $categories = [];
 $result = $conn->query("SELECT nama_kategori FROM kategori");

@@ -1,5 +1,5 @@
 <?php
-require "../public/sess.php";
+require 'sess.php';
 $error = '';
 
 if (!empty($_POST)) {
@@ -8,7 +8,7 @@ if (!empty($_POST)) {
         $query = "INSERT INTO kategori (nama_kategori) 
                   VALUES ('$nama')";
         mysqli_query($conn, $query);
-        header("Location: admindash.php");
+        header("Location: index.php");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();

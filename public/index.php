@@ -1,5 +1,11 @@
 <?php
 include '../connect.php';
+if(isset($_SESSION['login']) && $_SESSION['login'] === 'trueguess'){
+    header('Location: dashboard.php');        
+}
+// else if(isset($_SESSION['login']) && $_SESSION['login'] === 'trueadmin'){
+//     header('Location: ../atmin/index.php');
+// }
 $query = "SELECT * FROM produk NATURAL JOIN kategori";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 ?>
@@ -65,8 +71,8 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                         alt="Search"></button>
             </form>
             <?php if (isset($_GET['search'])){
-                $filtervalues = $_GET['search'];
-                $query = "SELECT * FROM produk NATURAL JOIN kategori WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+                $searched = $_GET['search'];
+                header("Location: search1.php?search={$searched}");
             } ?>
         </div>
 
@@ -116,7 +122,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     </script>
 
     <!-- Category Label -->
-    <div id="category-label" class="my-4 text-xl font-bold text-center">Category: All</div>
+    <div id="category-label" class="my-4 text-2xl font-bold text-center">Category: All</div>
     <!-- Product Grid -->
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
 

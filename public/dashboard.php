@@ -123,6 +123,9 @@ if (!empty($_POST)) {
     <div class="carousel my-6">
         <div class="carousel-track">
             <div class="carousel-slide">
+                <img src="./photo/FM4.png" alt="Duplicate Last Slide"> <!-- Duplicate of last -->
+            </div>
+            <div class="carousel-slide">
                 <img src="./photo/FM1.png" alt="Slide 1">
             </div>
             <div class="carousel-slide">
@@ -134,8 +137,12 @@ if (!empty($_POST)) {
             <div class="carousel-slide">
                 <img src="./photo/FM4.png" alt="Slide 4">
             </div>
+            <div class="carousel-slide">
+                <img src="./photo/FM1.png" alt="Duplicate First Slide"> <!-- Duplicate of first -->
+            </div>
         </div>
     </div>
+
 
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4" id="category-buttons">
@@ -158,7 +165,7 @@ if (!empty($_POST)) {
     </script>
 
 
-    <div id="category-label" class="my-4 text-xl font-bold text-center">Category: All</div>
+    <div id="category-label" class="my-4 text-2xl font-bold text-center">Category: All</div>
 
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
         <?php $result = $conn->query($query);
@@ -250,16 +257,47 @@ if (!empty($_POST)) {
             document.addEventListener('DOMContentLoaded', function () {
                 const track = document.querySelector('.carousel-track');
                 const slides = document.querySelectorAll('.carousel-slide');
-                let index = 0;
+                const slideWidth = slides[0].offsetWidth;
 
-                function moveCarousel() {
-                    index = (index + 1) % slides.length;
-                    track.style.transform = `translateX(-${index * 100}%)`;
+                let index = 1; // Start from the first real slide
+                let isTransitioning = false;
+
+                // Initialize the carousel position
+                track.style.transform = `translateX(-${slideWidth}px)`;
+
+                function moveCarousel(direction) {
+                    if (isTransitioning) return; // Prevent new transitions during animation
+                    isTransitioning = true;
+
+                    index += direction;
+                    track.style.transition = 'transform 0.5s ease-in-out';
+                    track.style.transform = `translateX(-${index * slideWidth}px)`;
                 }
 
-                setInterval(moveCarousel, 3000);
+                // Handle the infinite loop
+                track.addEventListener('transitionend', () => {
+                    isTransitioning = false;
+                    if (index === 0) {
+                        track.style.transition = 'none';
+                        index = slides.length - 2;
+                        track.style.transform = `translateX(-${index * slideWidth}px)`;
+                    } else if (index === slides.length - 1) {
+                        track.style.transition = 'none';
+                        index = 1;
+                        track.style.transform = `translateX(-${index * slideWidth}px)`;
+                    }
+                });
+
+                // Auto-slide functionality
+                setInterval(() => moveCarousel(1), 3000);
+
+                // Optional: Add manual navigation (if needed)
+                const prevButton = document.querySelector('#prev');
+                const nextButton = document.querySelector('#next'); 
+
+                prevButton?.addEventListener('click', () => moveCarousel(-1));
+                nextButton?.addEventListener('click', () => moveCarousel(1));
             });
         </script>
 </body>
-
 </html>
