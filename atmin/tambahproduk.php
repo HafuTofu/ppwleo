@@ -3,9 +3,9 @@ require "../public/sess.php";
 $error = '';
 $categories = [];
 $result = $conn->query("SELECT nama_kategori FROM kategori");
-    while ($row = $result->fetch_assoc()) {
-        $categories[] = $row['nama_kategori'];
-    }
+while ($row = $result->fetch_assoc()) {
+    $categories[] = $row['nama_kategori'];
+}
 
 if (!empty($_POST)) {
     try {
@@ -40,7 +40,7 @@ if (!empty($_POST)) {
                   VALUES ('$nama', '$deskripsi', '$harga', '$stok', '0', '$idkat', '$filename')";
         mysqli_query($conn, $query);
         move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
-        header("Location: adminew.php");
+        header("Location: admindash.php");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -51,6 +51,7 @@ if (!empty($_POST)) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,47 +59,48 @@ if (!empty($_POST)) {
     <link rel="stylesheet" href="../public/css/tambahproduk.css">
     <link rel="icon" href="../public/photo/ciG.png">
 </head>
+
 <body>
     <div class="container">
         <div class="register-box">
             <h2>Tambah Produk</h2>
             <?php
-            if ($error){
-                echo '<p class="alert">'.$error.'</p>';
+            if ($error) {
+                echo '<p class="alert">' . $error . '</p>';
             }
             ?>
             <form method="POST" action="" enctype="multipart/form-data">
-                <label style="padding-bottom: 0.5rem;"for="inputfoto">MasuGan Foto:</label>
+                <label style="padding-bottom: 0.5rem;" for="inputfoto">MasuGan Foto:</label>
                 <input style="margin-bottom: 1rem;" type="file" name="inputfoto" required
-                accept="image/png,image/jpeg,image/jpg">
+                    accept="image/png,image/jpeg,image/jpg">
 
                 <label style="padding-bottom: 0.5rem;" for="nama">Nama Barang:</label>
-                <input type="text" id="nama" name="nama" required
-                value="<?php echo $_POST['nama'] ?? ''?>">
-                
-                <label for = "kategori" style="padding-bottom: 0.5rem;">Kategori:</label>
+                <input type="text" id="nama" name="nama" required value="<?php echo $_POST['nama'] ?? '' ?>">
+
+                <label for="kategori" style="padding-bottom: 0.5rem;">Kategori:</label>
                 <select id="kategori" name="kategori" required>
                     <option value="" disabled selected>Pilih Kategori</option>
                     <?php foreach ($categories as $category) { ?>
                         <option value="<?php echo strtolower($category); ?>"><?php echo $category; ?></option>
                     <?php } ?>
                 </select>
-                
+
                 <label style="padding-bottom: 0.5rem;" for="stok">Stok Barang:</label>
                 <input type="number" id="stok" name="stok" min='1' required
-                value="<?php echo $_POST['inputnumber'] ?? '1'?>">
+                    value="<?php echo $_POST['inputnumber'] ?? '1' ?>">
 
                 <label for="harga" style="padding-bottom: 0.5rem;">Harga:</label>
-                <input   type="number" id="harga" name="harga" min='1000' required
-                value = "<?php echo $_POST['harga'] ?? '1000' ?>">
+                <input type="number" id="harga" name="harga" min='1000' required
+                    value="<?php echo $_POST['harga'] ?? '1000' ?>">
 
                 <label for="deskripsi" style="padding-bottom: 0.5rem;">Deskripsi:</label>
-                <textarea  style="max-width:100% !important; min-width:100%;"  id="deskripsi" name="deskripsi" required
-                value = "<?php echo $_POST['deskripsi'] ?? '' ?>"></textarea>
+                <textarea style="max-width:100% !important; min-width:100%;" id="deskripsi" name="deskripsi" required
+                    value="<?php echo $_POST['deskripsi'] ?? '' ?>"></textarea>
 
                 <button type="submit">TambahGan</button>
             </form>
         </div>
     </div>
 </body>
+
 </html>
