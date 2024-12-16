@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer List</title>
   <link rel="icon" href="./photo/ciG.png">
-  <link rel="stylesheet" href="./css/style12.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
 </head>
 
 <body class="font-sans bg-yellow-50">
@@ -41,7 +46,7 @@
 
         <!-- Table Container -->
         <div class="overflow-hidden rounded-lg">
-            <table class="min-w-full bg-white">
+            <table class="min-w-full bg-white" id="customerTable">
                 <!-- Table Header -->
                 <thead class="bg-yellow-400 text-black uppercase text-sm leading-normal">
                     <tr>
@@ -59,21 +64,41 @@
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-3 px-6 font-bold text-center">Pham Hanni</td>
                         <td class="py-3 px-6 font-bold text-center">Jl. Agus Salim, RT 06</td>
-                        <td class="py-3 px-6 font-bold text-center">fkhjdkf@gmail.com</td>
+                        <td class="py-3 px-6 font-bold text-center">PhamParapam@gmail.com</td>
                         <td class="py-3 px-6 font-bold text-center">0898172873485</td>
-                        <td class="py-3 px-6 font-bold text-center">
-                            <button onclick="toggleButton(this)" class="toggle-btn w-20 px-4 py-1 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-full transition duration-200">Unban</button>
+                        <td class="py-3 px-6 font-bold text-center space-x-2">
+                            <div class="flex space-x-2 justify-center">
+                                <!-- Unban/Ban Button -->
+                                <button onclick="toggleButton(this)" class="toggle-btn w-24 h-8 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-lg flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-unlock"></i> <span>Unban</span>
+                                </button>
+
+                                <!-- Edit Button -->
+                                <button onclick="editRow(this)" class="bg-blue-500 text-white w-24 h-8 text-xs font-bold rounded-lg hover:bg-blue-600 flex items-center justify-center space-x-2">
+                                    <i class="fas fa-edit"></i> <span>Edit</span>
+                                </button>
+                            </div>
                         </td>
                     </tr>
 
                     <!-- Row 2 -->
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="py-3 px-6 font-bold text-center">Pham Hanni</td>
-                        <td class="py-3 px-6 font-bold text-center">Jl. Agus Salim, RT 06</td>
-                        <td class="py-3 px-6 font-bold text-center">fkhjdkf@gmail.com</td>
-                        <td class="py-3 px-6 font-bold text-center">0898172873485</td>
-                        <td class="py-3 px-6 font-bold text-center">
-                            <button onclick="toggleButton(this)" class="toggle-btn w-20 px-4 py-1 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-full transition duration-200">Unban</button>
+                        <td class="py-3 px-6 font-bold text-center">Kim Minji</td>
+                        <td class="py-3 px-6 font-bold text-center">Jl. Kemuning, RT 06</td>
+                        <td class="py-3 px-6 font-bold text-center">minjiKim2004@gmail.com</td>
+                        <td class="py-3 px-6 font-bold text-center">0898172424235</td>
+                        <td class="py-3 px-6 font-bold text-center space-x-2">
+                            <div class="flex font-bold space-x-2 justify-center">
+                                <!-- Unban/Ban Button -->
+                                <button onclick="toggleButton(this)" class="toggle-btn w-24 h-8 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-lg flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-unlock"></i> <span>Unban</span>
+                                </button>
+
+                                <!-- Edit Button -->
+                                <button onclick="editRow(this)" class="bg-blue-500 text-white w-24 h-8 text-xs font-bold rounded-lg hover:bg-blue-600 flex items-center justify-center space-x-2">
+                                    <i class="fas fa-edit"></i> <span>Edit</span>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -83,16 +108,55 @@
 
     <!-- JavaScript -->
     <script>
+        // Toggle Ban/Unban Button
         function toggleButton(button) {
-            if (button.innerText === "Unban") {
-                button.innerText = "Ban";
+            if (button.innerText.includes("Unban")) {
+                button.innerHTML = `<i class="fa-solid fa-lock"></i> Ban`;
                 button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
                 button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
             } else {
-                button.innerText = "Unban";
+                button.innerHTML = `<i class="fa-solid fa-unlock"></i> Unban`;
                 button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
                 button.classList.add("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
             }
+        }
+
+        // Edit Row Functionality
+        function editRow(button) {
+            const row = button.closest('tr'); // Get the closest table row
+            const cells = row.querySelectorAll('td'); // Select all <td> cells in the row
+            
+            // Loop through each cell and make it editable
+            cells.forEach((cell, index) => {
+                if (index < 4) { // Only the first 4 columns are editable
+                    const currentValue = cell.innerText;
+                    cell.innerHTML = `<input type="text" value="${currentValue}" class="w-full p-1 border border-gray-300 rounded" />`;
+                }
+            });
+
+            // Change the Edit button to "Save"
+            button.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save`;
+            button.classList.remove("bg-blue-500", "hover:bg-blue-600");
+            button.classList.add("bg-green-500", "hover:bg-green-600");
+            button.onclick = () => saveRow(button);
+        }
+
+        // Save Row Functionality
+        function saveRow(button) {
+            const row = button.closest('tr');
+            const inputs = row.querySelectorAll('input'); // Find all input fields
+            
+            // Replace inputs with their values
+            inputs.forEach(input => {
+                const newValue = input.value;
+                input.parentElement.innerText = newValue; // Set cell text to input value
+            });
+
+            // Change the Save button back to Edit
+            button.innerHTML = `<i class="fa-solid fa-pen"></i> Edit`;
+            button.classList.remove("bg-green-500", "hover:bg-green-600");
+            button.classList.add("bg-blue-500", "hover:bg-blue-600");
+            button.onclick = () => editRow(button);
         }
     </script>
 </body>
