@@ -1,5 +1,5 @@
 <?php
-require 'sess.php';
+require '../public/sess.php';
 $error = '';
 $categories = [];
 $result = $conn->query("SELECT nama_kategori FROM kategori");
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
             }
 
             $filename = md5(random_bytes(1)) . '.' . pathinfo($_FILES['inputfoto']['name'], PATHINFO_EXTENSION);
-            $filepath = './products/' . $filename;
+            $filepath = '../public/products/' . $filename;
 
         }
 
@@ -65,8 +65,8 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Produk</title>
-    <link rel="stylesheet" href="./css/tambahproduk.css">
-    <link rel="icon" href="./photo/ciG.png">
+    <link rel="stylesheet" href="../public/css/tambahproduk.css">
+    <link rel="icon" href="../public/photo/ciG.png">
 </head>
 <body>
     <div class="container">

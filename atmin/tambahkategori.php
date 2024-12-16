@@ -1,5 +1,5 @@
 <?php
-require 'sess.php';
+require "../public/sess.php";
 $error = '';
 
 if (!empty($_POST)) {
@@ -25,7 +25,7 @@ if (!empty($_POST)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Produk</title>
     <link rel="stylesheet" href="../public/css/tambahproduk.css">
-    <link rel="icon" href="./photo/ciG.png">
+    <link rel="icon" href="../public/photo/ciG.png">
 </head>
 
 <body>

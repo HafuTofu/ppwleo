@@ -41,7 +41,7 @@
                             $_SESSION['login'] = 'trueadmin';
                             $_SESSION['id'] = $row1['ID_user'];
                             $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: admin.php");
+                            header("Location: ../atmin/adminew.php");
                         }else{
                             $_SESSION['login'] = 'trueguess';
                             $_SESSION['id'] = $row1['ID_user'];
@@ -59,7 +59,7 @@
                             $_SESSION['login'] = 'trueadmin';
                             $_SESSION['id'] = $row2['ID_user'];
                             $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: admin.php");
+                            header("Location: ../atmin/adminew.php");
                         }else{
                             $_SESSION['login'] = 'trueguess';
                             $_SESSION['id'] = $row2['ID_user'];
