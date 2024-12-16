@@ -8,7 +8,7 @@ if (!empty($_POST)) {
         $query = "INSERT INTO kategori (nama_kategori) 
                   VALUES ('$nama')";
         mysqli_query($conn, $query);
-        header("Location: adminew.php");
+        header("Location: admindash.php");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
