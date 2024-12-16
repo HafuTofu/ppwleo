@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer List</title>
+  <link rel="icon" href="./photo/ciG.png">
+  <link rel="stylesheet" href="./css/style12.css">
+</head>
+
+<body class="font-sans bg-yellow-50">
+    <!-- Navbar -->
+    <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200 z-50">
+        <a href="./dashboard.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+
+        <!-- Search Bar -->
+        <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
+            <form action="" class="flex items-center w-full">
+                <input type="text" name="search" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
+            </form>
+        </div>
+
+        <!-- User and Cart Icons -->
+        <div class="flex items-center mr-6 space-x-6">
+            <div class="relative">
+                <img src="./photouser/monitor.jpg" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
+                <!-- Dropdown menu -->
+                <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
+                    <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                    <a href="#wishlist" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                    <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Customer List -->
+    <div class="container mx-auto px-6 py-6">
+        <h2 class="text-3xl font-bold text-black mb-6">Customer List</h2>
+
+        <!-- Table Container -->
+        <div class="overflow-hidden rounded-lg">
+            <table class="min-w-full bg-white">
+                <!-- Table Header -->
+                <thead class="bg-yellow-400 text-black uppercase text-sm leading-normal">
+                    <tr>
+                        <th class="py-3 px-6 text-center">Name</th>
+                        <th class="py-3 px-6 text-center">Address</th>
+                        <th class="py-3 px-6 text-center">Email</th>
+                        <th class="py-3 px-6 text-center">Phone</th>
+                        <th class="py-3 px-6 text-center">Action</th>
+                    </tr>
+                </thead>
+
+                <!-- Table Rows -->
+                <tbody class="text-gray-600 text-sm font-light">
+                    <!-- Row 1 -->
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-3 px-6 font-bold text-center">Pham Hanni</td>
+                        <td class="py-3 px-6 font-bold text-center">Jl. Agus Salim, RT 06</td>
+                        <td class="py-3 px-6 font-bold text-center">fkhjdkf@gmail.com</td>
+                        <td class="py-3 px-6 font-bold text-center">0898172873485</td>
+                        <td class="py-3 px-6 font-bold text-center">
+                            <button onclick="toggleButton(this)" class="toggle-btn w-20 px-4 py-1 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-full transition duration-200">Unban</button>
+                        </td>
+                    </tr>
+
+                    <!-- Row 2 -->
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-3 px-6 font-bold text-center">Pham Hanni</td>
+                        <td class="py-3 px-6 font-bold text-center">Jl. Agus Salim, RT 06</td>
+                        <td class="py-3 px-6 font-bold text-center">fkhjdkf@gmail.com</td>
+                        <td class="py-3 px-6 font-bold text-center">0898172873485</td>
+                        <td class="py-3 px-6 font-bold text-center">
+                            <button onclick="toggleButton(this)" class="toggle-btn w-20 px-4 py-1 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-full transition duration-200">Unban</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function toggleButton(button) {
+            if (button.innerText === "Unban") {
+                button.innerText = "Ban";
+                button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
+                button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
+            } else {
+                button.innerText = "Unban";
+                button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
+                button.classList.add("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
+            }
+        }
+    </script>
+</body>
+</html>
