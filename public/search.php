@@ -106,7 +106,16 @@ if (!empty($_POST)) {
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
         ?>
+        <div>
+            <select id="sortDropdown" class="px-6 py-2 text-white bg-gray-400 rounded-lg cursor-pointer">
+                <option value="most_relevant">Most Relevant</option>
+                <option value="highest_price">Highest Price</option>
+                <option value="lowest_price">Lowest Price</option>
+                <option value="latest">Latest</option>
+            </select>
+        </div>
     </div>
+
     <script>
         const categories = <?php echo json_encode($categories); ?>;
     </script>
