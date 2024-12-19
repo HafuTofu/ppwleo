@@ -29,6 +29,7 @@ $inwl = $resultwl->num_rows > 0;
   <title>Product Detail</title>
   <link rel="stylesheet" href="./css/style3.css">
   <link rel="icon" href="./photo/ciG.png">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
     .bg-beige {
       background-color: #f5ecd4;
@@ -150,30 +151,42 @@ $inwl = $resultwl->num_rows > 0;
       <!-- Review 1 -->
       <div class="flex items-start mb-6">
         <img src="./photo/Herbud.jpg" alt="Herbud" class="w-12 h-12 rounded-full mr-2">
-        <div class="ml-4">
+        <div class="ml-4 flex-grow">
           <h3 class="font-semibold text-gray-800">Heru Budi</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
           <p class="mt-2 text-gray-700">Pesanan sudah sampai, sudah pasti original, rasanya seperti pemenang, rekomended.</p>
+        </div>
+        <div class="flex items-center">
+          <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
+          <span class="ml-1 text-gray-800">5</span>
         </div>
       </div>
       <hr class="border-gray-300 mb-6">
       <!-- Review 2 -->
       <div class="flex items-start mb-6">
         <img src="./photo/Pham.jpg" alt="Pham" class="w-12 h-12 rounded-full mr-2">
-        <div class="ml-4">
+        <div class="ml-4 flex-grow">
           <h3 class="font-semibold text-gray-800">Pham Hanni</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
           <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.</p>
+        </div>
+        <div class="flex items-center">
+          <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
+          <span class="ml-1 text-gray-800">5</span>
         </div>
       </div>
       <hr class="border-gray-300 mb-6">
       <!-- Review 3 -->
       <div class="flex items-start mb-6">
         <img src="./photo/foto1.png" alt="Demogorgon" class="w-12 h-12 rounded-full mr-2">
-        <div class="ml-4">
+        <div class="ml-4 flex-grow">
           <h3 class="font-semibold text-gray-800">Demogorgon</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
           <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.</p>
+        </div>
+        <div class="flex items-center">
+          <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
+          <span class="ml-1 text-gray-800">5</span>
         </div>
       </div>
     </div>
