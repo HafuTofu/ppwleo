@@ -111,11 +111,11 @@
         // Toggle Ban/Unban Button
         function toggleButton(button) {
             if (button.innerText.includes("Unban")) {
-                button.innerHTML = `<i class="fa-solid fa-lock"></i> Ban`;
+                button.innerHTML = `<i class="fa-solid fa-lock mr-2"></i> Ban`;
                 button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
                 button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
             } else {
-                button.innerHTML = `<i class="fa-solid fa-unlock"></i> Unban`;
+                button.innerHTML = `<i class="fa-solid fa-unlock mr-2"></i> Unban`;
                 button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
                 button.classList.add("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
             }
@@ -135,7 +135,7 @@
             });
 
             // Change the Edit button to "Save"
-            button.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save`;
+            button.innerHTML = `<i class="fa-solid fa-floppy-disk mr-2"></i> Save`;
             button.classList.remove("bg-blue-500", "hover:bg-blue-600");
             button.classList.add("bg-green-500", "hover:bg-green-600");
             button.onclick = () => saveRow(button);
@@ -153,7 +153,7 @@
             });
 
             // Change the Save button back to Edit
-            button.innerHTML = `<i class="fa-solid fa-pen"></i> Edit`;
+            button.innerHTML = `<i class="fa-solid fa-pen mr-2"></i> Edit`;
             button.classList.remove("bg-green-500", "hover:bg-green-600");
             button.classList.add("bg-blue-500", "hover:bg-blue-600");
             button.onclick = () => editRow(button);
