@@ -8,6 +8,9 @@ $iduser = $_SESSION['id'];
 $query = "SELECT * FROM wishlist NATURAL JOIN produk NATURAL JOIN kategori WHERE ID_user = ? ";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
+$queryCategories = "SELECT DISTINCT nama_kategori FROM kategori";
+$resultCategories = $conn->query($queryCategories);
+
 ?>
 
 <!DOCTYPE html>
@@ -30,8 +33,8 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
         <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
             <form action="" class="flex items-center w-full">
                 <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
-                    echo $_GET['search'];
-                } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                                                            echo $_GET['search'];
+                                                        } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
                 <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
@@ -50,7 +53,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                    <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                    <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>
@@ -76,7 +79,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                                 <span>All Categories</span>
                             </label>
                         </li>
-                        <li>
+                        <!-- <li>
                             <label class="flex items-center space-x-2">
                                 <input type="radio" name="category" value="gaming"
                                     class="text-indigo-500 category-filter focus:ring-indigo-400" />
@@ -103,22 +106,31 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                                     class="text-indigo-500 category-filter focus:ring-indigo-400" />
                                 <span>Top-Up</span>
                             </label>
-                        </li>
+                        </li> -->
+                        <?php while ($category = $resultCategories->fetch_assoc()) { ?>
+                            <li>
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="category" value="<?php echo strtolower($category['nama_kategori']); ?>"
+                                        class="text-indigo-500 category-filter focus:ring-indigo-400" />
+                                    <span><?php echo htmlspecialchars($category['nama_kategori']); ?></span>
+                                </label>
+                            </li>
+                        <?php } ?>
                     </ul>
 
                     <!-- Stock Filter -->
                     <div>
-                        <h2 class="pt-4 text-lg font-semibold">Stock</h2>
+                        <h2 class="pt-4 text-lg font-semibold">Status</h2>
                         <ul class="mt-3 space-y-3">
                             <li>
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400" />
+                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400 availness-filter" value="available" />
                                     <span>Available</span>
                                 </label>
                             </li>
                             <li>
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400" />
+                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400 availness-filter" value="unavailable" />
                                     <span>No Available</span>
                                 </label>
                             </li>
@@ -136,10 +148,11 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                 $result = $stmt->get_result();
                 $row = $result->fetch_assoc();
                 while ($row != null) {
-                    $palnum = $row['ID_kategori'] - 1 % 4; ?>
+                    $palnum = ($row['ID_kategori'] - 1) % 4; ?>
                     <!-- Product Cards -->
                     <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card"
                         data-category="<?php echo $row["nama_kategori"]; ?>"
+                        data-availness="<?php echo $row["statusprod"]; ?>"
                         onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                         <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                         <div class="p-4">
@@ -161,7 +174,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                                 to Cart</button>
                         </form>
                     </div>
-                    <?php $row = $result->fetch_assoc();
+                <?php $row = $result->fetch_assoc();
                 } ?>
             </section>
         </div>
@@ -172,20 +185,21 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
         const profileIcon = document.getElementById('profileIcon');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
-        profileIcon.addEventListener('mouseover', function () {
+        profileIcon.addEventListener('mouseover', function() {
             dropdownMenu.classList.remove('hidden');
         });
 
-        profileIcon.addEventListener('mouseout', function () {
+        profileIcon.addEventListener('mouseout', function() {
             dropdownMenu.classList.add('hidden');
         });
 
         // Category Filter Logic
         const categoryFilter = document.querySelectorAll('.category-filter');
+        const availnessFilter = document.querySelectorAll('.availness-filter');
         const productCards = document.querySelectorAll('.product-card');
 
         categoryFilter.forEach(filter => {
-            filter.addEventListener('change', function () {
+            filter.addEventListener('change', function() {
                 const selectedCategory = this.value;
                 productCards.forEach(card => {
                     if (selectedCategory === 'all' || card.getAttribute('data-category').toLowerCase() ===
@@ -196,6 +210,19 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                     }
                 });
             });
+        });
+
+        availnessFilter.forEach(filter => {
+            filter.addEventListener('change', function() {
+                const selectedAvailness = this.value;
+                productCards.forEach(card => {
+                    if (card.getAttribute('data-availness') === selectedAvailness) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            })
         });
     </script>
 </body>

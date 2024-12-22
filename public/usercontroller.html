@@ -15,7 +15,7 @@
 
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
-    <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200 z-50">
+    <header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-yellow-200">
         <a href="./dashboard.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
         <!-- Search Bar -->
@@ -41,40 +41,40 @@
     </header>
 
     <!-- Customer List -->
-    <div class="container mx-auto px-6 py-6">
-        <h2 class="text-3xl font-bold text-black mb-6">Customer List</h2>
+    <div class="container px-6 py-6 mx-auto">
+        <h2 class="mb-6 text-3xl font-bold text-black">Customer List</h2>
 
         <!-- Table Container -->
         <div class="overflow-hidden rounded-lg">
             <table class="min-w-full bg-white" id="customerTable">
                 <!-- Table Header -->
-                <thead class="bg-yellow-400 text-black uppercase text-sm leading-normal">
+                <thead class="text-sm leading-normal text-black uppercase bg-yellow-400">
                     <tr>
-                        <th class="py-3 px-6 text-center">Name</th>
-                        <th class="py-3 px-6 text-center">Address</th>
-                        <th class="py-3 px-6 text-center">Email</th>
-                        <th class="py-3 px-6 text-center">Phone</th>
-                        <th class="py-3 px-6 text-center">Action</th>
+                        <th class="px-6 py-3 text-center">Name</th>
+                        <th class="px-6 py-3 text-center">Address</th>
+                        <th class="px-6 py-3 text-center">Email</th>
+                        <th class="px-6 py-3 text-center">Phone</th>
+                        <th class="px-6 py-3 text-center">Action</th>
                     </tr>
                 </thead>
 
                 <!-- Table Rows -->
-                <tbody class="text-gray-600 text-sm font-light">
+                <tbody class="text-sm font-light text-gray-600">
                     <!-- Row 1 -->
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="py-3 px-6 font-bold text-center">Pham Hanni</td>
-                        <td class="py-3 px-6 font-bold text-center">Jl. Agus Salim, RT 06</td>
-                        <td class="py-3 px-6 font-bold text-center">PhamParapam@gmail.com</td>
-                        <td class="py-3 px-6 font-bold text-center">0898172873485</td>
-                        <td class="py-3 px-6 font-bold text-center space-x-2">
-                            <div class="flex space-x-2 justify-center">
+                        <td class="px-6 py-3 font-bold text-center">Pham Hanni</td>
+                        <td class="px-6 py-3 font-bold text-center">Jl. Agus Salim, RT 06</td>
+                        <td class="px-6 py-3 font-bold text-center">PhamParapam@gmail.com</td>
+                        <td class="px-6 py-3 font-bold text-center">0898172873485</td>
+                        <td class="px-6 py-3 space-x-2 font-bold text-center">
+                            <div class="flex justify-center space-x-2">
                                 <!-- Unban/Ban Button -->
-                                <button onclick="toggleButton(this)" class="toggle-btn w-32 h-10 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-lg flex items-center justify-center space-x-2">
+                                <button onclick="toggleButton(this)" class="flex items-center justify-center w-32 h-10 space-x-2 text-xs font-bold text-teal-700 bg-teal-200 rounded-lg toggle-btn hover:bg-teal-300">
                                     <i class="fa-solid fa-unlock"></i> <span>Unban</span>
                                 </button>
 
                                 <!-- Edit Button -->
-                                <button onclick="editRow(this)" class="bg-blue-500 text-white w-32 h-10 text-xs font-bold rounded-lg hover:bg-blue-600 flex items-center justify-center space-x-2">
+                                <button onclick="editRow(this)" class="flex items-center justify-center w-32 h-10 space-x-2 text-xs font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600">
                                     <i class="fas fa-edit"></i> <span>Edit</span>
                                 </button>
                             </div>
@@ -83,19 +83,19 @@
 
                     <!-- Row 2 -->
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="py-3 px-6 font-bold text-center">Kim Minji</td>
-                        <td class="py-3 px-6 font-bold text-center">Jl. Kemuning, RT 06</td>
-                        <td class="py-3 px-6 font-bold text-center">minjiKim2004@gmail.com</td>
-                        <td class="py-3 px-6 font-bold text-center">0898172424235</td>
-                        <td class="py-3 px-6 font-bold text-center space-x-2">
-                            <div class="flex font-bold space-x-2 justify-center">
+                        <td class="px-6 py-3 font-bold text-center">Kim Minji</td>
+                        <td class="px-6 py-3 font-bold text-center">Jl. Kemuning, RT 06</td>
+                        <td class="px-6 py-3 font-bold text-center">minjiKim2004@gmail.com</td>
+                        <td class="px-6 py-3 font-bold text-center">0898172424235</td>
+                        <td class="px-6 py-3 space-x-2 font-bold text-center">
+                            <div class="flex justify-center space-x-2 font-bold">
                                 <!-- Unban/Ban Button -->
-                                <button onclick="toggleButton(this)" class="toggle-btn w-32 h-10 text-xs font-bold text-teal-700 bg-teal-200 hover:bg-teal-300 rounded-lg flex items-center justify-center space-x-2">
+                                <button onclick="toggleButton(this)" class="flex items-center justify-center w-32 h-10 space-x-2 text-xs font-bold text-teal-700 bg-teal-200 rounded-lg toggle-btn hover:bg-teal-300">
                                     <i class="fa-solid fa-unlock"></i> <span>Unban</span>
                                 </button>
 
                                 <!-- Edit Button -->
-                                <button onclick="editRow(this)" class="bg-blue-500 text-white w-32 h-10 text-xs font-bold rounded-lg hover:bg-blue-600 flex items-center justify-center space-x-2">
+                                <button onclick="editRow(this)" class="flex items-center justify-center w-32 h-10 space-x-2 text-xs font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600">
                                     <i class="fas fa-edit"></i> <span>Edit</span>
                                 </button>
                             </div>
@@ -111,11 +111,11 @@
         // Toggle Ban/Unban Button
         function toggleButton(button) {
             if (button.innerText.includes("Unban")) {
-                button.innerHTML = `<i class="fa-solid fa-lock mr-2"></i> Ban`;
+                button.innerHTML = `<i class="mr-2 fa-solid fa-lock"></i> Ban`;
                 button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
                 button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
             } else {
-                button.innerHTML = `<i class="fa-solid fa-unlock mr-2"></i> Unban`;
+                button.innerHTML = `<i class="mr-2 fa-solid fa-unlock"></i> Unban`;
                 button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
                 button.classList.add("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
             }
@@ -135,7 +135,7 @@
             });
 
             // Change the Edit button to "Save"
-            button.innerHTML = `<i class="fa-solid fa-floppy-disk mr-2"></i> Save`;
+            button.innerHTML = `<i class="mr-2 fa-solid fa-floppy-disk"></i> Save`;
             button.classList.remove("bg-blue-500", "hover:bg-blue-600");
             button.classList.add("bg-green-500", "hover:bg-green-600");
             button.onclick = () => saveRow(button);
@@ -153,7 +153,7 @@
             });
 
             // Change the Save button back to Edit
-            button.innerHTML = `<i class="fa-solid fa-pen mr-2"></i> Edit`;
+            button.innerHTML = `<i class="mr-2 fa-solid fa-pen"></i> Edit`;
             button.classList.remove("bg-green-500", "hover:bg-green-600");
             button.classList.add("bg-blue-500", "hover:bg-blue-600");
             button.onclick = () => editRow(button);
