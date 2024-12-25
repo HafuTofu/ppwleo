@@ -13,6 +13,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
 
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 
 <head>
   <meta charset="UTF-8" />
@@ -61,11 +62,42 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
           <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
           <a href="#wishlist" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
           <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+=======
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order List</title>
+    <link rel="icon" href="../public/photo/ciG.png" />
+    <link rel="stylesheet" href="../public/css/style10.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      .status-filter button:hover {
+        background-color: gray;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body class="font-sans bg-yellow-50">
+    <!-- Navbar -->
+    <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200 z-50">
+        <a href="atmindashboard.html"><img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+
+        <!-- Search Bar -->
+        <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
+            <form action="" class="flex items-center w-full">
+                <input type="text" name="search" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                <button type="submit" class="p-2"><img src="../public/photo/search.png" width="20" height="20" alt="Search"></button>
+            </form>
+>>>>>>> 78d5c55b13847d112e2d66b7539b8acbd26cd5d3
         </div>
       </div>
     </div>
   </header>
 
+<<<<<<< HEAD
   <!-- Main Content -->
   <div class="p-4">
     <!-- Order List Title -->
@@ -113,9 +145,26 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
                 <span class="font-bold">Username</span><br>
                 <?php echo $rowst['address']; ?>
               </p>
+=======
+        <!-- User and Cart Icons -->
+        <div class="flex items-center mr-6 space-x-6">
+            <div class="relative">
+                <img src="../public/photouser/monitor.jpg" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
+                <!-- Dropdown menu -->
+                <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Dashboard</a>
+                <a href="atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin Dashboard</a>
+                <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Product Page</a>
+                <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount Page</a>
+                <a href="usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Page</a>
+                <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                </div>
+>>>>>>> 78d5c55b13847d112e2d66b7539b8acbd26cd5d3
             </div>
           </div>
 
+<<<<<<< HEAD
           <!-- Order Status -->
           <div class="w-1/4 flex flex-col items-center">
             <div class="flex items-center space-x-2">
@@ -137,14 +186,98 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
             </div>
             <p class="text-red-500 font-semibold text-sm mt-2"><?php $eta = "ETA: $startDay - $endDay $month $year";
             echo $eta; ?></p>
+=======
+    <!-- Main Content -->
+    <div class="p-4">
+      <!-- Order List Title -->
+      <h2 class="text-2xl font-bold mb-2 text-center">Order List</h2>
+
+      <!-- Status Filter -->
+      <div class="flex flex-wrap justify-center space-x-2 mb-4 status-filter">
+        <button class="px-4 py-2 bg-gray-200 rounded-full active" data-filter="All">All</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Confirmed">Confirmed</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Packing Process">Packing Process</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Delivering">Delivering</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Delivered">Delivered</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Done">Done</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Canceled">Canceled</button>
+      </div>
+
+      <!-- Status Message -->
+      <div id="statusMessage" class="status-message hidden font-bold text-center mb-4"></div>
+
+    <!-- Order Cards 1 -->
+    <div class="space-y-6">
+      <!-- Order Card -->
+      <div class="bg-white shadow-md rounded-md p-4 flex items-center space-x-4 max-w-4xl mx-auto">
+        <!-- Product Details -->
+        <div class="flex items-center space-x-4 flex-1">
+          <img 
+            src="../public/photo/JACKET.png" 
+            alt="Product" 
+            class="w-20 h-20 rounded-md object-cover">
+          <div>
+            <h3 class="text-lg font-bold">T1 Worlds Jacket 2024</h3>
+            <p class="text-sm text-gray-600 mb-1">Qty: 1</p>
+            <p class="text-sm">
+              <span class="font-bold">Username</span><br>
+              Jl. Johar Bahru IV A RT 04 RW 05 Johar Bahru, Jakarta Pusat, DKI Jakarta
+>>>>>>> 78d5c55b13847d112e2d66b7539b8acbd26cd5d3
             </p>
           </div>
 
+<<<<<<< HEAD
           <!-- Total and Buttons -->
           <div class="text-right w-1/4">
             <p class="font-bold text-sm">Total</p>
             <p class="text-xl font-semibold text-gray-800">Rp.
               <?php echo number_format($rowst['total_harga'], 0, ',', '.'); ?>
+=======
+      <!-- Order Status -->
+      <div class="w-1/4 flex flex-col items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-truck text-gray-600 text-xl"></i>
+          <select 
+            class="p-2 border rounded-md text-sm w-40 text-center" 
+            name="status" 
+            disabled>
+            <option>Confirmed</option>
+            <option>Packing Process</option>
+            <option>Delivering</option>
+            <option>Delivered</option>
+            <option>Done</option>
+            <option>Canceled</option>
+          </select>
+        </div>
+        <p class="text-red-500 font-semibold text-sm mt-2">ETA: 12 - 15 December 2024</p>
+      </div>
+
+      <!-- Total and Buttons -->
+      <div class="text-right w-1/4">
+        <p class="font-bold text-sm">Total</p>
+        <p class="text-xl font-semibold text-gray-800">Rp. 1.780.000</p>
+        <button class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600">UPDATE</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 hidden">SAVE</button>
+      </div>
+    </div>
+
+    <!-- Order Cards 2 -->
+    <div class="space-y-6">
+      <!-- Order Card -->
+      <div class="bg-white shadow-md rounded-md p-4 flex items-center space-x-4 max-w-4xl mx-auto">
+        <!-- Product Details -->
+        <div class="flex items-center space-x-4 flex-1">
+          <img 
+            src="../public/photo/JACKET.png" 
+            alt="Product" 
+            class="w-20 h-20 rounded-md object-cover">
+          <div>
+            <h3 class="text-lg font-bold">T1 Worlds Jacket 2024</h3>
+            <p class="text-sm text-gray-600 mb-1">Qty: 1</p>
+            <p class="text-sm">
+              <span class="font-bold">Username</span><br>
+              Jl. Johar Bahru IV A RT 04 RW 05 Johar Bahru, Jakarta Pusat, DKI Jakarta
+>>>>>>> 78d5c55b13847d112e2d66b7539b8acbd26cd5d3
             </p>
             <button class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600">UPDATE</button>
             <button class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 hidden" data-idtrans=<?php echo $rowst['ID_transaksi']; ?>>SAVE</button>
@@ -164,10 +297,216 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
             dropdownMenu.classList.remove('hidden');
           });
 
+<<<<<<< HEAD
           profileIcon.addEventListener('mouseleave', function () {
             setTimeout(() => {
               if (!dropdownMenu.matches(':hover')) {
                 dropdownMenu.classList.add('hidden');
+=======
+    <!-- Order Cards 3 -->
+    <div class="space-y-6">
+      <!-- Order Card -->
+      <div class="bg-white shadow-md rounded-md p-4 flex items-center space-x-4 max-w-4xl mx-auto">
+        <!-- Product Details -->
+        <div class="flex items-center space-x-4 flex-1">
+          <img 
+            src="../public/photo/JACKET.png" 
+            alt="Product" 
+            class="w-20 h-20 rounded-md object-cover">
+          <div>
+            <h3 class="text-lg font-bold">T1 Worlds Jacket 2024</h3>
+            <p class="text-sm text-gray-600 mb-1">Qty: 1</p>
+            <p class="text-sm">
+              <span class="font-bold">Username</span><br>
+              Jl. Johar Bahru IV A RT 04 RW 05 Johar Bahru, Jakarta Pusat, DKI Jakarta
+            </p>
+          </div>
+        </div>
+
+      <!-- Order Status -->
+      <div class="w-1/4 flex flex-col items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-truck text-gray-600 text-xl"></i>
+          <select 
+            class="p-2 border rounded-md text-sm w-40 text-center" 
+            name="status" 
+            disabled>
+            <option>Confirmed</option>
+            <option>Packing Process</option>
+            <option>Delivering</option>
+            <option>Delivered</option>
+            <option>Done</option>
+            <option>Canceled</option>
+          </select>
+        </div>
+        <p class="text-red-500 font-semibold text-sm mt-2">ETA: 12 - 15 December 2024</p>
+      </div>
+
+      <!-- Total and Buttons -->
+      <div class="text-right w-1/4">
+        <p class="font-bold text-sm">Total</p>
+        <p class="text-xl font-semibold text-gray-800">Rp. 1.780.000</p>
+        <button class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600">UPDATE</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 hidden">SAVE</button>
+      </div>
+    </div>
+
+    <!-- Order Cards 4 -->
+    <div class="space-y-6">
+      <!-- Order Card -->
+      <div class="bg-white shadow-md rounded-md p-4 flex items-center space-x-4 max-w-4xl mx-auto">
+        <!-- Product Details -->
+        <div class="flex items-center space-x-4 flex-1">
+          <img 
+            src="../public/photo/JACKET.png" 
+            alt="Product" 
+            class="w-20 h-20 rounded-md object-cover">
+          <div>
+            <h3 class="text-lg font-bold">T1 Worlds Jacket 2024</h3>
+            <p class="text-sm text-gray-600 mb-1">Qty: 1</p>
+            <p class="text-sm">
+              <span class="font-bold">Username</span><br>
+              Jl. Johar Bahru IV A RT 04 RW 05 Johar Bahru, Jakarta Pusat, DKI Jakarta
+            </p>
+          </div>
+        </div>
+
+      <!-- Order Status -->
+      <div class="w-1/4 flex flex-col items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-truck text-gray-600 text-xl"></i>
+          <select 
+            class="p-2 border rounded-md text-sm w-40 text-center" 
+            name="status" 
+            disabled>
+            <option>Confirmed</option>
+            <option>Packing Process</option>
+            <option>Delivering</option>
+            <option>Delivered</option>
+            <option>Done</option>
+            <option>Canceled</option>
+          </select>
+        </div>
+        <p class="text-red-500 font-semibold text-sm mt-2">ETA: 12 - 15 December 2024</p>
+      </div>
+
+      <!-- Total and Buttons -->
+      <div class="text-right w-1/4">
+        <p class="font-bold text-sm">Total</p>
+        <p class="text-xl font-semibold text-gray-800">Rp. 1.780.000</p>
+        <button class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600">UPDATE</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 hidden">SAVE</button>
+      </div>
+    </div>
+
+    <!-- Order Cards 5 -->
+    <div class="space-y-6">
+      <!-- Order Card -->
+      <div class="bg-white shadow-md rounded-md p-4 flex items-center space-x-4 max-w-4xl mx-auto">
+        <!-- Product Details -->
+        <div class="flex items-center space-x-4 flex-1">
+          <img 
+            src="../public/photo/JACKET.png" 
+            alt="Product" 
+            class="w-20 h-20 rounded-md object-cover">
+          <div>
+            <h3 class="text-lg font-bold">T1 Worlds Jacket 2024</h3>
+            <p class="text-sm text-gray-600 mb-1">Qty: 1</p>
+            <p class="text-sm">
+              <span class="font-bold">Username</span><br>
+              Jl. Johar Bahru IV A RT 04 RW 05 Johar Bahru, Jakarta Pusat, DKI Jakarta
+            </p>
+          </div>
+        </div>
+
+      <!-- Order Status -->
+      <div class="w-1/4 flex flex-col items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-truck text-gray-600 text-xl"></i>
+          <select 
+            class="p-2 border rounded-md text-sm w-40 text-center" 
+            name="status" 
+            disabled>
+            <option>Confirmed</option>
+            <option>Packing Process</option>
+            <option>Delivering</option>
+            <option>Delivered</option>
+            <option>Done</option>
+            <option>Canceled</option>
+          </select>
+        </div>
+        <p class="text-red-500 font-semibold text-sm mt-2">ETA: 12 - 15 December 2024</p>
+      </div>
+
+      <!-- Total and Buttons -->
+      <div class="text-right w-1/4">
+        <p class="font-bold text-sm">Total</p>
+        <p class="text-xl font-semibold text-gray-800">Rp. 1.780.000</p>
+        <button class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600">UPDATE</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 hidden">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const profileIcon = document.getElementById('profileIcon');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+
+      // Dropdown menu logic
+      profileIcon.addEventListener('mouseenter', function () {
+        dropdownMenu.classList.remove('hidden');
+      });
+
+      profileIcon.addEventListener('mouseleave', function () {
+        setTimeout(() => {
+          if (!dropdownMenu.matches(':hover')) {
+            dropdownMenu.classList.add('hidden');
+          }
+        }, 100);
+      });
+
+      dropdownMenu.addEventListener('mouseleave', function () {
+        dropdownMenu.classList.add('hidden');
+      });
+
+      // Status Filter Logic
+      const filterButtons = document.querySelectorAll('.status-filter button');
+      const allCards = document.querySelectorAll('.bg-white.shadow-md');
+      const statusMessage = document.getElementById('statusMessage');
+
+      // Set default filter to 'All'
+      filterButtons[0].classList.add('active');
+      statusMessage.textContent = "Order Status: All"; // Set "All" as default message
+      statusMessage.classList.remove('hidden'); // Show the message for "All"
+
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const selectedStatus = button.textContent.trim(); // Get the button text (e.g., "Confirmed")
+
+          // Show all orders if "All" is selected
+          if (selectedStatus === "All") {
+            allCards.forEach((card) => {
+              card.classList.remove('hidden'); // Show all cards
+            });
+            statusMessage.textContent = "Order Status: All"; // Show "All" status message
+            statusMessage.classList.remove('hidden'); // Show the message for "All"
+          } else {
+            statusMessage.textContent = `Order Status: ${selectedStatus}`; // Show the specific status message
+            statusMessage.classList.remove('hidden'); // Show the message
+
+            // Loop through all cards and filter by status
+            allCards.forEach((card) => {
+              const statusDropdown = card.querySelector('select[name="status"]');
+              const currentStatus = statusDropdown.value.trim(); // Get current status value
+
+              if (currentStatus === selectedStatus) {
+                card.classList.remove('hidden'); // Show card if status matches
+              } else {
+                card.classList.add('hidden'); // Hide card if status does not match
+>>>>>>> 78d5c55b13847d112e2d66b7539b8acbd26cd5d3
               }
             }, 100);
           });

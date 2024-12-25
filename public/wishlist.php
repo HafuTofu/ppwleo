@@ -52,6 +52,9 @@ $resultCategories = $conn->query($queryCategories);
                     class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <a href="./profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                    <a href="./cart.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Cart</a>
+                    <a href="./wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                    <a href="./orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order</a>
                     <a href="./logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
@@ -95,13 +98,13 @@ $resultCategories = $conn->query($queryCategories);
                         <ul class="mt-3 space-y-3">
                             <li>
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400 availness-filter" value="available" />
+                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400 availness-filter" value="available" checked/>
                                     <span>Available</span>
                                 </label>
                             </li>
                             <li>
                                 <label class="flex items-center space-x-2">
-                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400 availness-filter" value="unavailable" />
+                                    <input type="radio" name="stock" class="text-indigo-500 focus:ring-indigo-400 availness-filter" value="unavailable"/>
                                     <span>No Available</span>
                                 </label>
                             </li>
@@ -119,13 +122,16 @@ $resultCategories = $conn->query($queryCategories);
                 $result = $stmt->get_result();
                 $row = $result->fetch_assoc();
                 while ($row != null) {
-                    $palnum = ($row['ID_kategori'] - 1) % 4; ?>
+                    $palnum = ($row['ID_kategori'] - 1) % 4; 
+                    $isAvailable = $row["statusproduk"] === "available";?>
                     <!-- Product Cards -->
                     <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card"
                         data-category="<?php echo $row["nama_kategori"]; ?>"
                         data-availness="<?php echo $row["statusproduk"]; ?>"
-                        onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
-                        <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
+                        >
+                        <img <?php if ($isAvailable) { ?>
+            onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';"
+        <?php } ?>src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                         <div class="p-4">
                             <span
                                 class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
@@ -135,13 +141,13 @@ $resultCategories = $conn->query($queryCategories);
                             </p>
                             <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                         </div>
-                        <form method="POST">
+                        <form method="POST" class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75">
                             <input type="hidden" name="iduser" value=<?php echo $_SESSION['id']; ?>>
                             <input type="hidden" name="idprod" value=<?php echo $row['ID_produk']; ?>>
                             <input type="hidden" name="harga" value=<?php echo $row['harga']; ?>>
                             <input type="hidden" name="total_harga" value=<?php echo $row['harga']; ?>>
                             <button type="submit"
-                                class="w-full py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add
+                                class="w-full px-3 py-3">Add
                                 to Cart</button>
                         </form>
                     </div>

@@ -115,7 +115,9 @@ if (!empty($_POST)) {
                     class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <a href="./profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                    <a href="./cart.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Cart</a>
                     <a href="./wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                    <a href="./orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order</a>
                     <a href="./logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
@@ -145,6 +147,59 @@ if (!empty($_POST)) {
         </div>
     </div>
 
+        <!-- New Arrivals Section -->
+        <div class="px-10 my-6">
+        <h2 class="text-4xl font-bold text-left mb-6">New Arrivals</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <!-- Product 1 -->
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
+                <img src="./photo/JACKET.png" alt="Product" class="object-cover w-full h-48">
+                <div class="p-4">
+                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
+                    <h1 class="text-lg font-semibold">T1 Worlds Jacket 2024</h1>
+                    <p class="text-sm font-semibold text-gray-600">Rp. 1.700.000</p>
+                    <p class="text-sm text-gray-600">The T1 White Jacket White is not simply a form of clothing that one puts on; it is a proclamation of passion.</p>
+                </div>
+            <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+            </div>    
+
+            <!-- Product 2 -->
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
+                <img src="./photo/hoodie.jpg" alt="Product" class="object-cover w-full h-48">
+                <div class="p-4">
+                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
+                    <h1 class="text-lg font-semibold">McLaren Hoodie</h1>
+                    <p class="text-sm font-semibold text-gray-600">Rp. 2.700.000</p>
+                    <p class="text-sm text-gray-600">The McLaren Hoodie is not simply a form of clothing that one puts on; it is a proclamation of passion</p>
+                </div>
+            <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
+                <img src="./photo/hoodie.jpg" alt="Product" class="object-cover w-full h-48">
+                <div class="p-4">
+                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
+                    <h1 class="text-lg font-semibold">McLaren Hoodie</h1>
+                    <p class="text-sm font-semibold text-gray-600">Rp. 2.700.000</p>
+                    <p class="text-sm text-gray-600">The McLaren Hoodie is not simply a form of clothing that one puts on; it is a proclamation of passion</p>
+                </div>
+                <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
+                <img src="./photo/hoodie.jpg" alt="Product" class="object-cover w-full h-48">
+                <div class="p-4">
+                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
+                    <h1 class="text-lg font-semibold">McLaren Hoodie</h1>
+                    <p class="text-sm font-semibold text-gray-600">Rp. 2.700.000</p>
+                    <p class="text-sm text-gray-600">The McLaren Hoodie is not simply a form of clothing that one puts on; it is a proclamation of passion</p>
+                </div>
+                <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+            </div>
+        </div>
+    </div>
 
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4" id="category-buttons">
