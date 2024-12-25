@@ -134,7 +134,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             width: 90%;
             max-width: 400px;
             padding: 2rem;
-            background-color: rgba(236, 218, 183, 0.85);
+            background-color: rgba(236, 218, 183, 1);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 2;
