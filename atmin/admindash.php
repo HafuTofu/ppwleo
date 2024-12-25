@@ -330,7 +330,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
                 <label class="fixed inline-flex items-center cursor-pointer">
                     <input type="checkbox" id="cekbok_<?php echo $row['ID_produk']; ?>" class="sr-only peer"
                         <?php echo ($row['statusproduk'] == 'available') ? 'checked' : ''; ?>>
-                    <div class="h-6 bg-red-500 rounded-full w-11 peer-checked:bg-green-500"><?php echo ($row['statusproduk'] == 'available') ? 'AVAILABLE' : 'UNAVAILABLE'; ?></div>
+                    <div class="h-6 px-3 bg-red-500 rounded-full peer-checked:bg-green-500 w-full font-semibold"><?php echo ($row['statusproduk'] == 'available') ? 'AVAILABLE' : 'UNAVAILABLE'; ?></div>
                 </label>
             </div>
             <div class="p-4 text-center bg-white rounded-lg shadow-md">
@@ -442,6 +442,13 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             checkbox.addEventListener('change', function() {
                 const productId = this.id.split('_')[1];
                 const status = this.checked ? 'available' : 'unavailable';
+                const buttonText = this.nextElementSibling;
+
+                if (this.checked) {
+                    buttonText.textContent = 'AVAILABLE';
+                } else {
+                    buttonText.textContent = 'UNAVAILABLE';
+                }
 
                 fetch('update_status.php', {
                         method: 'POST',
