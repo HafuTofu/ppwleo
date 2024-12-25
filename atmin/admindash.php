@@ -26,7 +26,7 @@ if (!empty($_POST['insert'])) {
         $kategori = $_POST['kategori'];
         $stok = $_POST['stok'];
         $harga = $_POST['harga'];
-        $deskripsi = $_POST['deskripsi'];
+        $deskripsi = "{$_POST['deskripsi']}";
         $filename = '';
         $finfo = new finfo(FILEINFO_MIME_TYPE);
 
@@ -50,7 +50,7 @@ if (!empty($_POST['insert'])) {
         }
 
         $query = "INSERT INTO produk (nama, deskripsi, harga, stok, terjual, ID_kategori, foto) 
-                  VALUES ('$nama', '$deskripsi', '$harga', '$stok', '0', '$idkat', '$filename')";
+                  VALUES ($nama, $deskripsi, $harga, $stok, 0, $idkat, $filename)";
         mysqli_query($conn, $query);
         move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
         header("Location: admindash.php");

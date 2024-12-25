@@ -152,11 +152,11 @@ if (!empty($_POST)) {
         <?php
         $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
         $categories = [];
-        $idx = 0;
+        $idx = 1;
         while ($categoryRow = $categoriesResult->fetch_assoc()) {
             $categories[] = $categoryRow['nama_kategori'];
             $categoryName = $categoryRow['nama_kategori'];
-            $categoryColor = $pallete[($idx % 4)];
+            $categoryColor = $pallete[(($idx - 1) % 4)];
             $idx++;
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
