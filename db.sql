@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Waktu pembuatan: 14 Des 2024 pada 22.46
+-- Waktu pembuatan: 25 Des 2024 pada 11.35
 -- Versi server: 9.1.0
 -- Versi PHP: 8.3.14
 
@@ -37,7 +37,29 @@ CREATE TABLE IF NOT EXISTS `cart` (
   PRIMARY KEY (`ID_cart`),
   KEY `user_cart` (`ID_user`),
   KEY `produk_cart` (`ID_produk`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `cart`
+--
+
+INSERT INTO `cart` (`ID_cart`, `ID_user`, `ID_produk`, `qty`, `total_harga`) VALUES
+(39, 39, 58, 6, 740740734),
+(40, 39, 57, 7, 7000000);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `discounts`
+--
+
+DROP TABLE IF EXISTS `discounts`;
+CREATE TABLE IF NOT EXISTS `discounts` (
+  `ID_discount` int NOT NULL AUTO_INCREMENT,
+  `amount` tinyint NOT NULL,
+  `discountprice` int NOT NULL,
+  PRIMARY KEY (`ID_discount`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -59,9 +81,9 @@ CREATE TABLE IF NOT EXISTS `kategori` (
 INSERT INTO `kategori` (`ID_kategori`, `nama_kategori`) VALUES
 (1, 'Gaming'),
 (2, 'Food'),
-(3, 'Topup'),
+(3, 'Top-Up'),
 (4, 'Clothes'),
-(5, 'Asdf');
+(5, 'Adid');
 
 -- --------------------------------------------------------
 
@@ -81,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `produk` (
   `terjual` int DEFAULT NULL,
   `waktuditambahkan` date NOT NULL,
   `statusproduk` enum('available','unavailable') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'available',
+  `ID_discount` int DEFAULT NULL,
   PRIMARY KEY (`ID_produk`),
   KEY `nama` (`nama`),
   KEY `ID_kategori` (`ID_kategori`)
@@ -90,9 +113,9 @@ CREATE TABLE IF NOT EXISTS `produk` (
 -- Dumping data untuk tabel `produk`
 --
 
-INSERT INTO `produk` (`ID_produk`, `ID_kategori`, `nama`, `deskripsi`, `harga`, `foto`, `stok`, `terjual`, `waktuditambahkan`, `statusproduk`) VALUES
-(57, 5, 'Apalah', 'Test1', 1000000, 'dd7536794b63bf90eccfd37f9b147d7f.jpeg', 1001, 5, '2024-12-13', 'available'),
-(58, 4, 'A Chill Guy', 'Just A Chill Guy *sfx: Chill Guy Theme Music*', 123456789, '8d39dd7eef115ea6975446ef4082951f.jpg', 9999, 0, '0000-00-00', 'available');
+INSERT INTO `produk` (`ID_produk`, `ID_kategori`, `nama`, `deskripsi`, `harga`, `foto`, `stok`, `terjual`, `waktuditambahkan`, `statusproduk`, `ID_discount`) VALUES
+(57, 5, 'Apalah', 'Test1', 1000000, '7b774effe4a349c6dd82ad4f4f21d34c.jpeg', 1001, 5, '2024-12-13', 'available', NULL),
+(58, 4, 'A Chill Guy', 'Just A Chill Guy *sfx: Chill Guy Theme Music*', 123456789, '8d39dd7eef115ea6975446ef4082951f.jpg', 9999, 0, '2024-12-13', 'available', NULL);
 
 -- --------------------------------------------------------
 
@@ -120,7 +143,8 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `ID_transaksi` int NOT NULL,
   `ID_produk` int NOT NULL,
   `ID_user` int NOT NULL,
-  `order_status` enum('Confirmed','Packing Process','Delivering','Delivered','Need Rate','Done.','Canceled') NOT NULL DEFAULT 'Confirmed'
+  `order_status` enum('Confirmed','Packing Process','Delivering','Delivered','Need Rate','Done.','Canceled') NOT NULL DEFAULT 'Confirmed',
+  `timestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -173,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `wishlist` (
 --
 
 INSERT INTO `wishlist` (`ID_user`, `ID_produk`) VALUES
+(39, 58),
 (39, 57);
 
 --
