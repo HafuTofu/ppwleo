@@ -3,7 +3,7 @@ require "./sess.php";
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
     header('Location: login.php');
 }
-$query = "SELECT * FROM produk NATURAL JOIN kategori";
+$query = "SELECT * FROM (produk NATURAL JOIN kategori) WHERE statusproduk = 'available'";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
 if (!empty($_POST)) {

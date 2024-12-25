@@ -125,7 +125,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
                 <!-- Toggle Switch -->
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" id="cekbok_<?php echo $row['ID_produk']; ?>" class="sr-only peer"
-                        <?php echo ($row['statusprod'] == 'available') ? 'checked' : ''; ?>>
+                        <?php echo ($row['statusproduk'] == 'available') ? 'checked' : ''; ?>>
                     <div class="h-6 bg-gray-200 rounded-full w-11 peer-checked:bg-green-500"></div>
                     <span
                         class="absolute w-4 h-4 transition-transform bg-white rounded-full top-1 left-1 peer-checked:translate-x-5"></span>

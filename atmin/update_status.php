@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prodid = intval($data['id']);
         $status = $data['status']; // Adjust based on your database
 
-        $query = "UPDATE produk SET statusprod = ? WHERE ID_produk = ? ";
+        $query = "UPDATE produk SET statusproduk = ? WHERE ID_produk = ? ";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("si", $status, $prodid);
         if ($stmt->execute() === TRUE) {

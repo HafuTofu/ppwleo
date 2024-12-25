@@ -116,7 +116,7 @@ $stmt->execute();
               <h2 class='font-semibold'> $value[nama]</h2>
               <div class='flex items-center mt-2 gap-4 py-4'>
                 <button class='bg-gray-200 rounded-full px-2 quantity-button decrease onclick='updateSubtotal();' data-action='decrease''>-</button>
-                <input type='number' class='quantity w-12 text-center border rounded' id='$value[ID_produk]' value='$value[qty]' min='1'>
+                <input type='number' value='$value[qty]' min=1 max=$value[stok] class='quantity w-16 text-center border border-gray-300 rounded-md no-arrows' oninput='inputQuantity()' >
                 <button class='bg-gray-200 rounded-full px-2 quantity-button increase onclick='updateSubtotal();' data-action='increase''>+</button>
               </div>
             </div>
@@ -339,6 +339,15 @@ $stmt->execute();
           }
 
           quantityElement.value = quantity;
+          calculateSubtotal();
+        });
+      });
+
+      document.querySelectorAll(".quantity").forEach((input) => {
+        input.addEventListener("input", function () {
+          if (parseInt(input.value, 10) < 1 || isNaN(input.value)) {
+            input.value = 1;
+          }
           calculateSubtotal();
         });
       });

@@ -3,7 +3,7 @@ require "./sess.php";
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
     header('Location: login.php');
 }
-$query = "SELECT * FROM produk NATURAL JOIN kategori";
+$query = "SELECT * FROM (produk NATURAL JOIN kategori) WHERE statusproduk = 'available'";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
 if (!empty($_POST)) {
@@ -71,7 +71,7 @@ if (!empty($_POST)) {
             </form>
             <?php if (isset($_GET['search'])) {
                 $filtervalues = $_GET['search'];
-                $query = "SELECT * FROM produk NATURAL JOIN kategori WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+                $query = "SELECT * FROM (produk NATURAL JOIN kategori) WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' AND statusproduk = 'available'";
             } ?>
         </div>
 
