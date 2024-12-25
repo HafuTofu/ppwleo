@@ -15,7 +15,7 @@ if (!empty($_POST)) {
     $conn->begin_transaction();
 
     try {
-        $stmt = $conn->prepare("SELECT * FROM cart WHERE ID_produk = ? AND ID_user = ?");
+        $stmt = $conn->prepare("SELECT * FROM cart WHERE (ID_produk = ? AND ID_user = ? AND checkorno = 'unchecked')");
         $stmt->bind_param("ii", $idprod, $iduser);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -79,8 +79,8 @@ if (!empty($_POST)) {
         <div class="flex items-center mr-6 space-x-6">
             <a href="./cart.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
             <div class="relative">
-                <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>" class="w-12 h-12 rounded-full cursor-pointer"
-                    alt="User profile" id="profileIcon">
+                <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>"
+                    class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
@@ -107,11 +107,11 @@ if (!empty($_POST)) {
         }
         ?>
         <div>
-            <select id="sortDropdown" class="px-6 py-2 text-white bg-gray-400 rounded-lg cursor-pointer">
+            <select id="sortDropdown" class="px-6 py-2 text-white bg-blue-500 rounded-lg cursor-pointer">
                 <option value="most_relevant">Most Relevant</option>
                 <option value="highest_price">Highest Price</option>
                 <option value="lowest_price">Lowest Price</option>
-                <option value="latest">Latest</option>
+                <option value="newest">Newest</option>
             </select>
         </div>
     </div>
@@ -139,17 +139,17 @@ if (!empty($_POST)) {
                         class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
                     <p class="text-sm font-semibold text-gray-600">Rp.
-                        <?php echo number_format($row['harga'], 0, ',', '.'); ?></p>
+                        <?php echo number_format($row['harga'], 0, ',', '.'); ?>
+                    </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <form method="POST">
-                    <input type="hidden" name="iduser" value=<?php echo $_SESSION['id']; ?>>
-                    <input type="hidden" name="idprod" value=<?php echo $row['ID_produk']; ?>>
-                    <input type="hidden" name="harga" value=<?php echo $row['harga']; ?>>
-                    <input type="hidden" name="total_harga" value=<?php echo $row['harga']; ?>>
-                    <button type="submit"
-                        class="w-full py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to
-                        Cart</button>
+                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75 formatc"
+                    method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <input type="hidden" name="iduser" value="<?php echo $_SESSION['id']; ?>">
+                    <input type="hidden" name="idprod" value="<?php echo $row['ID_produk']; ?>">
+                    <input type="hidden" name="harga" value="<?php echo $row['harga']; ?>">
+                    <input type="hidden" name="total_harga" value="<?php echo $row['harga']; ?>">
+                    <button class="w-full py-3" type="submit">Add to Cart</button>
                 </form>
             </div>
             <?php $row = $result->fetch_assoc();
@@ -157,31 +157,78 @@ if (!empty($_POST)) {
 
         <!-- Dropdown Menu -->
         <script>
+            function showPopup(message) {
+                const popup = document.createElement('div');
+                popup.innerHTML = message;
+                popup.style.position = 'fixed';
+                popup.style.bottom = '20px';
+                popup.style.right = '20px';
+                popup.style.background = '#4caf50';
+                popup.style.color = 'white';
+                popup.style.padding = '10px 20px';
+                popup.style.borderRadius = '5px';
+                popup.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+                popup.style.zIndex = '1000';
+
+                document.body.appendChild(popup);
+
+                setTimeout(() => {
+                    popup.remove();
+                }, 2000);
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // Handle form submission with AJAX
+                const forms = document.querySelectorAll('formatc');
+
+                forms.forEach(form => {
+                    form.addEventListener('submit', async function (event) {
+                        event.preventDefault(); // Prevent default form submission
+
+                        // Collect form data
+                        const formData = new FormData(this);
+
+                        try {
+                            // Send data to server using fetch
+                            const response = await fetch(this.action, {
+                                method: 'POST',
+                                body: formData,
+                            });
+
+                            if (response.ok) {
+                                showPopup('Item added to cart!');
+                            } else {
+                                showPopup('Error adding item to cart.');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            showPopup('An error occurred.');
+                        }
+                    });
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
                 const profileIcon = document.getElementById('profileIcon');
                 const dropdownMenu = document.getElementById('dropdownMenu');
 
-                // Toggle dropdown visibility when mouse enters the profile icon
                 profileIcon.addEventListener('mouseenter', function () {
-                    dropdownMenu.classList.remove('hidden'); // Show dropdown
+                    dropdownMenu.classList.remove('hidden');
                 });
 
-                // Hide dropdown when mouse leaves the profile icon or the dropdown menu
                 profileIcon.addEventListener('mouseleave', function () {
                     setTimeout(() => {
                         if (!dropdownMenu.matches(':hover')) {
-                            dropdownMenu.classList.add('hidden'); // Hide dropdown
+                            dropdownMenu.classList.add('hidden');
                         }
-                    }, 100); // Small delay to allow mouse to hover over dropdown menu
+                    }, 100);
                 });
 
-                // Hide dropdown when mouse leaves the dropdown menu
                 dropdownMenu.addEventListener('mouseleave', function () {
-                    dropdownMenu.classList.add('hidden'); // Hide dropdown
+                    dropdownMenu.classList.add('hidden');
                 });
             });
 
-            // Function to filter products by category
             document.addEventListener('DOMContentLoaded', function () {
                 const categoryLabel = document.getElementById('category-label');
                 const products = document.querySelectorAll('.product-card');
@@ -215,6 +262,65 @@ if (!empty($_POST)) {
                 });
             });
 
+            // Carousel Script
+            document.addEventListener('DOMContentLoaded', function () {
+                const track = document.querySelector('.carousel-track');
+                const slides = document.querySelectorAll('.carousel-slide');
+                let index = 0;
+
+                function moveCarousel() {
+                    index = (index + 1) % slides.length;
+                    track.style.transform = `translateX(-${index * 100}%)`;
+                }
+
+                setInterval(moveCarousel, 4000);
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const productsContainer = document.querySelector('.grid'); // Product grid container
+                const products = Array.from(document.querySelectorAll('.product-card')); // Convert NodeList to Array
+                const sortDropdown = document.getElementById('sortDropdown');
+
+                sortDropdown.addEventListener('change', function () {
+                    const selectedOption = this.value; // Get selected sort option
+
+                    // Sorting logic
+                    let sortedProducts = [...products]; // Clone products array
+
+                    switch (selectedOption) {
+                        case 'highest_price':
+                            sortedProducts.sort((a, b) => {
+                                const priceA = parseFloat(a.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                const priceB = parseFloat(b.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                return priceB - priceA; // Descending order
+                            });
+                            break;
+                        case 'lowest_price':
+                            sortedProducts.sort((a, b) => {
+                                const priceA = parseFloat(a.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                const priceB = parseFloat(b.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                return priceA - priceB; // Ascending order
+                            });
+                            break;
+                        case 'newest':
+                            sortedProducts.sort((a, b) => {
+                                const idA = parseInt(a.querySelector('input[name="idprod"]').value, 10);
+                                const idB = parseInt(b.querySelector('input[name="idprod"]').value, 10);
+                                return idB - idA; // Newest first
+                            });
+                            break;
+                        default: // Default: Most Relevant (original order)
+                            sortedProducts = [...products]; // Reset to original order
+                            break;
+                    }
+
+                    // Clear the container and append sorted products
+                    productsContainer.innerHTML = '';
+                    sortedProducts.forEach(product => {
+                        productsContainer.appendChild(product);
+                    });
+                });
+            });
         </script>
 </body>
 
