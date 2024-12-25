@@ -190,7 +190,7 @@ if (!empty($_POST)) {
                     </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75"
+                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75 formatc"
                     method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <input type="hidden" name="iduser" value="<?php echo $_SESSION['id']; ?>">
                     <input type="hidden" name="idprod" value="<?php echo $row['ID_produk']; ?>">
@@ -226,7 +226,7 @@ if (!empty($_POST)) {
 
             document.addEventListener('DOMContentLoaded', function () {
                 // Handle form submission with AJAX
-                const forms = document.querySelectorAll('form');
+                const forms = document.querySelectorAll('formatc');
 
                 forms.forEach(form => {
                     form.addEventListener('submit', async function (event) {
