@@ -139,12 +139,10 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
             <p class="text-xl font-semibold text-gray-800">Rp.
               <?php echo number_format($rowst['total_harga'], 0, ',', '.'); ?>
             </p>
-            <button
-              class="bg-red-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-red-600 cancel-btn hidden"
-              data-idtrans = <?php echo $rowst['ID_transaksi']; ?>>CANCEL</button>
-            <button
-              class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600 rate-btn hidden"
-              data-idtrans = <?php echo $rowst['ID_transaksi']; ?>>RATE</button>
+            <button class="bg-red-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-red-600 cancel-btn hidden"
+              data-idtrans=<?php echo $rowst['ID_transaksi']; ?>>CANCEL</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600 rate-btn hidden"
+              data-idtrans=<?php echo $rowst['ID_transaksi']; ?>>RATE</button>
           </div>
         </div>
         <!-- batas bawah -->
@@ -277,19 +275,26 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
 
             // Rate Button Click
             rateBtn.addEventListener('click', () => {
-              const rating = prompt('Rate this order (1-5):');
+              const rating = prompt('Rate this product (1-5):');
               if (rating && rating >= 1 && rating <= 5) {
+                const komentar = prompt('Leave a comment (optional):') || '';
+
                 fetch('./rate_order.php', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
                   },
-                  body: JSON.stringify({ orderId, rating }),
+                  body: JSON.stringify({
+                    transactionId: orderId,
+                    rating: rating,
+                    komentar: komentar,
+                    productId: card.dataset.productId, // Assuming product ID is available
+                  }),
                 })
                   .then((response) => response.json())
                   .then((data) => {
                     if (data.success) {
-                      alert('Thank you for rating!');
+                      alert('Thank you for your feedback!');
                       statusDropdown.value = 'Done';
                       updateButtons();
                     } else {
@@ -304,6 +309,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
                 alert('Invalid rating. Please enter a number between 1 and 5.');
               }
             });
+
           });
         });
 
