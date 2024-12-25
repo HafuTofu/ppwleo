@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtUpdateCart->bind_param('i', $cartId);
         $stmtUpdateCart->execute();
 
-        $stmtUpdateStock = $conn->prepare('UPDATE produk SET stok = stok - ? WHERE ID_produk = ?');
-        $stmtUpdateStock->bind_param('ii', $rowc['qty'], $rowc['ID_produk']);
+        $stmtUpdateStock = $conn->prepare('UPDATE produk SET stok = stok - ?, terjual = terjual + ? WHERE ID_produk = ?');
+        $stmtUpdateStock->bind_param('iii', $rowc['qty'], $rowc['qty'], $rowc['ID_produk']);
         $stmtUpdateStock->execute();
       }
 
