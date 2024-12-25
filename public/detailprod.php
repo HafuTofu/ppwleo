@@ -42,6 +42,11 @@ $inwl = $resultwl->num_rows > 0;
     .heart-transition:active {
       transform: scale(1.2);
     }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
   </style>
 </head>
 
@@ -54,11 +59,10 @@ $inwl = $resultwl->num_rows > 0;
     <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
       <form action="" class="flex items-center w-full">
         <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
-                                                  echo $_GET['search'];
-                                                } ?>"
-          placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
-        <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
-            alt="Search"></button>
+          echo $_GET['search'];
+        } ?>" placeholder="Search"
+          class="w-full text-lg text-center bg-transparent outline-none">
+        <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
       </form>
       <?php if (isset($_GET['search'])) {
         $searched = urlencode($_GET['search']);
@@ -71,7 +75,8 @@ $inwl = $resultwl->num_rows > 0;
     <div class="flex items-center mr-6 space-x-6">
       <a href="cart.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
       <div class="relative">
-        <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
+        <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>" class="w-12 h-12 rounded-full cursor-pointer"
+          alt="User profile" id="profileIcon">
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
           <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
@@ -96,7 +101,8 @@ $inwl = $resultwl->num_rows > 0;
           <h1 class="text-2xl font-bold text-gray-800"><?php echo $row['nama']; ?></h1>
           <button id="heartButton" onclick="toggleHeart()"
             class="ml-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 heart-transition">
-            <svg id="heartIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 <?php echo $inwl ? 'text-red-600 fill-current' : 'text-gray-600' ?>" fill="none"
+            <svg id="heartIcon" xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 <?php echo $inwl ? 'text-red-600 fill-current' : 'text-gray-600' ?>" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4.318 6.318C5.084 5.553 6.048 5 7.05 5c1.003 0 1.967.553 2.733 1.318L12 8.536l2.217-2.218C15.953 5.553 16.917 5 17.919 5c1.003 0 1.967.553 2.733 1.318 1.466 1.467 1.466 3.843 0 5.31L12 21l-8.652-8.672c-1.466-1.467-1.466-3.843 0-5.31z" />
@@ -106,7 +112,8 @@ $inwl = $resultwl->num_rows > 0;
 
         <div>
           <p class="text-lg font-semibold text-green-600 mt-2">Rp.
-            <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
+            <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+          </p>
           <p class="mt-4 text-gray-700 leading-relaxed">
             <?php echo $row['deskripsi']; ?>
           </p>
@@ -123,7 +130,8 @@ $inwl = $resultwl->num_rows > 0;
                 class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300">
                 <span class="text-xl font-semibold">-</span>
               </button>
-              <span id="quantity" class="text-lg text-gray-800">1</span>
+              <input type="number" id="quantity" value="1" min="1" max="<?php echo $row['stok']; ?>"
+                class="w-16 text-center border border-gray-300 rounded-md no-arrows" oninput="inputQuantity()" />
               <button onclick="updateQuantity('increase')"
                 class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300">
                 <span class="text-xl font-semibold">+</span>
@@ -131,16 +139,17 @@ $inwl = $resultwl->num_rows > 0;
             </div>
             <span class="text-gray-500 text-sm">Stok total: <?php echo $row['stok']; ?></span>
           </div>
-          <!-- Subtotal -->
-          <div class="flex justify-between items-center mt-4">
-            <span class="text-gray-600">Subtotal</span>
-            <span id="subtotal" class="text-green-600 font-semibold">Rp. 0,00</span>
-          </div>
-          <button class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700" onclick="addtocart()">
-            Tambahkan ke Keranjang
-          </button>
+        <!-- Subtotal -->
+        <div class="flex justify-between items-center mt-4">
+          <span class="text-gray-600">Subtotal</span>
+          <span id="subtotal" class="text-green-600 font-semibold">Rp. 0,00</span>
         </div>
+        <button class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700"
+          onclick="addtocart()">
+          Tambahkan ke Keranjang
+        </button>
       </div>
+    </div>
     </div>
   </main>
 
@@ -154,7 +163,8 @@ $inwl = $resultwl->num_rows > 0;
         <div class="ml-4 flex-grow">
           <h3 class="font-semibold text-gray-800">Heru Budi</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, sudah pasti original, rasanya seperti pemenang, rekomended.</p>
+          <p class="mt-2 text-gray-700">Pesanan sudah sampai, sudah pasti original, rasanya seperti pemenang,
+            rekomended.</p>
         </div>
         <div class="flex items-center">
           <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
@@ -168,7 +178,8 @@ $inwl = $resultwl->num_rows > 0;
         <div class="ml-4 flex-grow">
           <h3 class="font-semibold text-gray-800">Pham Hanni</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.</p>
+          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.
+          </p>
         </div>
         <div class="flex items-center">
           <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
@@ -182,7 +193,8 @@ $inwl = $resultwl->num_rows > 0;
         <div class="ml-4 flex-grow">
           <h3 class="font-semibold text-gray-800">Demogorgon</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.</p>
+          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.
+          </p>
         </div>
         <div class="flex items-center">
           <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
@@ -192,17 +204,15 @@ $inwl = $resultwl->num_rows > 0;
     </div>
   </section>
 
-  <!-- JavaScript -->
   <script>
-    const productPrice = <?php echo $row['harga']; ?>; // Product price in IDR
-    const stock = <?php echo $row['stok']; ?>; // Total stock available
     var hearttoggled = true;
-    let quantity = 1; // Initial quantity
-
+    const productPrice = <?php echo $row['harga']; ?>;
+    const stock = <?php echo $row['stok']; ?>;
+    let quantity = 1;
+    
     function addtocart() {
-      const finalqty = document.getElementById("quantity").textContent;
+      const finalqty = document.getElementById("quantity").value;
 
-      // Send data to the server using AJAX
       fetch("add_to_cart.php", {
         method: "POST",
         headers: {
@@ -217,8 +227,6 @@ $inwl = $resultwl->num_rows > 0;
       });
     }
 
-
-    // Initialize the subtotal on page load
     function initializeSubtotal() {
       const subtotalElement = document.getElementById('subtotal');
       subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
@@ -234,10 +242,28 @@ $inwl = $resultwl->num_rows > 0;
         quantity--;
       }
 
-      // Update quantity and subtotal
-      quantityElement.textContent = quantity;
+      quantityElement.value = quantity;
       subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
     }
+
+    function inputQuantity() {
+      const quantityElement = document.getElementById('quantity');
+      const subtotalElement = document.getElementById('subtotal');
+      const inputValue = parseInt(quantityElement.value, 10);
+
+      if (isNaN(inputValue) || inputValue < 1) {
+        quantity = 1;
+      } else if (inputValue > stock) {
+        quantity = stock;
+      } else {
+        quantity = inputValue;
+      }
+
+      quantityElement.value = quantity;
+      subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeSubtotal);
 
     function toggleHeart() {
       const heartIcon = document.getElementById('heartIcon');
@@ -245,41 +271,33 @@ $inwl = $resultwl->num_rows > 0;
       heartIcon.classList.toggle('fill-current');
 
       fetch('add_to_wishlist.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            idprod: <?php echo $row['ID_produk']; ?>
-          }),
-        });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          idprod: <?php echo $row['ID_produk']; ?>
+        }),
+      });
     }
 
-    document.addEventListener('DOMContentLoaded', initializeSubtotal);
-  </script>
-
-  <!-- Dropdown Menu Function -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const profileIcon = document.getElementById('profileIcon');
       const dropdownMenu = document.getElementById('dropdownMenu');
 
-      // Toggle dropdown visibility when mouse enters the profile icon
-      profileIcon.addEventListener('mouseenter', function() {
+      profileIcon.addEventListener('mouseenter', function () {
         dropdownMenu.classList.remove('hidden'); // Show dropdown
       });
 
-      // Hide dropdown when mouse leaves the profile icon or the dropdown menu
-      profileIcon.addEventListener('mouseleave', function() {
+      profileIcon.addEventListener('mouseleave', function () {
         setTimeout(() => {
           if (!dropdownMenu.matches(':hover')) {
             dropdownMenu.classList.add('hidden'); // Hide dropdown
           }
-        }, 100); // Small delay to allow mouse to hover over dropdown menu
+        }, 100);
       });
 
-      // Hide dropdown when mouse leaves the dropdown menu
-      dropdownMenu.addEventListener('mouseleave', function() {
+      dropdownMenu.addEventListener('mouseleave', function () {
         dropdownMenu.classList.add('hidden'); // Hide dropdown
       });
     });

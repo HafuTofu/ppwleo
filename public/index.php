@@ -1,11 +1,8 @@
 <?php
 include '../connect.php';
-if(isset($_SESSION['login']) && $_SESSION['login'] === 'trueguess'){
-    header('Location: dashboard.php');        
+if (isset($_SESSION['login']) && $_SESSION['login'] === 'trueguess') {
+    header('Location: dashboard.php');
 }
-// else if(isset($_SESSION['login']) && $_SESSION['login'] === 'trueadmin'){
-//     header('Location: ../atmin/index.php');
-// }
 $query = "SELECT * FROM produk NATURAL JOIN kategori";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 ?>
@@ -26,7 +23,8 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             width: 80%;
             height: 300px;
             margin: 0 auto;
-            margin-top: 40px; /* Prevent overlapping with navbar */
+            margin-top: 40px;
+            /* Prevent overlapping with navbar */
             overflow: hidden;
             border: 4px solid #ddd;
             border-radius: 12px;
@@ -48,7 +46,6 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             object-fit: cover;
         }
 
-        /* Ensure navbar is above other elements */
         .sticky {
             z-index: 1000;
         }
@@ -65,12 +62,11 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             <form action="" class="flex items-center w-full">
                 <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
                     echo $_GET['search'];
-                } ?>"
-                    placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
                 <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
-            <?php if (isset($_GET['search'])){
+            <?php if (isset($_GET['search'])) {
                 $searched = $_GET['search'];
                 header("Location: search1.php?search={$searched}");
             } ?>
@@ -107,12 +103,12 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
         <?php
         $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
         $categories = [];
-        $idx=0;
+        $idx = 0;
         while ($categoryRow = $categoriesResult->fetch_assoc()) {
             $categories[] = $categoryRow['nama_kategori'];
             $categoryName = $categoryRow['nama_kategori'];
             $categoryColor = $pallete[($idx % 4)];
-            $idx ++;
+            $idx++;
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
         ?>
@@ -126,11 +122,13 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <!-- Product Grid -->
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
 
-        <?php $result = $conn->query($query); $row = $result->fetch_assoc();
+        <?php $result = $conn->query($query);
+        $row = $result->fetch_assoc();
         while ($row != null) {
-            $palnum = $row['ID_kategori'] - 1 % 4; ?>
+            $palnum = ($row['ID_kategori'] - 1) % 4; ?>
             <!-- Product Card 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer" onclick="window.location.href = 'detailprod1.php?idprod=<?php echo $row['ID_produk']; ?>';"
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
+                onclick="window.location.href = 'detailprod1.php?idprod=<?php echo $row['ID_produk']; ?>';"
                 data-category="<?php echo $row["nama_kategori"]; ?>">
                 <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                 <div class="p-4">
@@ -138,10 +136,12 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                         class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
                     <p class="text-sm font-semibold text-gray-600">Rp.
-                        <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
+                        <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+                    </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <a href="login.php" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+                <a href="login.php" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add
+                    to Cart</a>
             </div>
             <?php $row = $result->fetch_assoc();
         } ?>
@@ -149,6 +149,29 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
         <!-- Filtering Products by Category -->
         <script>
+            function showPopup(event) {
+                event.preventDefault();
+
+                const popup = document.createElement('div');
+                popup.innerHTML = 'Item added to cart!';
+                popup.style.position = 'fixed';
+                popup.style.bottom = '20px';
+                popup.style.right = '20px';
+                popup.style.background = '#4caf50'; /* Green background */
+                popup.style.color = 'white';
+                popup.style.padding = '10px 20px';
+                popup.style.borderRadius = '5px';
+                popup.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+                popup.style.zIndex = '1000';
+
+                document.body.appendChild(popup);
+
+                setTimeout(() => {
+                    popup.remove();
+                    event.target.submit();
+                }, 2000);
+            }
+
             document.addEventListener('DOMContentLoaded', function () {
                 const categoryLabel = document.getElementById('category-label');
                 const products = document.querySelectorAll('.product-card');
@@ -184,17 +207,17 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
 
             document.addEventListener('DOMContentLoaded', function () {
-            const track = document.querySelector('.carousel-track');
-            const slides = document.querySelectorAll('.carousel-slide');
-            let index = 0;
+                const track = document.querySelector('.carousel-track');
+                const slides = document.querySelectorAll('.carousel-slide');
+                let index = 0;
 
-            function moveCarousel() {
-                index = (index + 1) % slides.length;
-                track.style.transform = `translateX(-${index * 100}%)`;
-            }
+                function moveCarousel() {
+                    index = (index + 1) % slides.length;
+                    track.style.transform = `translateX(-${index * 100}%)`;
+                }
 
-            setInterval(moveCarousel, 3000); // Change slide every 3 seconds
-        });
+                setInterval(moveCarousel, 3000);
+            });
         </script>
 
 </body>

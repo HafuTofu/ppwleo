@@ -10,14 +10,6 @@ $stmt->bind_param("i", $idprod);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
-
-// $inwl = false;
-// $iduser = $_SESSION['id'];
-// $stmtwl = $conn->prepare("SELECT * FROM wishlist WHERE ID_user = ? AND ID_produk = ?");
-// $stmtwl->bind_param("ii", $iduser, $idprod);
-// $stmtwl->execute();
-// $resultwl = $stmtwl->get_result();
-// $inwl = $resultwl->num_rows > 0;
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +33,11 @@ $row = $result->fetch_assoc();
     .heart-transition:active {
       transform: scale(1.2);
     }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
   </style>
 </head>
 
@@ -54,8 +51,7 @@ $row = $result->fetch_assoc();
       <form action="" class="flex items-center w-full">
         <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
           echo $_GET['search'];
-        } ?>" placeholder="Search"
-          class="w-full text-lg text-center bg-transparent outline-none">
+        } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
         <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
       </form>
       <?php if (isset($_GET['search'])) {
@@ -97,7 +93,8 @@ $row = $result->fetch_assoc();
 
         <div>
           <p class="text-lg font-semibold text-green-600 mt-2">Rp.
-            <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
+            <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+          </p>
           <p class="mt-4 text-gray-700 leading-relaxed">
             <?php echo $row['deskripsi']; ?>
           </p>
@@ -114,7 +111,8 @@ $row = $result->fetch_assoc();
                 class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300">
                 <span class="text-xl font-semibold">-</span>
               </button>
-              <span id="quantity" class="text-lg text-gray-800">1</span>
+              <input type="number" id="quantity" value="1" min="1" max="<?php echo $row['stok']; ?>"
+                class="w-16 text-center border border-gray-300 rounded-md no-arrows" oninput="inputQuantity()" />
               <button onclick="updateQuantity('increase')"
                 class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300">
                 <span class="text-xl font-semibold">+</span>
@@ -127,7 +125,8 @@ $row = $result->fetch_assoc();
             <span class="text-gray-600">Subtotal</span>
             <span id="subtotal" class="text-green-600 font-semibold">Rp. 0,00</span>
           </div>
-          <button class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700" onclick="window.location.href= 'login.php';">
+          <button class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700"
+            onclick="window.location.href= 'login.php';">
             Tambahkan ke Keranjang
           </button>
         </div>
@@ -135,7 +134,7 @@ $row = $result->fetch_assoc();
     </div>
   </main>
 
-      <!-- Review Section -->
+  <!-- Review Section -->
   <section class="px-6 py-10">
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-2xl font-bold text-gray-800 mb-6">Review Product</h2>
@@ -145,7 +144,8 @@ $row = $result->fetch_assoc();
         <div class="ml-4">
           <h3 class="font-semibold text-gray-800">Heru Budi</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, sudah pasti original, rasanya seperti pemenang, rekomended.</p>
+          <p class="mt-2 text-gray-700">Pesanan sudah sampai, sudah pasti original, rasanya seperti pemenang,
+            rekomended.</p>
         </div>
       </div>
       <hr class="border-gray-300 mb-6">
@@ -155,7 +155,8 @@ $row = $result->fetch_assoc();
         <div class="ml-4">
           <h3 class="font-semibold text-gray-800">Pham Hanni</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.</p>
+          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.
+          </p>
         </div>
       </div>
       <hr class="border-gray-300 mb-6">
@@ -165,7 +166,8 @@ $row = $result->fetch_assoc();
         <div class="ml-4">
           <h3 class="font-semibold text-gray-800">Demogorgon</h3>
           <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.</p>
+          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.
+          </p>
         </div>
       </div>
     </div>
@@ -173,31 +175,10 @@ $row = $result->fetch_assoc();
 
   <!-- JavaScript -->
   <script>
-    const productPrice = <?php echo $row['harga']; ?>; // Product price in IDR
-    const stock = <?php echo $row['stok']; ?>; // Total stock available
-    var hearttoggled = true;
-    let quantity = 1; // Initial quantity
+    const productPrice = <?php echo $row['harga']; ?>;
+    const stock = <?php echo $row['stok']; ?>;
+    let quantity = 1;
 
-    function addtocart() {
-      const finalqty = document.getElementById("quantity").textContent;
-
-      // Send data to the server using AJAX
-      fetch("add_to_cart.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          idprod: "<?php echo $row['ID_produk']; ?>",
-          iduser: "<?php echo $_SESSION['id']; ?>",
-          qty: finalqty,
-          harga: "<?php echo $row['harga']; ?>"
-        }),
-      });
-    }
-
-
-    // Initialize the subtotal on page load
     function initializeSubtotal() {
       const subtotalElement = document.getElementById('subtotal');
       subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
@@ -213,61 +194,29 @@ $row = $result->fetch_assoc();
         quantity--;
       }
 
-      // Update quantity and subtotal
-      quantityElement.textContent = quantity;
+      quantityElement.value = quantity;
       subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
     }
 
-    function checkwl() {
-      const hearticon = document.getElementById('heartIcon');
-      hearticon.classList.toggle('text-red-600');
-      hearticon.classList.toggle('fill-current');
-    }
+    function inputQuantity() {
+      const quantityElement = document.getElementById('quantity');
+      const subtotalElement = document.getElementById('subtotal');
+      const inputValue = parseInt(quantityElement.value, 10);
 
-    function toggleHeart() {
-      const heartIcon = document.getElementById('heartIcon');
-      heartIcon.classList.toggle('text-red-600');
-      heartIcon.classList.toggle('fill-current');
+      if (isNaN(inputValue) || inputValue < 1) {
+        quantity = 1;
+      } else if (inputValue > stock) {
+        quantity = stock;
+      } else {
+        quantity = inputValue;
+      }
 
-      fetch('add_to_wishlist.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          idprod: <?php echo $row['ID_produk']; ?>
-        }),
-      });
+      quantityElement.value = quantity;
+      subtotalElement.textContent = `Rp. ${(quantity * productPrice).toLocaleString('id-ID')},00`;
     }
 
     document.addEventListener('DOMContentLoaded', initializeSubtotal);
-  </script>
 
-  <!-- Dropdown Menu Function -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const profileIcon = document.getElementById('profileIcon');
-      const dropdownMenu = document.getElementById('dropdownMenu');
-
-      // Toggle dropdown visibility when mouse enters the profile icon
-      profileIcon.addEventListener('mouseenter', function () {
-        dropdownMenu.classList.remove('hidden'); // Show dropdown
-      });
-
-      // Hide dropdown when mouse leaves the profile icon or the dropdown menu
-      profileIcon.addEventListener('mouseleave', function () {
-        setTimeout(() => {
-          if (!dropdownMenu.matches(':hover')) {
-            dropdownMenu.classList.add('hidden'); // Hide dropdown
-          }
-        }, 100); // Small delay to allow mouse to hover over dropdown menu
-      });
-
-      // Hide dropdown when mouse leaves the dropdown menu
-      dropdownMenu.addEventListener('mouseleave', function () {
-        dropdownMenu.classList.add('hidden'); // Hide dropdown
-      });
-    });
   </script>
 </body>
 

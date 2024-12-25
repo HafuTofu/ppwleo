@@ -27,6 +27,12 @@ $stmt->execute();
   <link rel="stylesheet" href="./css/style5.css">
   <!-- Font Awesome Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+  </style>
 </head>
 
 <body class="bg-yellow-50 font-sans">
@@ -110,7 +116,7 @@ $stmt->execute();
               <h2 class='font-semibold'> $value[nama]</h2>
               <div class='flex items-center mt-2 gap-4 py-4'>
                 <button class='bg-gray-200 rounded-full px-2 quantity-button decrease onclick='updateSubtotal();' data-action='decrease''>-</button>
-                <span class='quantity' id='$value[ID_produk]'>$value[qty]</span>
+                <input type='number' class='quantity w-12 text-center border rounded' id='$value[ID_produk]' value='$value[qty]' min='1'>
                 <button class='bg-gray-200 rounded-full px-2 quantity-button increase onclick='updateSubtotal();' data-action='increase''>+</button>
               </div>
             </div>
@@ -147,7 +153,6 @@ $stmt->execute();
   </main>
 
   <script>
-    // Love Button Functionality
     document.addEventListener("DOMContentLoaded", function () {
       const loveButtons = document.querySelectorAll("[id^='loveButton']");
       loveButtons.forEach((button, index) => {
@@ -183,6 +188,27 @@ $stmt->execute();
         }),
       });
 
+      event.preventDefault();
+
+      const popup = document.createElement('div');
+      popup.innerHTML = 'Item removed from your cart!';
+      popup.style.position = 'fixed';
+      popup.style.bottom = '20px';
+      popup.style.right = '20px';
+      popup.style.background = '#AF4C4CFF';
+      popup.style.color = 'white';
+      popup.style.padding = '10px 20px';
+      popup.style.borderRadius = '5px';
+      popup.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+      popup.style.zIndex = '1000';
+
+      document.body.appendChild(popup);
+
+      setTimeout(() => {
+        popup.remove();
+        event.target.submit();
+      }, 2000);
+
       location.reload();
     }
 
@@ -191,13 +217,11 @@ $stmt->execute();
       const itemCheckboxes = document.querySelectorAll(".itemCheckbox");
 
       deleteSelectedButton.addEventListener("click", function () {
-        // Collect ID_cart values from checked checkboxes
         const selectedItems = Array.from(itemCheckboxes)
-          .filter((checkbox) => checkbox.checked) // Only checked items
-          .map((checkbox) => parseInt(checkbox.value, 10)); // Extract the ID_cart value
+          .filter((checkbox) => checkbox.checked)
+          .map((checkbox) => parseInt(checkbox.value, 10));
 
         if (selectedItems.length > 0) {
-          // Send the selected IDs to the server
           fetch("delete_cart.php", {
             method: "POST",
             headers: {
@@ -215,28 +239,24 @@ $stmt->execute();
 
 
 
-    // Profile Dropdown Menu
     document.addEventListener('DOMContentLoaded', function () {
       const profileIcon = document.getElementById('profileIcon');
       const dropdownMenu = document.getElementById('dropdownMenu');
 
-      // Toggle dropdown visibility when mouse enters the profile icon
       profileIcon.addEventListener('mouseenter', function () {
-        dropdownMenu.classList.remove('hidden'); // Show dropdown
+        dropdownMenu.classList.remove('hidden');
       });
 
-      // Hide dropdown when mouse leaves the profile icon or the dropdown menu
       profileIcon.addEventListener('mouseleave', function () {
         setTimeout(() => {
           if (!dropdownMenu.matches(':hover')) {
-            dropdownMenu.classList.add('hidden'); // Hide dropdown
+            dropdownMenu.classList.add('hidden');
           }
-        }, 100); // Small delay to allow mouse to hover over dropdown menu
+        }, 100);
       });
 
-      // Hide dropdown when mouse leaves the dropdown menu
       dropdownMenu.addEventListener('mouseleave', function () {
-        dropdownMenu.classList.add('hidden'); // Hide dropdown
+        dropdownMenu.classList.add('hidden');
       });
     });
 
@@ -249,12 +269,11 @@ $stmt->execute();
       const iquantity = document.getElementsByClassName("quantity");
       const subtotal = document.getElementById("totalPrice");
 
-      // Function to calculate the subtotal for selected items
       function calculateSubtotal() {
         let total = 0;
         for (let i = 0; i < itemCheckboxes.length; i++) {
           if (itemCheckboxes[i].checked) {
-            total += parseInt(iprice[i].value, 10) * parseInt(iquantity[i].innerText, 10);
+            total += parseInt(iprice[i].value, 10) * parseInt(iquantity[i].value, 10);
             fetch("update_qty.php", {
               method: "POST",
               headers: {
@@ -263,7 +282,7 @@ $stmt->execute();
               body: JSON.stringify({
                 idprod: parseInt(idproduct[i].value, 10),
                 iduser: iduser,
-                newqty: parseInt(iquantity[i].innerText, 10),
+                newqty: parseInt(iquantity[i].value, 10),
                 harga: parseInt(iprice[i].value, 10)
               }),
             });
@@ -276,7 +295,7 @@ $stmt->execute();
               body: JSON.stringify({
                 idprod: parseInt(idproduct[i].value, 10),
                 iduser: iduser,
-                newqty: parseInt(iquantity[i].innerText, 10),
+                newqty: parseInt(iquantity[i].value, 10),
                 harga: parseInt(iprice[i].value, 10)
               }),
             });
@@ -285,52 +304,45 @@ $stmt->execute();
         subtotal.innerText = `Rp. ${total.toLocaleString("id-ID")}`;
       }
 
-      // Select All Checkbox functionality
       selectAllCheckbox.addEventListener("change", function () {
         const isChecked = selectAllCheckbox.checked;
         itemCheckboxes.forEach((checkbox) => {
           checkbox.checked = isChecked;
         });
-        calculateSubtotal(); // Update subtotal
+        calculateSubtotal();
       });
 
-      // Individual Item Checkbox functionality
       itemCheckboxes.forEach((checkbox) => {
         checkbox.addEventListener("change", function () {
-          // If any checkbox is unchecked, uncheck "All Items"
           if (!checkbox.checked) {
             selectAllCheckbox.checked = false;
           }
 
-          // If all checkboxes are checked, check "All Items"
           const allChecked = Array.from(itemCheckboxes).every((cb) => cb.checked);
           selectAllCheckbox.checked = allChecked;
 
-          calculateSubtotal(); // Update subtotal
+          calculateSubtotal();
         });
       });
 
-      // Increase and Decrease Quantity Buttons
       document.querySelectorAll(".quantity-button").forEach((button) => {
         button.addEventListener("click", function () {
           const action = this.getAttribute("data-action");
           const parentDiv = this.closest(".flex.items-center");
           const quantityElement = parentDiv.querySelector(".quantity");
-          let quantity = parseInt(quantityElement.innerText, 10);
+          let quantity = parseInt(quantityElement.value, 10);
 
           if (action === "increase") {
-            quantity += 1; // Increase by 1
+            quantity += 1;
           } else if (action === "decrease" && quantity > 1) {
-            quantity -= 1; // Decrease by 1
+            quantity -= 1;
           }
 
-          quantityElement.innerText = quantity;
-          calculateSubtotal(); // Update subtotal when quantity changes
+          quantityElement.value = quantity;
+          calculateSubtotal();
         });
       });
     });
-
-
   </script>
 </body>
 

@@ -88,9 +88,11 @@ if (!empty($_POST)) {
 </head>
 
 <body class="font-sans bg-yellow-50">
+    <!-- Navbar -->
     <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
         <a href="./dashboard.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
+        <!-- Search Bar -->
         <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
             <form action="" class="flex items-center w-full">
                 <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
@@ -150,12 +152,12 @@ if (!empty($_POST)) {
         <?php
         $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
         $categories = [];
-        $idx=0;
+        $idx = 0;
         while ($categoryRow = $categoriesResult->fetch_assoc()) {
             $categories[] = $categoryRow['nama_kategori'];
             $categoryName = $categoryRow['nama_kategori'];
             $categoryColor = $pallete[($idx % 4)];
-            $idx ++;
+            $idx++;
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
         ?>
@@ -164,41 +166,101 @@ if (!empty($_POST)) {
         const categories = <?php echo json_encode($categories); ?>;
     </script>
 
-
+    <!-- Category Label -->
     <div id="category-label" class="my-4 text-2xl font-bold text-center">Category: All</div>
-
+    <!-- Product Grid -->
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
+
         <?php $result = $conn->query($query);
         $row = $result->fetch_assoc();
         while ($row != null) {
             $palnum = ($row['ID_kategori'] - 1) % 4; ?>
+            <!-- Product Card 1 -->
             <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
-                data-category="<?php echo $row["nama_kategori"]; ?>"
-                onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
-                <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
+                data-category="<?php echo $row["nama_kategori"]; ?>">
+                <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
+                    onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                 <div class="p-4">
                     <span
-                        class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
+                        class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full">
+                        <?php echo $row["nama_kategori"]; ?>
+                    </span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
                     <p class="text-sm font-semibold text-gray-600">Rp.
                         <?php echo number_format($row['harga'], 2, ',', '.'); ?>
                     </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <form method="POST">
-                    <input type="hidden" name="iduser" value=<?php echo $_SESSION['id']; ?>>
-                    <input type="hidden" name="idprod" value=<?php echo $row['ID_produk']; ?>>
-                    <input type="hidden" name="harga" value=<?php echo $row['harga']; ?>>
-                    <input type="hidden" name="total_harga" value=<?php echo $row['harga']; ?>>
-                    <button type="submit"
-                        class="w-full py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to
-                        Cart</button>
+                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75" method="POST"
+                    action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <input type="hidden" name="iduser" value="<?php echo $_SESSION['id']; ?>">
+                    <input type="hidden" name="idprod" value="<?php echo $row['ID_produk']; ?>">
+                    <input type="hidden" name="harga" value="<?php echo $row['harga']; ?>">
+                    <input type="hidden" name="total_harga" value="<?php echo $row['harga']; ?>">
+                    <button class="w-full py-3" type="submit">Add to Cart</button>
                 </form>
+
             </div>
             <?php $row = $result->fetch_assoc();
         } ?>
 
         <script>
+            function showWishlistPopup(message) {
+                // Create a popup div
+                const popup = document.createElement('div');
+                popup.textContent = message;
+                popup.style.position = 'relative';
+                popup.style.top = '20px';
+                popup.style.right = '20px';
+                popup.style.backgroundColor = '#f5f5f5';
+                popup.style.color = '#333';
+                popup.style.padding = '10px 20px';
+                popup.style.borderRadius = '8px';
+                popup.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+                popup.style.zIndex = '5000';
+
+                // Add the popup to the body
+                document.body.appendChild(popup);
+
+                // Remove the popup after 3 seconds
+                setTimeout(() => {
+                    popup.remove();
+                }, 3000);
+            }
+
+            // Update the toggleHeart function to include the popup
+            function toggleHeart() {
+                const heartIcon = document.getElementById('heartIcon');
+                const inWishlist = heartIcon.classList.contains('text-red-600');
+
+                heartIcon.classList.toggle('text-red-600');
+                heartIcon.classList.toggle('fill-current');
+
+                // Send data to the server
+                fetch('add_to_wishlist.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idprod: <?php echo $row['ID_produk']; ?>
+                    }),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Show a popup message
+                            const message = inWishlist ? 'Removed from wishlist!' : 'Added to wishlist!';
+                            showWishlistPopup(message);
+                        } else {
+                            showWishlistPopup('Error updating wishlist!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showWishlistPopup('Error updating wishlist!');
+                    });
+            }
+
             document.addEventListener('DOMContentLoaded', function () {
                 const profileIcon = document.getElementById('profileIcon');
                 const dropdownMenu = document.getElementById('dropdownMenu');
@@ -253,51 +315,20 @@ if (!empty($_POST)) {
                 });
             });
 
-
+            // Carousel Script
             document.addEventListener('DOMContentLoaded', function () {
                 const track = document.querySelector('.carousel-track');
                 const slides = document.querySelectorAll('.carousel-slide');
-                const slideWidth = slides[0].offsetWidth;
+                let index = 0;
 
-                let index = 1; // Start from the first real slide
-                let isTransitioning = false;
-
-                // Initialize the carousel position
-                track.style.transform = `translateX(-${slideWidth}px)`;
-
-                function moveCarousel(direction) {
-                    if (isTransitioning) return; // Prevent new transitions during animation
-                    isTransitioning = true;
-
-                    index += direction;
-                    track.style.transition = 'transform 0.5s ease-in-out';
-                    track.style.transform = `translateX(-${index * slideWidth}px)`;
+                function moveCarousel() {
+                    index = (index + 1) % slides.length;
+                    track.style.transform = `translateX(-${index * 100}%)`;
                 }
 
-                // Handle the infinite loop
-                track.addEventListener('transitionend', () => {
-                    isTransitioning = false;
-                    if (index === 0) {
-                        track.style.transition = 'none';
-                        index = slides.length - 2;
-                        track.style.transform = `translateX(-${index * slideWidth}px)`;
-                    } else if (index === slides.length - 1) {
-                        track.style.transition = 'none';
-                        index = 1;
-                        track.style.transform = `translateX(-${index * slideWidth}px)`;
-                    }
-                });
-
-                // Auto-slide functionality
-                setInterval(() => moveCarousel(1), 3000);
-
-                // Optional: Add manual navigation (if needed)
-                const prevButton = document.querySelector('#prev');
-                const nextButton = document.querySelector('#next'); 
-
-                prevButton?.addEventListener('click', () => moveCarousel(-1));
-                nextButton?.addEventListener('click', () => moveCarousel(1));
+                setInterval(moveCarousel, 4000);
             });
         </script>
 </body>
+
 </html>
