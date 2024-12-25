@@ -150,13 +150,13 @@ if (!empty($_POST)) {
     <div class="flex justify-center my-4 space-x-4" id="category-buttons">
         <button class="px-6 py-2 text-white bg-gray-400 rounded-lg category-button" data-category="all">All</button>
         <?php
-        $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
+        $categoriesResult = $conn->query("SELECT * FROM kategori");
         $categories = [];
         $idx = 1;
         while ($categoryRow = $categoriesResult->fetch_assoc()) {
             $categories[] = $categoryRow['nama_kategori'];
             $categoryName = $categoryRow['nama_kategori'];
-            $categoryColor = $pallete[(($idx - 1) % 4)];
+            $categoryColor = $pallete[(($categoryRow['ID_kategori'] - 1) % 4)];
             $idx++;
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
