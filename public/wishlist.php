@@ -26,7 +26,7 @@ $resultCategories = $conn->query($queryCategories);
 
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
-    <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
+    <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
         <a href="dashboard.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
         <!-- Search Bar -->
@@ -46,18 +46,17 @@ $resultCategories = $conn->query($queryCategories);
 
         <!-- User and Cart Icons -->
         <div class="flex items-center mr-6 space-x-6">
-            <a href="dashboard.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
+            <a href="./cart.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
             <div class="relative">
-                <img src="./photo/<?php echo $_SESSION['fotouser'] ?>" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile"
-                    id="profileIcon">
-                <!-- Dropdown menu -->
+                <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>"
+                    class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-                    <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                    <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                    <a href="./profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                    <a href="./logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 
     <!-- Main Content -->
     <main class="px-8 py-8">
@@ -79,34 +78,6 @@ $resultCategories = $conn->query($queryCategories);
                                 <span>All Categories</span>
                             </label>
                         </li>
-                        <!-- <li>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" value="gaming"
-                                    class="text-indigo-500 category-filter focus:ring-indigo-400" />
-                                <span>Gaming</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" value="food"
-                                    class="text-indigo-500 category-filter focus:ring-indigo-400" />
-                                <span>Food</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" value="clothes"
-                                    class="text-indigo-500 category-filter focus:ring-indigo-400" />
-                                <span>Clothes</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="category" value="topup"
-                                    class="text-indigo-500 category-filter focus:ring-indigo-400" />
-                                <span>Top-Up</span>
-                            </label>
-                        </li> -->
                         <?php while ($category = $resultCategories->fetch_assoc()) { ?>
                             <li>
                                 <label class="flex items-center space-x-2">
@@ -152,7 +123,7 @@ $resultCategories = $conn->query($queryCategories);
                     <!-- Product Cards -->
                     <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card"
                         data-category="<?php echo $row["nama_kategori"]; ?>"
-                        data-availness="<?php echo $row["statusprod"]; ?>"
+                        data-availness="<?php echo $row["statusproduk"]; ?>"
                         onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                         <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                         <div class="p-4">
@@ -181,17 +152,26 @@ $resultCategories = $conn->query($queryCategories);
     </main>
 
     <script>
-        // Dropdown Menu for Profile
-        const profileIcon = document.getElementById('profileIcon');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+        document.addEventListener('DOMContentLoaded', function () {
+                const profileIcon = document.getElementById('profileIcon');
+                const dropdownMenu = document.getElementById('dropdownMenu');
 
-        profileIcon.addEventListener('mouseover', function() {
-            dropdownMenu.classList.remove('hidden');
-        });
+                profileIcon.addEventListener('mouseenter', function () {
+                    dropdownMenu.classList.remove('hidden');
+                });
 
-        profileIcon.addEventListener('mouseout', function() {
-            dropdownMenu.classList.add('hidden');
-        });
+                profileIcon.addEventListener('mouseleave', function () {
+                    setTimeout(() => {
+                        if (!dropdownMenu.matches(':hover')) {
+                            dropdownMenu.classList.add('hidden');
+                        }
+                    }, 100);
+                });
+
+                dropdownMenu.addEventListener('mouseleave', function () {
+                    dropdownMenu.classList.add('hidden');
+                });
+            });
 
         // Category Filter Logic
         const categoryFilter = document.querySelectorAll('.category-filter');

@@ -3,8 +3,6 @@ require './sess.php';
 
 if ($_SESSION['login'] === 'false') {
   header('Location: login.php');
-} else if ($_SESSION['login'] === 'trueadmin') {
-  header('Location: admin.php');
 }
 
 $iduser = $_SESSION['id'];
@@ -331,8 +329,9 @@ $stmt->execute();
           const parentDiv = this.closest(".flex.items-center");
           const quantityElement = parentDiv.querySelector(".quantity");
           let quantity = parseInt(quantityElement.value, 10);
+          let quantitymax = parseInt(quantityElement.max, 10);
 
-          if (action === "increase") {
+          if (action === "increase" && quantity < quantitymax) {
             quantity += 1;
           } else if (action === "decrease" && quantity > 1) {
             quantity -= 1;
@@ -345,8 +344,13 @@ $stmt->execute();
 
       document.querySelectorAll(".quantity").forEach((input) => {
         input.addEventListener("input", function () {
-          if (parseInt(input.value, 10) < 1 || isNaN(input.value)) {
+          const max = parseInt(input.getAttribute("max"), 10);
+          const value = parseInt(input.value, 10);
+
+          if (value < 1 || isNaN(value)) {
             input.value = 1;
+          } else if (value > max) {
+            input.value = max;
           }
           calculateSubtotal();
         });

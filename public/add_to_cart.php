@@ -20,8 +20,18 @@ try {
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
 
+    $stmtp = $conn->prepare("SELECT stok FROM produk WHERE ID_produk = ?");
+    $stmtp->bind_param("i", $idprod);
+    $stmtp->execute();
+    $rowp = $stmtp->get_result()->fetch_assoc();
+
     if ($row) {
         $newQty = $row['qty'] + $qty;
+
+        if ($newQty >= $rowp['stok']) {
+            $newQty = $rowp['stok'];
+        }
+
         $newTotal = $newQty * $harga;
 
         $stmt = $conn->prepare("UPDATE cart SET qty = ?, total_harga = ? WHERE ID_produk = ? AND ID_user = ?");

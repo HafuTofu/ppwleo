@@ -11,7 +11,7 @@ if ($_SESSION['login'] === 'trueguess') {
   header('Location: dashboard.php');
 }
 
-$query = "SELECT * FROM produk NATURAL JOIN kategori";
+$query = "SELECT * FROM (produk NATURAL JOIN kategori)";
 
 if (isset($_POST['edit']) && !empty($_POST['edit'])) {
   $prodid = $_POST['edit'];
@@ -36,12 +36,88 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
     <link rel="icon" href="./photo/ciG.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style7.css">
+    <style>
+        .register-box {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            background-color: rgba(236, 218, 183, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            text-align: center;
+        }
+
+        .register-box form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-box h2 {
+            font-size: 1.5rem;
+            color: black;
+            margin-bottom: 1rem;
+        }
+
+        .register-box label {
+            display: block;
+            font-size: 14.4px;
+            color: black;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-box input[type="text"],
+        .register-box input[type="number"],
+        .register-box select {
+            margin-bottom: 1rem;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #a94b4b;
+            border-radius: 5px;
+            background-color: rgba(80, 7, 18, 0.5);
+            font-size: 14.4px;
+            color: white;
+        }
+
+        .register-box button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #a94b4b;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .register-box button:hover {
+            background-color: rgba(80, 7, 18, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+    </style>
 </head>
 
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="adminew.php">
+        <a href="admindash.php">
             <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
         </a>
 
@@ -57,7 +133,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             </form>
             <?php if (isset($_GET['search'])) {
         $filtervalues = $_GET['search'];
-        $query = "SELECT * FROM produk NATURAL JOIN kategori WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+        $query = "SELECT * FROM (produk NATURAL JOIN kategori) WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
       } ?>
         </div>
 
@@ -153,7 +229,6 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
 
     <!-- Dropdown Menu Script -->
     <script>
-    // Profile Dropdown Menu
     document.addEventListener('DOMContentLoaded', function() {
         const profileIcon = document.getElementById('profileIcon');
         const dropdownMenu = document.getElementById('dropdownMenu');
@@ -164,7 +239,6 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
                 const productId = this.id.split('_')[1];
                 const status = this.checked ? 'available' : 'unavailable';
 
-                // Use AJAX to update the database
                 fetch('update_status.php', {
                         method: 'POST',
                         headers: {
@@ -187,23 +261,20 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             });
         });
 
-        // Toggle dropdown visibility when mouse enters the profile icon
         profileIcon.addEventListener('mouseenter', function() {
-            dropdownMenu.classList.remove('hidden'); // Show dropdown
+            dropdownMenu.classList.remove('hidden');
         });
 
-        // Hide dropdown when mouse leaves the profile icon or the dropdown menu
         profileIcon.addEventListener('mouseleave', function() {
             setTimeout(() => {
                 if (!dropdownMenu.matches(':hover')) {
-                    dropdownMenu.classList.add('hidden'); // Hide dropdown
+                    dropdownMenu.classList.add('hidden');
                 }
-            }, 100); // Small delay to allow mouse to hover over dropdown menu
+            }, 100);
         });
 
-        // Hide dropdown when mouse leaves the dropdown menu
         dropdownMenu.addEventListener('mouseleave', function() {
-            dropdownMenu.classList.add('hidden'); // Hide dropdown
+            dropdownMenu.classList.add('hidden');
         });
     });
     </script>
