@@ -15,7 +15,7 @@ try {
     $harga = intval($input['harga']);
     $total_harga = $harga * $qty;
 
-    $stmt = $conn->prepare("SELECT qty FROM cart WHERE ID_produk = ? AND ID_user = ?");
+    $stmt = $conn->prepare("SELECT qty FROM cart WHERE (ID_produk = ? AND ID_user = ? AND checkorno = 'unchecked')");
     $stmt->bind_param("ii", $idprod, $iduser);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();

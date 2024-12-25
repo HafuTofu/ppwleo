@@ -6,7 +6,7 @@ if ($_SESSION['login'] === 'false') {
 }
 
 $iduser = $_SESSION['id'];
-$query = 'SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ?';
+$query = "SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ? AND checkorno = 'unchecked'";
 
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $iduser);
@@ -20,7 +20,7 @@ $stmt->execute();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout Page</title>
+  <title>Cart Page</title>
   <link rel="icon" href="./photo/ciG.png">
   <link rel="stylesheet" href="./css/style5.css">
   <!-- Font Awesome Icons -->
@@ -50,7 +50,7 @@ $stmt->execute();
       </form>
       <?php if (isset($_GET['search'])) {
         $searchkey = urlencode($_GET['search']);
-        header("Location: dashboard.php?{$searchkey}");
+        header("Location: search.php?{$searchkey}");
       } ?>
     </div>
 
@@ -140,7 +140,7 @@ $stmt->execute();
             <span>Total</span>
             <span id="totalPrice">Rp. 0</span>
           </div>
-          <a href="#checkout">
+          <a>
             <button class="bg-red-600 text-white w-full py-2 mt-4 rounded-md shadow-md hover:bg-red-700">
               Checkout
             </button>
@@ -356,6 +356,39 @@ $stmt->execute();
         });
       });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const checkoutButton = document.querySelector("button.bg-red-600");
+
+      checkoutButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        const selectedItems = Array.from(document.querySelectorAll(".itemCheckbox"))
+          .filter((checkbox) => checkbox.checked)
+          .map((checkbox) => parseInt(checkbox.value, 10)); // Extract the `id_cart` value
+
+        if (selectedItems.length === 0) {
+          alert("Please select at least one item to checkout.");
+          return;
+        }
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "checkout.php";
+
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "selected_cart_ids"; 
+        input.value = JSON.stringify(selectedItems);
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+
+        form.submit();
+      });
+    });
+
+
   </script>
 </body>
 

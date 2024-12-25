@@ -15,7 +15,7 @@ if (!empty($_POST)) {
     $conn->begin_transaction();
 
     try {
-        $stmt = $conn->prepare("SELECT * FROM cart WHERE ID_produk = ? AND ID_user = ?");
+        $stmt = $conn->prepare("SELECT * FROM cart WHERE (ID_produk = ? AND ID_user = ? AND checkorno = 'unchecked')");
         $stmt->bind_param("ii", $idprod, $iduser);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -186,7 +186,7 @@ if (!empty($_POST)) {
                     </span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
                     <p class="text-sm font-semibold text-gray-600">Rp.
-                        <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+                        <?php echo number_format($row['harga'], 0, ',', '.'); ?>
                     </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>

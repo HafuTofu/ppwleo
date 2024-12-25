@@ -225,8 +225,8 @@ $row = mysqli_fetch_assoc($result);
                 gender: gender,
                 phone: phone,
                 address: address,
-                currentPassword: currentPassword,
-                newPassword: newPassword
+                currentPassword: currentPassword ?? "<?php echo $row['Password'];?>",
+                newPassword: newPassword ?? "<?php echo $row['Password'];?>"
             };
 
             fetch('update_profile.php', {
@@ -245,7 +245,6 @@ $row = mysqli_fetch_assoc($result);
                 .then(data => {
                     if (data.success) {
                         alert('Profile updated successfully!');
-                        // Optionally refresh the page or redirect the user
                         location.reload();
                     } else {
                         alert('Error updating profile: ' + data.message);
