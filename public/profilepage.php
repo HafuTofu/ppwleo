@@ -164,13 +164,13 @@ $row = mysqli_fetch_assoc($result);
                         <label class="w-1/4 text-sm font-medium text-gray-700">Current Password</label>
                         <input type="password" id="crnpass"
                             class="flex-grow px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-                            value="" required>
+                            value="">
                     </div>
                     <div class="flex items-start">
                         <label class="w-1/4 text-sm font-medium text-gray-700">New Password</label>
                         <input type="password" id="newpass"
                             class="flex-grow px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-                            value="" required>
+                            value="">
                     </div>
                 </div>
                 <div class="mt-6 flex justify-center space-x-4">
