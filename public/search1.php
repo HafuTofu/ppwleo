@@ -11,7 +11,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/style1.css">
+    <link rel="stylesheet" href="./css/dashtry.css">
     <link rel="icon" href="./photo/ciG.png">
     </style>
 </head>
@@ -60,6 +60,14 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
         ?>
+        <div>
+            <select id="sortDropdown" class="px-6 py-2 text-white bg-blue-500 rounded-lg cursor-pointer">
+                <option value="most_relevant">Most Relevant</option>
+                <option value="highest_price">Highest Price</option>
+                <option value="lowest_price">Lowest Price</option>
+                <option value="newest">Newest</option>
+            </select>
+        </div>
     </div>
     <script>
         const categories = <?php echo json_encode($categories); ?>;
@@ -126,6 +134,51 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                 });
             });
 
+            document.addEventListener('DOMContentLoaded', function () {
+                const productsContainer = document.querySelector('.grid'); // Product grid container
+                const products = Array.from(document.querySelectorAll('.product-card')); // Convert NodeList to Array
+                const sortDropdown = document.getElementById('sortDropdown');
+
+                sortDropdown.addEventListener('change', function () {
+                    const selectedOption = this.value; // Get selected sort option
+
+                    // Sorting logic
+                    let sortedProducts = [...products]; // Clone products array
+
+                    switch (selectedOption) {
+                        case 'highest_price':
+                            sortedProducts.sort((a, b) => {
+                                const priceA = parseFloat(a.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                const priceB = parseFloat(b.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                return priceB - priceA; // Descending order
+                            });
+                            break;
+                        case 'lowest_price':
+                            sortedProducts.sort((a, b) => {
+                                const priceA = parseFloat(a.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                const priceB = parseFloat(b.querySelector('p.text-sm.font-semibold').textContent.replace(/[^\d]/g, ''));
+                                return priceA - priceB; // Ascending order
+                            });
+                            break;
+                        case 'newest':
+                            sortedProducts.sort((a, b) => {
+                                const idA = parseInt(a.querySelector('input[name="idprod"]').value, 10);
+                                const idB = parseInt(b.querySelector('input[name="idprod"]').value, 10);
+                                return idB - idA; // Newest first
+                            });
+                            break;
+                        default: // Default: Most Relevant (original order)
+                            sortedProducts = [...products]; // Reset to original order
+                            break;
+                    }
+
+                    // Clear the container and append sorted products
+                    productsContainer.innerHTML = '';
+                    sortedProducts.forEach(product => {
+                        productsContainer.appendChild(product);
+                    });
+                });
+            });
         </script>
 
 </body>
