@@ -133,7 +133,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
           <!-- Total and Buttons -->
           <div class="text-right w-1/4">
             <p class="font-bold text-sm">Total</p>
-            <p class="text-xl font-semibold text-gray-800">Rp. 1.780.000</p>
+            <p class="text-xl font-semibold text-gray-800">Rp. <?php echo number_format($rowst['total_harga'], 0, ',', '.'); ?></p>
           </div>
         </div>
         <!-- batas bawah -->

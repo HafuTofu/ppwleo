@@ -327,12 +327,10 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             </div>
             <div class="p-4 text-center bg-white rounded-lg shadow-md">
                 <!-- Toggle Switch -->
-                <label class="relative inline-flex items-center cursor-pointer">
+                <label class="fixed inline-flex items-center cursor-pointer">
                     <input type="checkbox" id="cekbok_<?php echo $row['ID_produk']; ?>" class="sr-only peer"
                         <?php echo ($row['statusproduk'] == 'available') ? 'checked' : ''; ?>>
-                    <div class="h-6 bg-gray-200 rounded-full w-11 peer-checked:bg-green-500"></div>
-                    <span
-                        class="absolute w-4 h-4 transition-transform bg-white rounded-full top-1 left-1 peer-checked:translate-x-5"></span>
+                    <div class="h-6 bg-red-500 rounded-full w-11 peer-checked:bg-green-500"><?php echo ($row['statusproduk'] == 'available') ? 'AVAILABLE' : 'UNAVAILABLE'; ?></div>
                 </label>
             </div>
             <div class="p-4 text-center bg-white rounded-lg shadow-md">
