@@ -51,8 +51,11 @@ $row = mysqli_fetch_assoc($result);
                     class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-                    <a href="wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                    <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                <a href="./profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                    <a href="./cart.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Cart</a>
+                    <a href="./wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                    <a href="./orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order</a>
+                    <a href="./logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>
