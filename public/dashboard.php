@@ -178,8 +178,7 @@ if (!empty($_POST)) {
             <!-- Product Card 1 -->
             <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
                 data-category="<?php echo $row["nama_kategori"]; ?>">
-                <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
-                    onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
+                <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48" onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                 <div class="p-4">
                     <span
                         class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full">
@@ -191,8 +190,8 @@ if (!empty($_POST)) {
                     </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75" method="POST"
-                    action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75"
+                    method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <input type="hidden" name="iduser" value="<?php echo $_SESSION['id']; ?>">
                     <input type="hidden" name="idprod" value="<?php echo $row['ID_produk']; ?>">
                     <input type="hidden" name="harga" value="<?php echo $row['harga']; ?>">
@@ -205,61 +204,56 @@ if (!empty($_POST)) {
         } ?>
 
         <script>
-            function showWishlistPopup(message) {
-                // Create a popup div
+            function showPopup(message) {
                 const popup = document.createElement('div');
-                popup.textContent = message;
-                popup.style.position = 'relative';
-                popup.style.top = '20px';
+                popup.innerHTML = message;
+                popup.style.position = 'fixed';
+                popup.style.bottom = '20px';
                 popup.style.right = '20px';
-                popup.style.backgroundColor = '#f5f5f5';
-                popup.style.color = '#333';
+                popup.style.background = '#4caf50';
+                popup.style.color = 'white';
                 popup.style.padding = '10px 20px';
-                popup.style.borderRadius = '8px';
-                popup.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
-                popup.style.zIndex = '5000';
+                popup.style.borderRadius = '5px';
+                popup.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+                popup.style.zIndex = '1000';
 
-                // Add the popup to the body
                 document.body.appendChild(popup);
 
-                // Remove the popup after 3 seconds
                 setTimeout(() => {
                     popup.remove();
-                }, 3000);
+                }, 2000);
             }
 
-            // Update the toggleHeart function to include the popup
-            function toggleHeart() {
-                const heartIcon = document.getElementById('heartIcon');
-                const inWishlist = heartIcon.classList.contains('text-red-600');
+            document.addEventListener('DOMContentLoaded', function () {
+                // Handle form submission with AJAX
+                const forms = document.querySelectorAll('form');
 
-                heartIcon.classList.toggle('text-red-600');
-                heartIcon.classList.toggle('fill-current');
+                forms.forEach(form => {
+                    form.addEventListener('submit', async function (event) {
+                        event.preventDefault(); // Prevent default form submission
 
-                // Send data to the server
-                fetch('add_to_wishlist.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        idprod: <?php echo $row['ID_produk']; ?>
-                    }),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            // Show a popup message
-                            const message = inWishlist ? 'Removed from wishlist!' : 'Added to wishlist!';
-                            showWishlistPopup(message);
-                        } else {
-                            showWishlistPopup('Error updating wishlist!');
+                        // Collect form data
+                        const formData = new FormData(this);
+
+                        try {
+                            // Send data to server using fetch
+                            const response = await fetch(this.action, {
+                                method: 'POST',
+                                body: formData,
+                            });
+
+                            if (response.ok) {
+                                showPopup('Item added to cart!');
+                            } else {
+                                showPopup('Error adding item to cart.');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            showPopup('An error occurred.');
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showWishlistPopup('Error updating wishlist!');
                     });
-            }
+                });
+            });
 
             document.addEventListener('DOMContentLoaded', function () {
                 const profileIcon = document.getElementById('profileIcon');
