@@ -30,11 +30,17 @@ $row = mysqli_fetch_assoc($result);
         <!-- Search Bar -->
         <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
             <form action="" class="flex items-center w-full">
-                <input type="text" name="search" placeholder="Search"
-                    class="w-full text-lg text-center bg-transparent outline-none">
+                <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
+                    echo $_GET['search'];
+                } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
                 <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
+            <?php if (isset($_GET['search'])) {
+                $searched = urlencode($_GET['search']);
+                header("Location: search.php?search={$searched}");
+                exit();
+            } ?>
         </div>
 
         <!-- User and Cart Icons -->
