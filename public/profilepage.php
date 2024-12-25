@@ -121,7 +121,8 @@ $row = mysqli_fetch_assoc($result);
             <div class="flex flex-col items-center mb-6 md:mb-0 ml-3 mr-6">
                 <img src="./photo/<?php echo $row['fotouser']; ?>" alt="Profile"
                     class="w-40 h-40 rounded-full object-cover mb-4 shadow-md">
-                <button class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-400">Change Picture</button>
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+                    <button id="changePicBtn" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-400">Change Picture</button>
             </div>
             <!-- Editable Profile Details Section -->
             <div class="flex-grow bg-[#FAF3E0] p-6 rounded-lg">
@@ -212,6 +213,27 @@ $row = mysqli_fetch_assoc($result);
             alert('Changes saved successfully!');
             profileEdit.classList.add('hidden');
             profileView.classList.remove('hidden');
+        });
+
+        const profilePic = document.getElementById('profilePic');
+        const fileInput = document.getElementById('fileInput');
+        const changePicBtn = document.getElementById('changePicBtn');
+
+        // Open file input when the button is clicked
+        changePicBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Preview the selected image
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.src = e.target.result; // Update the image preview
+                };
+                reader.readAsDataURL(file);
+            }
         });
 
         function updateprofile() {
