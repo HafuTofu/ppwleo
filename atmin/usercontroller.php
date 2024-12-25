@@ -16,7 +16,7 @@
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="./admindash.php"><img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+        <a href="atmindashboard.html"><img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
         <!-- Search Bar -->
         <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
@@ -32,8 +32,13 @@
                 <img src="../public/photouser/pfp.png" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-                    <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                    <a href="#wishlist" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                    <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                    <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Dashboard</a>
+                    <a href="atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin Dashboard</a>
+                    <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Product Page</a>
+                    <a href="admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category Page</a>
+                    <a href="orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order Page</a>
+                    <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount Page</a>
                     <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
@@ -108,6 +113,40 @@
 
     <!-- JavaScript -->
     <script>
+
+        // Profile Dropdown Menu
+        document.addEventListener('DOMContentLoaded', function () {
+        const profileIcon = document.getElementById('profileIcon');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        profileIcon.addEventListener('mouseenter', function () {
+            dropdownMenu.classList.remove('hidden'); // Show dropdown
+        });
+
+        profileIcon.addEventListener('mouseleave', function () {
+            setTimeout(() => {
+            if (!dropdownMenu.matches(':hover')) {
+                dropdownMenu.classList.add('hidden'); // Hide dropdown
+            }
+            }, 100);
+        });
+
+        dropdownMenu.addEventListener('mouseleave', function () {
+            dropdownMenu.classList.add('hidden');
+        });
+
+        // Select/Deselect All Functionality
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const productCheckboxes = document.querySelectorAll('.productCheckbox');
+
+        selectAllCheckbox.addEventListener('change', function () {
+            const isChecked = selectAllCheckbox.checked;
+            productCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+            });
+        });
+        });
+
         // Toggle Ban/Unban Button
         function toggleButton(button) {
             if (button.innerText.includes("Unban")) {

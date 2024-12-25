@@ -195,6 +195,40 @@ $row = mysqli_fetch_assoc($result);
     </main>
 
     <script>
+
+        // Profile Dropdown Menu
+        document.addEventListener('DOMContentLoaded', function () {
+        const profileIcon = document.getElementById('profileIcon');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        profileIcon.addEventListener('mouseenter', function () {
+            dropdownMenu.classList.remove('hidden'); // Show dropdown
+        });
+
+        profileIcon.addEventListener('mouseleave', function () {
+            setTimeout(() => {
+            if (!dropdownMenu.matches(':hover')) {
+                dropdownMenu.classList.add('hidden'); // Hide dropdown
+            }
+            }, 100);
+        });
+
+        dropdownMenu.addEventListener('mouseleave', function () {
+            dropdownMenu.classList.add('hidden');
+        });
+
+        // Select/Deselect All Functionality
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const productCheckboxes = document.querySelectorAll('.productCheckbox');
+
+        selectAllCheckbox.addEventListener('change', function () {
+            const isChecked = selectAllCheckbox.checked;
+            productCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+            });
+        });
+        });
+
         const editBtn = document.getElementById('edit-btn');
         const cancelBtn = document.getElementById('cancel-btn');
         const confirmBtn = document.getElementById('confirm-btn');

@@ -21,7 +21,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order List</title>
-    <link rel="icon" href="./photo/ciG.png" />
+    <link rel="icon" href="../public/photo/ciG.png" />
     <link rel="stylesheet" href="../public/css/style10.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -37,25 +37,29 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
   <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200 z-50">
-        <a href="./dashboard.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+        <a href="atmindashboard.html"><img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
         <!-- Search Bar -->
         <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
             <form action="" class="flex items-center w-full">
                 <input type="text" name="search" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
-                <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20" alt="Search"></button>
+                <button type="submit" class="p-2"><img src="../public/photo/search.png" width="20" height="20" alt="Search"></button>
             </form>
         </div>
 
         <!-- User and Cart Icons -->
         <div class="flex items-center mr-6 space-x-6">
             <div class="relative">
-                <img src="./photouser/monitor.jpg" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
+                <img src="../public/photouser/monitor.jpg" class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-                    <a href="pfpadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                    <a href="#wishlist" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                    <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Dashboard</a>
+                <a href="atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin Dashboard</a>
+                <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Product Page</a>
+                <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount Page</a>
+                <a href="usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Page</a>
+                <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>
@@ -87,7 +91,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
         <!-- Product Details -->
         <div class="flex items-center space-x-4 flex-1">
           <img 
-            src="./photo/JACKET.png" 
+            src="../public/photo/JACKET.png" 
             alt="Product" 
             class="w-20 h-20 rounded-md object-cover">
           <div>
@@ -135,7 +139,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
         <!-- Product Details -->
         <div class="flex items-center space-x-4 flex-1">
           <img 
-            src="./photo/JACKET.png" 
+            src="../public/photo/JACKET.png" 
             alt="Product" 
             class="w-20 h-20 rounded-md object-cover">
           <div>
@@ -183,7 +187,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
         <!-- Product Details -->
         <div class="flex items-center space-x-4 flex-1">
           <img 
-            src="./photo/JACKET.png" 
+            src="../public/photo/JACKET.png" 
             alt="Product" 
             class="w-20 h-20 rounded-md object-cover">
           <div>
@@ -231,7 +235,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
         <!-- Product Details -->
         <div class="flex items-center space-x-4 flex-1">
           <img 
-            src="./photo/JACKET.png" 
+            src="../public/photo/JACKET.png" 
             alt="Product" 
             class="w-20 h-20 rounded-md object-cover">
           <div>
@@ -279,7 +283,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
         <!-- Product Details -->
         <div class="flex items-center space-x-4 flex-1">
           <img 
-            src="./photo/JACKET.png" 
+            src="../public/photo/JACKET.png" 
             alt="Product" 
             class="w-20 h-20 rounded-md object-cover">
           <div>

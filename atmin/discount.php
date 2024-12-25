@@ -18,7 +18,7 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
 <body class="bg-yellow-50 font-sans">
   <!-- Navbar -->
   <div class="bg-yellow-200 sticky top-0 flex justify-between items-center p-4">
-    <a href="dashboard.php">
+    <a href="atmindashboard.html">
       <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
     </a>
 
@@ -42,10 +42,14 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
       <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
         id="profileIcon">
       <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
-        <a href="#profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-        <a href="tambahproduk.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Added Product</a>
-        <a href="discount.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount Product</a>
-        <a href="#Logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+      <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+        <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Dashboard</a>
+        <a href="atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin Dashboard</a>
+        <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Product Page</a>
+        <a href="admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category Page</a>
+        <a href="orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order Page</a>
+        <a href="usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Page</a>
+        <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
       </div>
     </div>
   </div>

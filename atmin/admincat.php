@@ -138,7 +138,7 @@ if (!empty($_POST['insert'])) {
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="admindash.php">
+        <a href="atmindashboard.html">
             <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
         </a>
 
@@ -162,9 +162,14 @@ if (!empty($_POST['insert'])) {
             <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
                 id="profileIcon">
             <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-                <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product Page</a>
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Dashboard</a>
+                <a href="atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin Dashboard</a>
+                <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Product Page</a>
                 <a href="discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount Page</a>
-                <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                <a href="orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order Page</a>
+                <a href="usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Page</a>
+                <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
             </div>
         </div>
     </div>
