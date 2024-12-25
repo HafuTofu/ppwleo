@@ -19,5 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo json_encode(['success' => false, 'error' => 'Invalid data']);
     }
+
+    if (isset($data['order_id']) && isset($data['status'])) {
+        $orderId = $data['order_id'];
+        $newStatus = $data['status'];
+
+        // Update the database
+        $stmt = $conn->prepare("UPDATE transactions SET order_status = ? WHERE ID_transaksi = ?");
+        $stmt->bind_param("si", $newStatus, $orderId);
+
+        if ($stmt->execute()) {
+            echo json_encode(["success" => true, "message" => "Status updated successfully."]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Failed to update status."]);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(["success" => false, "message" => "Invalid input."]);
+    }
 }
 ?>

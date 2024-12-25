@@ -81,8 +81,8 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
       <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Packing Process">Packing Process</button>
       <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Delivering">Delivering</button>
       <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Delivered">Delivered</button>
+      <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Need Rate">Need Rate</button>
       <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Done">Done</button>
-      <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Need Rate">Need Rate!</button>
       <button class="px-4 py-2 bg-gray-200 rounded-full" data-filter="Canceled">Canceled</button>
     </div>
 
@@ -127,13 +127,22 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
             </div>
             <p class="text-red-500 font-semibold text-sm mt-2">
               <?php $eta = "ETA: $startDay - $endDay $month $year";
-              echo $eta; ?></p>
+              echo $eta; ?>
+            </p>
           </div>
 
           <!-- Total and Buttons -->
           <div class="text-right w-1/4">
             <p class="font-bold text-sm">Total</p>
-            <p class="text-xl font-semibold text-gray-800">Rp. <?php echo number_format($rowst['total_harga'], 0, ',', '.'); ?></p>
+            <p class="text-xl font-semibold text-gray-800">Rp.
+              <?php echo number_format($rowst['total_harga'], 0, ',', '.'); ?>
+            </p>
+            <button
+              class="bg-red-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-red-600 cancel-btn hidden"
+              data-idtrans = <?php echo $rowst['ID_transaksi']; ?>>CANCEL</button>
+            <button
+              class="bg-green-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-green-600 rate-btn hidden"
+              data-idtrans = <?php echo $rowst['ID_transaksi']; ?>>RATE</button>
           </div>
         </div>
         <!-- batas bawah -->
@@ -207,50 +216,95 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
             });
           });
 
-          // Rate and Cancel Button Logic
-          document.addEventListener('DOMContentLoaded', function () {
-            // Grab all order cards
-            const orderCards = document.querySelectorAll('.bg-white.shadow-md');
 
-            orderCards.forEach((card) => {
-              const statusDropdown = card.querySelector('select[name="status"]');
-              const rateBtn = card.querySelector('.rate-btn');
-              const cancelBtn = card.querySelector('.cancel-btn');
+        });
 
-              // Function to update button visibility based on status
-              const updateButtons = () => {
-                const status = statusDropdown.value.trim();
-                rateBtn.classList.add('hidden');
-                cancelBtn.classList.add('hidden');
+        document.addEventListener('DOMContentLoaded', function () {
+          const orderCards = document.querySelectorAll('.bg-white.shadow-md');
 
-                if (status === 'Need Rate!') {
-                  rateBtn.classList.remove('hidden');
-                }
-                if (status === 'Confirmed' || status === 'Packing Process') {
-                  cancelBtn.classList.remove('hidden');
-                }
-              };
+          orderCards.forEach((card) => {
+            const statusDropdown = card.querySelector('select[name="status"]');
+            const rateBtn = card.querySelector('.rate-btn');
+            const cancelBtn = card.querySelector('.cancel-btn');
+            const orderId = cancelBtn.getAttribute('data-idtrans'); // Assuming you add a `data-order-id` attribute to the card
 
-              // Initial call
-              updateButtons();
+            // Update button visibility based on status
+            const updateButtons = () => {
+              const status = statusDropdown.value.trim();
+              rateBtn.classList.add('hidden');
+              cancelBtn.classList.add('hidden');
 
-              // Listen for status changes
-              statusDropdown.addEventListener('change', updateButtons);
+              if (status === 'Need Rate') {
+                rateBtn.classList.remove('hidden');
+              }
+              if (status === 'Confirmed' || status === 'Packing Process') {
+                cancelBtn.classList.remove('hidden');
+              }
+            };
 
-              // Optional: Add click events for buttons
-              rateBtn.addEventListener('click', () => {
-                alert('Thank you for rating this order!');
-              });
+            // Initial call
+            updateButtons();
 
-              cancelBtn.addEventListener('click', () => {
-                if (confirm('Are you sure you want to cancel this order?')) {
-                  alert('Order has been canceled!');
-                  // Add logic to update status or perform an action
-                }
-              });
+            // Cancel Button Click
+            cancelBtn.addEventListener('click', () => {
+              if (confirm('Are you sure you want to cancel this order?')) {
+                fetch('./cancel_order.php', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ orderId }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.success) {
+                      alert('Order has been canceled!');
+                      statusDropdown.value = 'Canceled';
+                      updateButtons();
+                    } else {
+                      alert('Failed to cancel order. Please try again.');
+                    }
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                  });
+              }
+              location.reload();
+            });
+
+            // Rate Button Click
+            rateBtn.addEventListener('click', () => {
+              const rating = prompt('Rate this order (1-5):');
+              if (rating && rating >= 1 && rating <= 5) {
+                fetch('./rate_order.php', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ orderId, rating }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.success) {
+                      alert('Thank you for rating!');
+                      statusDropdown.value = 'Done';
+                      updateButtons();
+                    } else {
+                      alert('Failed to submit rating. Please try again.');
+                    }
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                  });
+              } else {
+                alert('Invalid rating. Please enter a number between 1 and 5.');
+              }
             });
           });
         });
+
       </script>
 </body>
 
