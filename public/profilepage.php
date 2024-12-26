@@ -53,26 +53,34 @@ $row = mysqli_fetch_assoc($result);
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <a href="./profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
                     <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-                        <a href="../atmin/atmindashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                        <a href="../atmin/atmindashboard.html"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                             Admin Dashboard</a>
-                        <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+                        <a href="../atmin/admindash.php"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
                             Managing Page</a>
-                        <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+                        <a href="../atmin/discount.php"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
                             Managing Page</a>
-                        <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                        <a href="../atmin/orderadmin.php"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                             Managing Page</a>
-                        <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+                        <a href="../atmin/usercontroller.php"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
                             Managing Page</a>
-                        <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+                        <a href="../atmin/admincat.php"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
                             Managing Page</a>
                     <?php } ?>
                     <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                         Dashboard</a>
                     <a href="../public/wishlist.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                    <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                    <a href="../public/orderlist.php"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                         List</a>
-                    <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                    <a href="../public/logout.php"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>
@@ -139,13 +147,8 @@ $row = mysqli_fetch_assoc($result);
         <div id="profile-edit" class="hidden flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-6">
             <!-- Profile Picture Section -->
             <div class="flex flex-col items-center mb-6 md:mb-0 ml-3 mr-6">
-                <img src="./photo/<?php echo $row['fotouser']; ?>" alt="Profile" id="profilePic"
+                <img src="./photo/<?php echo $row['fotouser']; ?>" alt="Profile"
                     class="w-40 h-40 rounded-full object-cover mb-4 shadow-md">
-                <input type="file" id="fileInput" accept="image/*" class="hidden">
-                <button id="changePicBtn" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-400">Change
-                    Picture</button>
-                <button id="uploadPicBtn"
-                    class="mt-2 px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-400 hidden">Upload</button>
             </div>
             <!-- Editable Profile Details Section -->
             <div class="flex-grow bg-[#FAF3E0] p-6 rounded-lg">
@@ -272,6 +275,27 @@ $row = mysqli_fetch_assoc($result);
             profileView.classList.remove('hidden');
         });
 
+        const profilePic = document.getElementById('profilePic');
+        const fileInput = document.getElementById('fileInput');
+        const changePicBtn = document.getElementById('changePicBtn');
+
+        // Open file input when the button is clicked
+        changePicBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Preview the selected image
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.src = e.target.result; // Update the image preview
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         function updateprofile() {
             const username = document.getElementById('username').value;
             const fullName = document.getElementById('fullname').value;
@@ -289,8 +313,8 @@ $row = mysqli_fetch_assoc($result);
                 gender: gender,
                 phone: phone,
                 address: address,
-                currentPassword: currentPassword ?? "<?php echo $row['Password']; ?>",
-                newPassword: newPassword ?? "<?php echo $row['Password']; ?>"
+                currentPassword: currentPassword,
+                newPassword: newPassword
             };
 
             fetch('../public/update_profile.php', {
@@ -318,57 +342,8 @@ $row = mysqli_fetch_assoc($result);
                     console.error('There was a problem with the fetch operation:', error);
                     alert('An unexpected error occurred. Please try again later.');
                 });
+
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const profilePic = document.getElementById('profilePic');
-            const fileInput = document.getElementById('fileInput');
-            const changePicBtn = document.getElementById('changePicBtn');
-            const uploadPicBtn = document.getElementById('uploadPicBtn');
-
-            // Open file input when the button is clicked
-            changePicBtn.addEventListener('click', () => {
-                fileInput.click();
-            });
-
-            // Preview the selected image
-            fileInput.addEventListener('change', () => {
-                const file = fileInput.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        profilePic.src = e.target.result; // Update the image preview
-                        uploadPicBtn.classList.remove('hidden'); // Show the upload button
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Handle the image upload
-            uploadPicBtn.addEventListener('click', () => {
-                const formData = new FormData();
-                formData.append('profile_pic', fileInput.files[0]);
-
-                fetch('../public/upload_photo.php', {
-                    method: 'POST',
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            alert('Profile picture updated successfully!');
-                            uploadPicBtn.classList.add('hidden'); // Hide the upload button
-                        } else {
-                            alert('Error uploading profile picture: ' + data.message);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error uploading image:', error);
-                        alert('An unexpected error occurred. Please try again later.');
-                    });
-            });
-        });
-
 
 
     </script>
