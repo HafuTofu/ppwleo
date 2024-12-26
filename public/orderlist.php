@@ -293,7 +293,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
               if (rating && rating >= 1 && rating <= 5) {
                 const komentar = prompt('Leave a comment (optional):') || '';
 
-                fetch('.../public/rate_order.php', {
+                fetch('../public/rate_order.php', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',

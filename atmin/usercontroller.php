@@ -94,15 +94,18 @@ $resU = $conn->query($userQ);
                         ?>
                         <!-- Row 1 -->
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="px-6 py-3 font-bold text-center"><?php echo $rowU['Username'] ;?></td>
-                            <td class="px-6 py-3 font-bold text-center"><?php echo $rowU['address'] ;?></td>
-                            <td class="px-6 py-3 font-bold text-center"><?php echo htmlspecialchars($rowU['Email']) ;?></td>
-                            <td class="px-6 py-3 font-bold text-center"><?php echo htmlspecialchars($rowU['phone']) ;?></td>
+                            <td class="px-6 py-3 font-bold text-center"><?php echo $rowU['Username']; ?></td>
+                            <td class="px-6 py-3 font-bold text-center"><?php echo $rowU['address']; ?></td>
+                            <td class="px-6 py-3 font-bold text-center"><?php echo htmlspecialchars($rowU['Email']); ?></td>
+                            <td class="px-6 py-3 font-bold text-center"><?php echo htmlspecialchars($rowU['phone']); ?></td>
                             <td class="px-6 py-3 space-x-2 font-bold text-center">
                                 <div class="flex justify-center space-x-2">
                                     <button onclick="toggleButton(this)"
-                                        class="flex items-center justify-center w-32 h-10 space-x-2 text-xs font-bold text-teal-700 bg-teal-200 rounded-lg toggle-btn hover:bg-teal-300">
-                                        <i class="fa-solid fa-unlock"></i> <span>Unban</span>
+                                        class="flex items-center justify-center w-32 h-10 space-x-2 text-xs font-bold <?php echo $rowU['status'] === 'active' ? 'text-white bg-red-500 hover:bg-red-600' : 'text-teal-700 bg-teal-200 hover:bg-teal-300'; ?> rounded-lg toggle-btn"
+                                        id="banButton" data-username="<?php echo $rowU['Username']; ?>">
+                                        <i
+                                            class="fa-solid <?php echo $rowU['status'] == 'active' ? 'fa-unlock' : 'fa-lock'; ?>"></i>
+                                        <span><?php echo $rowU['status'] == 'active' ? 'Ban' : 'Unban'; ?></span>
                                     </button>
 
                                     <button onclick="editRow(this)"
@@ -114,7 +117,7 @@ $resU = $conn->query($userQ);
                         </tr>
                         <!-- batas bawah -->
                     <?php } ?>
-                    
+
                 </tbody>
             </table>
         </div>
@@ -122,21 +125,9 @@ $resU = $conn->query($userQ);
 
     <!-- JavaScript -->
     <script>
-        function toggleButton(button) {
-            if (button.innerText.includes("Unban")) {
-                button.innerHTML = `<i class="mr-2 fa-solid fa-lock"></i> Ban`;
-                button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
-                button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
-            } else {
-                button.innerHTML = `<i class="mr-2 fa-solid fa-unlock"></i> Unban`;
-                button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
-                button.classList.add("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
-            }
-        }
-
         function editRow(button) {
-            const row = button.closest('tr'); 
-            const cells = row.querySelectorAll('td'); 
+            const row = button.closest('tr');
+            const cells = row.querySelectorAll('td');
 
             cells.forEach((cell, index) => {
                 if (index < 4) {
@@ -151,19 +142,72 @@ $resU = $conn->query($userQ);
             button.onclick = () => saveRow(button);
         }
 
+        function toggleButton(button) {
+            const row = button.closest('tr');
+            const username = row.querySelector('td:nth-child(1)').innerText.trim();
+            const currentAction = button.querySelector('span').innerText.trim();
+
+            // Determine the action based on the button text
+            const newAction = currentAction === 'Ban' ? 'blocked' : 'active';
+
+            fetch('update_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, action: newAction }) // Send the new status directly
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the button UI
+                        if (newAction === 'blocked') {
+                            button.innerHTML = `<i class="mr-2 fa-solid fa-lock"></i> Unban`;
+                            button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
+                            button.classList.add("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
+                        } else {
+                            button.innerHTML = `<i class="mr-2 fa-solid fa-unlock"></i> Ban`;
+                            button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
+                            button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
+                        }
+                        alert(data.message); // Notify the user of the successful update
+                    } else {
+                        alert('Failed to update status: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
         function saveRow(button) {
             const row = button.closest('tr');
-            const inputs = row.querySelectorAll('input'); 
+            const inputs = row.querySelectorAll('input');
 
-            inputs.forEach(input => {
-                const newValue = input.value;
-                input.parentElement.innerText = newValue;
-            });
+            const data = {
+                Username: inputs[0].value.trim(),
+                address: inputs[1].value.trim(),
+                Email: inputs[2].value.trim(),
+                phone: inputs[3].value.trim(),
+            };
 
-            button.innerHTML = `<i class="mr-2 fa-solid fa-pen"></i> Edit`;
-            button.classList.remove("bg-green-500", "hover:bg-green-600");
-            button.classList.add("bg-blue-500", "hover:bg-blue-600");
-            button.onclick = () => editRow(button);
+            fetch('update_user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        inputs.forEach(input => {
+                            input.parentElement.innerText = input.value.trim();
+                        });
+
+                        button.innerHTML = `<i class="mr-2 fa-solid fa-pen"></i> Edit`;
+                        button.classList.remove("bg-green-500", "hover:bg-green-600");
+                        button.classList.add("bg-blue-500", "hover:bg-blue-600");
+                        button.onclick = () => editRow(button);
+                    } else {
+                        alert('Failed to save changes: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
