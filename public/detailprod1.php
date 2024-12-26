@@ -10,6 +10,7 @@ $stmt->bind_param("i", $idprod);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
+$price = $row['ID_discount'] > 0 ? $row['discountprice'] : $row['harga'];
 ?>
 
 <!DOCTYPE html>
@@ -94,7 +95,7 @@ $row = $result->fetch_assoc();
 
         <div>
           <p class="text-lg font-semibold text-green-600 mt-2">Rp.
-            <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+            <?php echo number_format($price, 0, ',', '.'); ?>
           </p>
           <p class="mt-4 text-gray-700 leading-relaxed">
             <?php echo $row['deskripsi']; ?>

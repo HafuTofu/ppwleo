@@ -209,6 +209,27 @@ $resU = $conn->query($userQ);
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const profileIcon = document.getElementById('profileIcon');
+
+            profileIcon.addEventListener('mouseenter', () => {
+                dropdownMenu.classList.remove('hidden');
+            });
+
+            profileIcon.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!dropdownMenu.matches(':hover')) {
+                        dropdownMenu.classList.add('hidden');
+                    }
+                }, 100);
+            });
+
+            dropdownMenu.addEventListener('mouseleave', () => {
+                dropdownMenu.classList.add('hidden');
+            });
+        });
     </script>
 </body>
 

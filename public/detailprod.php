@@ -4,7 +4,7 @@ if (!isset($_GET['idprod'])) {
   header('Location: dashboard.php');
 }
 $idprod = $_GET['idprod'];
-$query = "SELECT * FROM produk WHERE ID_produk = ? ";
+$query = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE ID_produk = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $idprod);
 $stmt->execute();
@@ -18,6 +18,7 @@ $stmtwl->bind_param("ii", $iduser, $idprod);
 $stmtwl->execute();
 $resultwl = $stmtwl->get_result();
 $inwl = $resultwl->num_rows > 0;
+$price = $row['ID_discount'] > 0 ? $row['discountprice'] : $row['harga'];
 ?>
 
 <!DOCTYPE html>
@@ -129,7 +130,7 @@ $inwl = $resultwl->num_rows > 0;
 
         <div>
           <p class="text-lg font-semibold text-green-600 mt-2">Rp.
-            <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+            <?php echo number_format( $price, 0, ',', '.'); ?>
           </p>
           <p class="mt-4 text-gray-700 leading-relaxed">
             <?php echo $row['deskripsi']; ?>

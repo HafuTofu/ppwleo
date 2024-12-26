@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         while ($row = $stmtsearch->fetch_assoc()) {
             $idprod = $row['ID_produk'];
             $qty = $row['qty'];
-            $stmtup = $conn->prepare("UPDATE produk SET stok = stok + ? WHERE ID_produk = ?");
-            $stmtup->bind_param("ii", $qty, $idprod);
+            $stmtup = $conn->prepare("UPDATE produk SET stok = stok + ?, terjual = terjual - ? WHERE ID_produk = ?");
+            $stmtup->bind_param("iii", $qty, $qty, $idprod);
             $stmtup->execute();
         }
         if ($stmt->execute()) {

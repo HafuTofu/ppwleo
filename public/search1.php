@@ -1,6 +1,6 @@
 <?php
 include '../connect.php';
-$query = "SELECT * FROM produk NATURAL JOIN kategori";
+$query = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE statusproduk = 'available'";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 ?>
 
@@ -26,14 +26,13 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
             <form action="" class="flex items-center w-full">
                 <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
                     echo $_GET['search'];
-                } ?>"
-                    placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
+                } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
                 <button type="submit" class="p-2"><img src="./photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
-            <?php if (isset($_GET['search'])){
+            <?php if (isset($_GET['search'])) {
                 $filtervalues = $_GET['search'];
-                $query = "SELECT * FROM produk NATURAL JOIN kategori WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+                $query = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
             } ?>
         </div>
 
@@ -49,12 +48,14 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <div class="flex justify-center my-4 space-x-4" id="category-buttons">
         <button class="px-6 py-2 text-white bg-gray-400 rounded-lg category-button" data-category="all">All</button>
         <?php
-        $categoriesResult = $conn->query("SELECT * FROM kategori");
+        $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
         $categories = [];
+        $idx = 0;
         while ($categoryRow = $categoriesResult->fetch_assoc()) {
             $categories[] = $categoryRow['nama_kategori'];
             $categoryName = $categoryRow['nama_kategori'];
-            $categoryColor = $pallete[(($categoryRow['ID_kategori'] -1) % 4)];
+            $categoryColor = $pallete[($idx % 4)];
+            $idx++;
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
         ?>
@@ -76,11 +77,13 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <!-- Product Grid -->
     <div class="grid grid-cols-1 gap-6 px-10 py-8 md:grid-cols-2 lg:grid-cols-4">
 
-        <?php $result = $conn->query($query); $row = $result->fetch_assoc();
+        <?php $result = $conn->query($query);
+        $row = $result->fetch_assoc();
         while ($row != null) {
-            $palnum = ($row['ID_kategori'] - 1) % 4; ?>
+            $palnum = $row['ID_kategori'] - 1 % 4; ?>
             <!-- Product Card 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer" onclick="window.location.href = 'detailprod1.php?idprod=<?php echo $row['ID_produk']; ?>';"
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
+                onclick="window.location.href = 'detailprod1.php?idprod=<?php echo $row['ID_produk']; ?>';"
                 data-category="<?php echo $row["nama_kategori"]; ?>">
                 <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48">
                 <div class="p-4">
@@ -88,10 +91,12 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                         class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full"><?php echo $row["nama_kategori"]; ?></span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
                     <p class="text-sm font-semibold text-gray-600">Rp.
-                        <?php echo number_format($row['harga'], 2, ',', '.'); ?></p>
+                        <?php echo number_format($row['harga'], 2, ',', '.'); ?>
+                    </p>
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
-                <a href="login.php" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+                <a href="login.php" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add
+                    to Cart</a>
             </div>
             <?php $row = $result->fetch_assoc();
         } ?>
