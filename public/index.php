@@ -54,7 +54,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="dashboard1.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+        <a href="index.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
         <!-- Search Bar -->
         <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
@@ -108,7 +108,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                 <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
                     data-category="<?php echo $rowNew["nama_kategori"]; ?>">
                     <img src="./products/<?php echo $rowNew["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
-                        onclick="window.location.href = 'detailprod.php?idprod=<?php echo $rowNew['ID_produk']; ?>';">
+                        onclick="window.location.href = 'detailprod1.php?idprod=<?php echo $rowNew['ID_produk']; ?>';">
                     <div class="p-4">
                         <span
                             class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full">

@@ -87,7 +87,7 @@ $stmtTSP = $conn->query($topSPQ);
       <i class="fas fa-money-bill-wave text-3xl"></i>
       <div>
         <p class="text-sm">Total Revenue</p>
-        <p class="text-xl font-bold">Rp. <?php echo number_format($totalR['totalrev'], 0, ',', '.'); ?></p>
+        <p class="text-xl font-bold">Rp. <?php echo $totalR['totalrev'] > 0 ? number_format($totalR['totalrev'], 0, ',', '.') : 0; ?></p>
       </div>
     </div>
     <div class="bg-white p-6 rounded-lg shadow flex items-center space-x-4">

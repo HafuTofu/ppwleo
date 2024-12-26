@@ -114,7 +114,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
   $prodid = $_POST['hapus'];
   $queryhapus = "DELETE FROM produk WHERE ID_produk = $prodid";
   mysqli_query($conn, $queryhapus);
-  echo "<meta http-equiv='refresh' content='1; url=adminew.php'>";
+  echo "<meta http-equiv='refresh' content='1; url=admindash.php'>";
 }
 ?>
 

@@ -166,13 +166,14 @@ if (!empty($_POST)) {
     <!-- New Arrivals Section -->
     <div class="px-10 my-6">
         <h2 class="text-4xl font-bold text-left mb-6">New Arrivals</h2>
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+           >
             <?php $queryNew = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE statusproduk = 'available' ORDER BY ID_produk DESC LIMIT 4";
             $stmtNew = $conn->query($queryNew);
             while ($rowNew = $stmtNew->fetch_assoc()) {
                 $palnum = ($rowNew['ID_kategori'] - 1) % 4; ?>
                 <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
-                    data-category="All">
+                data-category="<?php echo $rowNew['nama_kategori']; ?>">
                     <img src="./products/<?php echo $rowNew["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
                         onclick="window.location.href = 'detailprod.php?idprod=<?php echo $rowNew['ID_produk']; ?>';">
                     <div class="p-4">
@@ -363,7 +364,7 @@ if (!empty($_POST)) {
 
                 const track = document.querySelector('.carousel-track');
                 const slides = document.querySelectorAll('.carousel-slide');
-                let index = 1; 
+                let index = 1;
                 const slideWidth = slides[0].clientWidth;
 
                 function moveCarousel() {

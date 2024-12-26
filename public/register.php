@@ -12,13 +12,14 @@
     $error = '';
     if(!empty($_POST)){
         $username = $_POST['username'];
-        $email = $_POST['email'];
+        $email = htmlspecialchars($_POST['email']);
         $password = $_POST['password'];
         $passwordcheck = $_POST['passwordcheck'];
         $gender = $_POST['gender'];
         $filename = '';
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $row = mysqli_fetch_assoc(qsearch('userdata', 'email',$email,$conn));
+        $queryreg = $conn->query("SELECT * FROM userdata WHERE Email = '{$email}'");
+        $row = $queryreg->fetch_assoc();
         try{
             if($row!=null){
                 throw new Exception('Username atau Email telah digunakan.');

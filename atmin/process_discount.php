@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtDel = $conn->prepare($deleteQuery);
         $stmtDel->bind_param("i", $iddisc);
         $stmtDel->execute();
-        header("Location: ../discount.php"); 
+        header("Location: ./discount.php"); 
         exit();
     }
 

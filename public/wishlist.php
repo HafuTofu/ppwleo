@@ -65,10 +65,10 @@ $resultCategories = $conn->query($queryCategories);
                     <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
                     Managing Page</a>
                 <?php } ?>
-                <a href="../publin/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                <a href="../publin/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                     User Dashboard</a>
-                <a href="../publin/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     List</a>
                 <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>

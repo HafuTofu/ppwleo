@@ -1,7 +1,7 @@
 <?php
 include "../connect.php";
 if (!isset($_GET['idprod'])) {
-  header('Location: dashboard1.php');
+  header('Location: index.php');
 }
 $idprod = $_GET['idprod'];
 $query = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE ID_produk = ? ";
@@ -49,7 +49,7 @@ $stmtRQ = $conn->query($ratingQ);
 <body class="font-sans bg-yellow-50">
   <!-- Navbar -->
   <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-    <a href="dashboard1.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+    <a href="index.php"><img src="./photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
     <!-- apalah -->
     <!-- Search Bar -->
