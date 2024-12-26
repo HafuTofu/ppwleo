@@ -94,10 +94,11 @@ if (!empty($_POST)) {
 <body class="flex items-center justify-center min-h-screen bg-[#fdf3e4]">
     <?php
     require_once '../vendor/autoload.php';
+    require_once '../config.php';
 
     // init configuration
-    $clientID = '179112429877-t7qjpub0jitoc496kq2bnl7jqsb2uq8r.apps.googleusercontent.com';
-    $clientSecret = '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';
+    $clientID = CLIENTID;
+    $clientSecret = CLIENTSECRET;
     $redirectUri = 'http://localhost/ppwleo/public/login.php';
 
     // create Client Request to access Google API
