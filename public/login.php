@@ -1,6 +1,6 @@
 <?php
     include '../connect.php';
-    include "../functions.php";
+    include "./functions.php";
 
     if(!isset($_SESSION['login'])){
         $_SESSION['login'] = 'false';

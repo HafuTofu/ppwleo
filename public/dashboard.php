@@ -393,20 +393,39 @@ if (!empty($_POST)) {
                 });
             });
 
-            // Carousel Script
             document.addEventListener('DOMContentLoaded', function () {
                 const track = document.querySelector('.carousel-track');
                 const slides = document.querySelectorAll('.carousel-slide');
-                let index = 0;
+                const slideCount = slides.length;
+                let index = 1; // Start at the first real slide
+                const slideWidth = slides[0].clientWidth;
+
+                // Set initial position
+                track.style.transform = `translateX(-${index * slideWidth}px)`;
 
                 function moveCarousel() {
-                    index = (index + 1) % slides.length;
-                    track.style.transform = `translateX(-${index * 100}%)`;
+                    index++;
+
+                    // Move to the next slide with transition
+                    track.style.transition = 'transform 0.5s ease-in-out';
+                    track.style.transform = `translateX(-${index * slideWidth}px)`;
+
+                    // Reset position without transition for infinite loop effect
+                    setTimeout(() => {
+                        if (index === slideCount - 1) { // Last duplicate slide
+                            track.style.transition = 'none'; // Disable transition
+                            index = 1; // Jump to the first real slide
+                            track.style.transform = `translateX(-${index * slideWidth}px)`;
+                        } else if (index === 0) { // First duplicate slide
+                            track.style.transition = 'none'; // Disable transition
+                            index = slideCount - 2; // Jump to the last real slide
+                            track.style.transform = `translateX(-${index * slideWidth}px)`;
+                        }
+                    }, 500); // Match the transition time
                 }
 
                 setInterval(moveCarousel, 4000);
             });
         </script>
 </body>
-
 </html>
