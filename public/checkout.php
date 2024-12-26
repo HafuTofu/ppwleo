@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtUpdateStock->bind_param('iii', $rowc['qty'], $rowc['qty'], $rowc['ID_produk']);
         $stmtUpdateStock->execute();
 
-        $stmtStockCheck = $conn->prepare('UPDATE produk SET statusproduk = "unavailable" WHERE stok = 0, ID_produk =  ?');
+        $stmtStockCheck = $conn->prepare('UPDATE produk SET statusproduk = "unavailable" WHERE stok = 0 AND ID_produk =  ?');
         $stmtStockCheck->bind_param('i', $rowc['ID_produk']);
         $stmtStockCheck->execute();
       }
 
-      header('Location: public/view/orderlist.php');
+      header('Location: ../public/orderlist.php');
       exit;
     } else {
       die('Transaction error: ' . $stmttransaction->error);

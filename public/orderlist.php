@@ -62,24 +62,24 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
           <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-            <a href=".../atmin/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+            <a href="../atmin/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
               Admin Dashboard</a>
-            <a href=".../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+            <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
               Managing Page</a>
-            <a href=".../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+            <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
               Managing Page</a>
-            <a href=".../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+            <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
               Managing Page</a>
-            <a href=".../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+            <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
               Managing Page</a>
-            <a href=".../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+            <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
               Managing Page</a>
           <?php } ?>
-          <a href=".../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-          <a href=".../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+          <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+          <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
             Dashboard</a>
-          <a href=".../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-          <a href=".../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+          <a href="../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+          <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
         </div>
       </div>
     </div>
@@ -262,7 +262,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
             // Cancel Button Click
             cancelBtn.addEventListener('click', () => {
               if (confirm('Are you sure you want to cancel this order?')) {
-                fetch('.../public/cancel_order.php', {
+                fetch('../public/cancel_order.php', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -293,7 +293,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
               if (rating && rating >= 1 && rating <= 5) {
                 const komentar = prompt('Leave a comment (optional):') || '';
 
-                fetch('.../public/rate_order.php', {
+                fetch('../public/rate_order.php', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
