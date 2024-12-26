@@ -3,12 +3,12 @@ require "../public/sess.php";
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
     session_destroy();
-    header('Location: .../public/login.php');
+    header('Location: ../public/login.php');
 }
 
 if ($_SESSION['login'] === 'trueguess') {
     session_destroy();
-    header('Location: .../public/dashboard.php');
+    header('Location: ../public/dashboard.php');
 }
 
 $query = "SELECT * FROM kategori";
@@ -54,9 +54,9 @@ if (!empty($_POST['insert'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Kategori</title>
-    <link rel="icon" href=".../public/photo/ciG.png">
+    <link rel="icon" href="../public/photo/ciG.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href=".../public/css/style7.css">
+    <link rel="stylesheet" href="../public/css/style7.css">
     <style>
         .register-box {
             position: relative;
@@ -138,8 +138,8 @@ if (!empty($_POST['insert'])) {
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="atmindashboard.html">
-            <img src=".../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
+        <a href="atmindashboard.php">
+            <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
         </a>
 
         <!-- Search Bar -->
@@ -148,7 +148,7 @@ if (!empty($_POST['insert'])) {
                 <input type="text" name="search" value="<?php if (isset($_GET['search'])) {
                     echo $_GET['search'];
                 } ?>" placeholder="Search" class="w-full text-lg text-center bg-transparent outline-none">
-                <button type="submit" class="p-2"><img src=".../public/photo/search.png" width="20" height="20"
+                <button type="submit" class="p-2"><img src="../public/photo/search.png" width="20" height="20"
                         alt="Search"></button>
             </form>
             <?php if (isset($_GET['search'])) {
@@ -159,26 +159,26 @@ if (!empty($_POST['insert'])) {
 
         <!-- User and Dropdown Menu -->
         <div class="relative">
-            <img src=".../public/photouser/<?php $_SESSION['fotouser']; ?>"
+            <img src="../public/photouser/<?php echo $_SESSION['fotouser']; ?>"
                 class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
             <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-                <a href=".../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
-                    Admin Dashboard</a>
-                <a href=".../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+                <a href="../atmin/atmindashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin
+                    Dashboard</a>
+                <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
                     Managing Page</a>
-                <a href=".../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+                <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
                     Managing Page</a>
-                <a href=".../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     Managing Page</a>
-                <a href=".../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+                <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
                     Managing Page</a>
-                <a href=".../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                     User Dashboard</a>
-                <a href=".../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                <a href=".../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                <a href="../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     List</a>
-                <a href=".../public/controller/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
             </div>
         </div>
     </div>

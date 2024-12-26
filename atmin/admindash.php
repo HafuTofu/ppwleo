@@ -1,14 +1,15 @@
 <?php
-require "../public/sess.php";
+require $_SERVER['DOCUMENT_ROOT'] . '/ppwleo/public/sess.php';
+
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
   session_destroy();
-  header('Location: ../public/login.php');
+  header("Location: { __DIR__ . '/../public/login.php'}");
 }
 
 if ($_SESSION['login'] === 'trueguess') {
   session_destroy();
-  header('Location: dashboard.php');
+  header("Location: {$_SERVER['DOCUMENT_ROOT']}dashboard.php");
 }
 
 $query = "SELECT * FROM (produk NATURAL JOIN kategori)";
@@ -209,7 +210,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
     <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
-        <a href="atmindashboard.html">
+        <a href="atmindashboard.php">
             <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
         </a>
 
@@ -234,23 +235,23 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
                 id="profileIcon">
             <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-            <a href=".../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
-                    Admin Dashboard</a>
-                <a href=".../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+                <a href="../atmin/atmindashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin
+                    Dashboard</a>
+                <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
                     Managing Page</a>
-                <a href=".../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
                     Managing Page</a>
-                <a href=".../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+                <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     Managing Page</a>
-                <a href=".../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+                <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
                     Managing Page</a>
-                <a href=".../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                     User Dashboard</a>
-                <a href=".../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                <a href=".../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                <a href="../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     List</a>
-                <a href=".../public/controller/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
             </div>
         </div>
     </header>
@@ -461,7 +462,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
                     buttonText.textContent = 'UNAVAILABLE';
                 }
 
-                fetch('.../atmin/controller/update_status.php', {
+                fetch('../atmin/update_status.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

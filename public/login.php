@@ -20,8 +20,8 @@
         $password = $_POST['password'];
         $captchaguess = $_POST['captchaguess'];
         $captchacheck = $_POST['captchacheck'];
-        $result1 = qsearch('userdata','email',$logses,$conn);
-        $result2 = qsearch('userdata','Username',$logses,$conn);
+        $result1 = $conn->query("SELECT * FROM userdata WHERE Email = '$logses' AND status = 'active'");
+        $result2 = $conn->query("SELECT * FROM userdata WHERE Username = '$logses' AND status = 'active'");
         
         if(!$result1 || !$result2){
             die("Connection failed: " . mysqli_connect_error());

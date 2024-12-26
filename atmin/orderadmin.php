@@ -34,7 +34,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
 <body class="font-sans bg-yellow-50">
   <!-- Navbar -->
   <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200 z-50">
-    <a href="./admindash.php"><img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
+    <a href="./atmindashboard.php"><img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10"></a>
 
     <!-- Search Bar -->
     <div class="relative flex items-center w-3/4 max-w-xl p-2 mx-auto bg-gray-100 rounded-full">
@@ -58,23 +58,23 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
           class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
-          <a href=".../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
-            Admin Dashboard</a>
-          <a href=".../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
-            Managing Page</a>
-          <a href=".../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
-            Managing Page</a>
-          <a href=".../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
-            Managing Page</a>
-          <a href=".../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
-            Managing Page</a>
-          <a href=".../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-          <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
-            User Dashboard</a>
-          <a href=".../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-          <a href=".../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
-            List</a>
-          <a href=".../public/controller/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+        <a href="../atmin/atmindashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin
+                    Dashboard</a>
+                <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+                    Managing Page</a>
+                <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+                    Managing Page</a>
+                <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+                    Managing Page</a>
+                <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+                    Managing Page</a>
+                <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                    User Dashboard</a>
+                <a href="../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+                <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                    List</a>
+                <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
         </div>
       </div>
     </div>
@@ -280,7 +280,7 @@ $shippingest = ["ekonomi" => "+5 days", "regular" => "+3 days", "express" => "+2
               const newStatus = statusDropdown.value;
 
               // Send AJAX request to update status
-              fetch('.../atmin/controller/update_status.php', {
+              fetch('../atmin/update_status.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ order_id: orderId, status: newStatus })

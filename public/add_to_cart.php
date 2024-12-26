@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '.../connect.php'; 
+include $_SERVER['DOCUMENT_ROOT'] . '/ppwleo/connect.php'; 
 
 header('Content-Type: application/json');
 

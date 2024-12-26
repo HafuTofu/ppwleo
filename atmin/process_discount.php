@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtDel = $conn->prepare($deleteQuery);
         $stmtDel->bind_param("i", $iddisc);
         $stmtDel->execute();
-        header("Location: ../view/discount.php"); 
+        header("Location: ../discount.php"); 
         exit();
     }
 
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateStmt->execute();
             } 
         }
-        header("Location: ../view/discount.php"); 
+        header("Location: ../discount.php"); 
         exit();
     } else {
         echo "Invalid input. Please try again.";

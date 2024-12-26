@@ -103,7 +103,7 @@ while ($row = $result->fetch_assoc()) {
 <body class="bg-yellow-50 font-sans">
   <!-- Navbar -->
   <header class="bg-yellow-200 sticky top-0 flex justify-between items-center p-4">
-    <a href="atmindashboard.html">
+    <a href="atmindashboard.php">
       <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
     </a>
 
@@ -126,24 +126,24 @@ while ($row = $result->fetch_assoc()) {
     <div class="relative">
       <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
         id="profileIcon">
-      <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
-        <a href=".../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
-          Admin Dashboard</a>
-        <a href=".../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+      <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
+        <a href="../atmin/atmindashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin
+          Dashboard</a>
+        <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
           Managing Page</a>
-        <a href=".../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+        <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
           Managing Page</a>
-        <a href=".../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+        <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
           Managing Page</a>
-        <a href=".../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+        <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
           Managing Page</a>
-        <a href=".../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-        <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+        <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+        <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
           User Dashboard</a>
-        <a href=".../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-        <a href=".../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+        <a href="../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+        <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
           List</a>
-        <a href=".../public/controller/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+        <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
       </div>
     </div>
   </header>
@@ -166,7 +166,7 @@ while ($row = $result->fetch_assoc()) {
   <div class="modal" id="addCatModal">
     <div class="discount-box">
       <h2 id="modalTitle">Add Discount</h2>
-      <form id="addCatForm" action=".../atmin/controller/process_discount.php" method="POST">
+      <form id="addCatForm" action="../atmin/process_discount.php" method="POST">
         <select id="idproduk" name="idproduk" required>
           <option value="" disabled selected>Choose Products Name</option>
           <?php for ($i = 0; $i < count($productsname); $i++) { ?>
@@ -184,7 +184,7 @@ while ($row = $result->fetch_assoc()) {
   <div class="modal" id="editCatModal">
     <div class="discount-box">
       <h2 id="modalTitle">Edit Discount</h2>
-      <form id="addCatForm" action=".../atmin/controller/process_discount.php" method="POST">
+      <form id="addCatForm" action="../atmin/process_discount.php" method="POST">
         <select id="idproduk" name="idproduk" required>
           <option value="" id="autoselect" selected>Choose Products Name</option>
         </select>
@@ -241,7 +241,7 @@ while ($row = $result->fetch_assoc()) {
             <i class="fas fa-edit mr-2"></i> Edit
           </button>
           <form class="bg-red-500 text-white rounded-lg hover:bg-red-600 mt-2" method="POST"
-            action=".../atmin/controller/process_discount.php">
+            action="../atmin/process_discount.php">
             <input type="hidden" name="hapus" value="<?php echo $rqd['ID_discount']; ?>">
             <input type="hidden" name="idproduk" value="<?php echo $rqd['ID_produk']; ?>">
             <button type="submit" class="py-1 px-4 rounded-lg">

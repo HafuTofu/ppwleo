@@ -14,7 +14,7 @@
   <!-- Navbar -->
   <div class="bg-yellow-200 sticky top-0 flex justify-between items-center p-4">
     <a href="admindash.php">
-      <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
+      <img src="../public/photo/" alt="ciGCentral" class="w-32 h-20 ml-10">
     </a>
 
     <!-- Search Bar -->
@@ -179,30 +179,25 @@
     </div>
   </div>
 
-  <!-- Dropdown Menu Script -->
   <script>
-    // Profile Dropdown Menu
     document.addEventListener('DOMContentLoaded', function () {
       const profileIcon = document.getElementById('profileIcon');
       const dropdownMenu = document.getElementById('dropdownMenu');
 
-      // Toggle dropdown visibility when mouse enters the profile icon
       profileIcon.addEventListener('mouseenter', function () {
-        dropdownMenu.classList.remove('hidden'); // Show dropdown
+        dropdownMenu.classList.remove('hidden');
       });
 
-      // Hide dropdown when mouse leaves the profile icon or the dropdown menu
       profileIcon.addEventListener('mouseleave', function () {
         setTimeout(() => {
           if (!dropdownMenu.matches(':hover')) {
-            dropdownMenu.classList.add('hidden'); // Hide dropdown
+            dropdownMenu.classList.add('hidden');
           }
-        }, 100); // Small delay to allow mouse to hover over dropdown menu
+        }, 100);
       });
 
-      // Hide dropdown when mouse leaves the dropdown menu
       dropdownMenu.addEventListener('mouseleave', function () {
-        dropdownMenu.classList.add('hidden'); // Hide dropdown
+        dropdownMenu.classList.add('hidden'); 
       });
     });
   </script>
