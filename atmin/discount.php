@@ -1,6 +1,14 @@
 <?php
 include "../connect.php";
-$qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN kategori) AS sub";
+$qd = "SELECT * FROM (produk NATURAL JOIN discounts NATURAL JOIN kategori)";
+$qp = "SELECT * FROM produk WHERE ID_discount = 0 ";
+$productsname = [];
+$productsid = [];
+$result = $conn->query($qp);
+while ($row = $result->fetch_assoc()) {
+  $productsname[] = $row['nama'];
+  $productsid[] = $row['ID_produk'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,11 +21,88 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
   <link rel="icon" href="../public/photo/ciG.png">
   <link rel="stylesheet" href="../public/css/style6.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .discount-box {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      padding: 2rem;
+      background-color: rgba(236, 218, 183, 1);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      text-align: center;
+    }
+
+    .discount-box form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .discount-box h2 {
+      font-size: 1.5rem;
+      color: black;
+      margin-bottom: 1rem;
+    }
+
+    .discount-box label {
+      display: block;
+      font-size: 14.4px;
+      color: black;
+      text-align: left;
+      margin-bottom: 0.5rem;
+    }
+
+    .discount-box input[type="text"],
+    .discount-box input[type="number"],
+    .discount-box select,
+    .discount-box textarea {
+      margin-bottom: 1rem;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #a94b4b;
+      border-radius: 5px;
+      background-color: rgba(80, 7, 18, 0.5);
+      font-size: 14.4px;
+      color: white;
+    }
+
+    .discount-box button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #a94b4b;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .discount-box button:hover {
+      background-color: rgba(80, 7, 18, 0.5);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+  </style>
 </head>
 
 <body class="bg-yellow-50 font-sans">
   <!-- Navbar -->
-  <div class="bg-yellow-200 sticky top-0 flex justify-between items-center p-4">
+  <header class="bg-yellow-200 sticky top-0 flex justify-between items-center p-4">
     <a href="atmindashboard.html">
       <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
     </a>
@@ -33,7 +118,7 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
       </form>
       <?php if (isset($_GET['search'])) {
         $filtervalues = $_GET['search'];
-        $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN kategori) WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
+        $qd = "SELECT * FROM (discounts NATURAL JOIN produk NATURAL JOIN kategori) WHERE CONCAT(nama, nama_kategori, deskripsi) LIKE '%$filtervalues%' ";
       } ?>
     </div>
 
@@ -42,7 +127,7 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
       <img src="../public/photo/pfp.png" class="w-12 h-12 mr-12 rounded-full cursor-pointer" alt="User profile"
         id="profileIcon">
       <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
-      <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+        <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
         <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User Dashboard</a>
         <a href="atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Admin Dashboard</a>
         <a href="admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Add Product Page</a>
@@ -52,7 +137,7 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
         <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Title and Action Buttons (Add Discount and Edit) -->
   <div class="flex justify-between items-center mx-16 mt-8 mb-4">
@@ -61,9 +146,45 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
 
     <!-- Action Buttons -->
     <div class="flex space-x-4">
-      <button class="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 flex items-center">
+      <button
+        class="addDiscountButton bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 flex items-center">
         <i class="fas fa-plus mr-2"></i> Add Discount
       </button>
+    </div>
+  </div>
+
+  <!-- add/edit product -->
+  <div class="modal" id="addCatModal">
+    <div class="discount-box">
+      <h2 id="modalTitle">Add Discount</h2>
+      <form id="addCatForm" action="process_discount.php" method="POST">
+        <select id="idproduk" name="idproduk" required>
+          <option value="" disabled selected>Choose Products Name</option>
+          <?php for ($i = 0; $i < count($productsname); $i++) { ?>
+            <option value="<?php echo $productsid[$i]; ?>"><?php echo $productsname[$i]; ?></option>
+          <?php } ?>
+        </select>
+        <label for="disc">Discount Amount:</label>
+        <input type="number" id="disc" name="disc" min="1" max="99" required>
+        <button type="submit" id="modalBtn">Add</button>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal" id="editCatModal">
+    <div class="discount-box">
+      <h2 id="modalTitle">Edit Discount</h2>
+      <form id="addCatForm" action="process_discount.php" method="POST">
+        <select id="idproduk" name="idproduk" required>
+          <option value="" id="autoselect" selected>Choose Products Name</option>
+        </select>
+        <label for="disc">Discount Amount:</label>
+        <input type="number" id="disc" name="disc" min="1" max="99" required>
+        <input type="hidden" id="iddisc" name="iddisc">
+        <button type="submit" id="modalBtn">Save</button>
+      </form>
+
     </div>
   </div>
 
@@ -82,12 +203,11 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
     <div class="grid grid-cols-5 gap-4">
 
       <?php $resqd = $conn->query($qd);
-      $rqd = $resqd->fetch_assoc();
-      while ($rqd != null) {
+      while ($rqd = $resqd->fetch_assoc()) {
         ?>
         <!-- Product Card 1 -->
         <div class="flex items-center bg-white p-4 rounded-lg shadow-md">
-          <img src="../public/photo/<?php echo $rqd['foto']; ?>" alt="Product Image" class="w-16 h-16 rounded-lg mr-4">
+          <img src="../public/products/<?php echo $rqd['foto']; ?>" alt="Product Image" class="w-16 h-16 rounded-lg mr-4">
           <p class="font-semibold"><?php echo $rqd['nama']; ?></p>
         </div>
 
@@ -106,21 +226,25 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow-md text-center">
-          <button class="bg-blue-500 text-white py-1 px-4 rounded-lg hover:bg-blue-600">
+          <button class="edit-cat-btn bg-blue-500 text-white py-1 px-4 rounded-lg hover:bg-blue-600"
+            data-disc-amount="<?php echo $rqd['amount']; ?>" data-prod-id="<?php echo $rqd['ID_produk']; ?>"
+            data-disc-id="<?php echo $rqd['ID_discount']; ?>" data-prod-name="<?php echo $rqd['nama']; ?>">
             <i class="fas fa-edit mr-2"></i> Edit
           </button>
-          <button class="bg-red-500 text-white py-1 px-4 rounded-lg hover:bg-red-600 mt-2">
-            <i class="fas fa-trash"></i> Delete
-          </button>
+          <form class="bg-red-500 text-white rounded-lg hover:bg-red-600 mt-2" method="POST" action="process_discount.php">
+            <input type="hidden" name="hapus" value="<?php echo $rqd['ID_discount']; ?>">
+            <input type="hidden" name="idproduk" value="<?php echo $rqd['ID_produk']; ?>">
+            <button type="submit" class="py-1 px-4 rounded-lg">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </form>
         </div>
-        <?php $rqd = $result->fetch_assoc();
+        <?php
       } ?>
     </div>
   </div>
 
-  <!-- Dropdown Menu Script -->
   <script>
-    // Profile Dropdown Menu
     document.addEventListener('DOMContentLoaded', function () {
       const profileIcon = document.getElementById('profileIcon');
       const dropdownMenu = document.getElementById('dropdownMenu');
@@ -141,15 +265,67 @@ $qd = "SELECT * FROM discounts NATURAL JOIN (SELECT * FROM produk NATURAL JOIN k
         dropdownMenu.classList.add('hidden');
       });
 
-      // Select/Deselect All Functionality
-      const selectAllCheckbox = document.getElementById('selectAll');
-      const productCheckboxes = document.querySelectorAll('.productCheckbox');
+    });
 
-      selectAllCheckbox.addEventListener('change', function () {
-        const isChecked = selectAllCheckbox.checked;
-        productCheckboxes.forEach(checkbox => {
-          checkbox.checked = isChecked;
+    document.addEventListener('DOMContentLoaded', function () {
+      const addDiscountButton = document.querySelector('.addDiscountButton');
+      const addCatModal = document.getElementById('addCatModal');
+      const editCatModal = document.getElementById('editCatModal');
+      const closeModalElements = document.querySelectorAll('#addCatModal button[type="submit"], #addCatModal');
+      const closeEditModalElements = document.querySelectorAll('#editCatModal button[type="submit"], #editCatModal');
+      const modalBtn = document.getElementById('modalBtn');
+
+      const openModal = () => {
+        addCatModal.classList.add('show');
+      };
+
+      const closeModal = (event) => {
+        if (event.target === addCatModal || event.target.closest('button[type="submit"]')) {
+          addCatModal.classList.remove('show');
+        }
+      };
+
+      addDiscountButton.addEventListener('click', openModal);
+      closeModalElements.forEach((element) => {
+        element.addEventListener('click', closeModal);
+      });
+
+      const modalContent = document.querySelector('.discount-box');
+      modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      const editButtons = document.querySelectorAll('.edit-cat-btn');
+      editButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const prodIdField = document.getElementById('autoselect');
+          const discAmount = document.getElementById('disc');
+          const idDisc = document.getElementById('iddisc');
+          const prodId = button.getAttribute('data-prod-id');
+          const prodName = button.getAttribute('data-prod-name');
+          const discamount = button.getAttribute('data-disc-amount');
+          const discid = button.getAttribute('data-disc-id');
+          prodIdField.value = prodId;
+          prodIdField.innerText = prodName;
+          discAmount.value = discamount;
+          idDisc.value = discid;
+          editCatModal.classList.add('show');
         });
+      });
+
+      const closeEditModal = (event) => {
+        if (event.target === editCatModal || event.target.closest('button[type="submit"]')) {
+          editCatModal.classList.remove('show');
+        }
+      };
+
+      closeEditModalElements.forEach((element) => {
+        element.addEventListener('click', closeEditModal);
+      });
+
+      const modalEditContent = document.querySelector('.discount-box');
+      modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
       });
     });
   </script>

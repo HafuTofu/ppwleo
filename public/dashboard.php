@@ -3,7 +3,7 @@ require "./sess.php";
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
     header('Location: login.php');
 }
-$query = "SELECT * FROM (produk NATURAL JOIN kategori) WHERE statusproduk = 'available'";
+$query = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE statusproduk = 'available'";
 $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
 
 if (!empty($_POST)) {
@@ -147,57 +147,51 @@ if (!empty($_POST)) {
         </div>
     </div>
 
-        <!-- New Arrivals Section -->
-        <div class="px-10 my-6">
+    <!-- New Arrivals Section -->
+    <div class="px-10 my-6">
         <h2 class="text-4xl font-bold text-left mb-6">New Arrivals</h2>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <!-- Product 1 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
-                <img src="./photo/JACKET.png" alt="Product" class="object-cover w-full h-48">
+        <?php $queryNew = "SELECT * FROM ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori) WHERE statusproduk = 'available' ORDER BY ID_produk DESC LIMIT 4";
+        $stmtNew = $conn->query($queryNew);
+        while ($rowNew = $stmtNew->fetch_assoc()) {
+            $palnum = ($rowNew['ID_kategori'] - 1) % 4; ?>
+            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
+                data-category="<?php echo $rowNew["nama_kategori"]; ?>">
+                <img src="./products/<?php echo $rowNew["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
+                    onclick="window.location.href = 'detailprod.php?idprod=<?php echo $rowNew['ID_produk']; ?>';">
                 <div class="p-4">
-                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
-                    <h1 class="text-lg font-semibold">T1 Worlds Jacket 2024</h1>
-                    <p class="text-sm font-semibold text-gray-600">Rp. 1.700.000</p>
-                    <p class="text-sm text-gray-600">The T1 White Jacket White is not simply a form of clothing that one puts on; it is a proclamation of passion.</p>
-                </div>
-            <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
-            </div>    
+                    <span
+                        class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full">
+                        <?php echo $rowNew["nama_kategori"]; ?>
+                    </span>
+                    <h1 class="text-lg font-semibold"><?php echo $rowNew["nama"]; ?></h1>
+                    <?php if ($rowNew['ID_discount'] == 0) { ?>
+                        <p class="text-sm font-semibold text-gray-600">Rp.
+                            <?php echo number_format($rowNew['harga'], 0, ',', '.'); ?>
+                        </p>
+                    <?php } else { ?>
+                        <div class="flex items-center space-x-2">
+                            <p class="text-sm font-semibold text-gray-600 line-through">Rp.
+                                <?php echo number_format($rowNew['harga'], 0, ',', '.'); ?>
+                            </p>
+                            <p class="text-sm font-semibold text-red-500">Rp.
+                                <?php echo number_format($rowNew['discountprice'], 0, ',', '.'); ?>
+                            </p>
+                        </div>
+                    <?php } ?>
 
-            <!-- Product 2 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
-                <img src="./photo/hoodie.jpg" alt="Product" class="object-cover w-full h-48">
-                <div class="p-4">
-                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
-                    <h1 class="text-lg font-semibold">McLaren Hoodie</h1>
-                    <p class="text-sm font-semibold text-gray-600">Rp. 2.700.000</p>
-                    <p class="text-sm text-gray-600">The McLaren Hoodie is not simply a form of clothing that one puts on; it is a proclamation of passion</p>
+                    <p class="text-sm text-gray-600"><?php echo $rowNew['deskripsi']; ?></p>
                 </div>
-            <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
+                <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75 formatc"
+                    method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <input type="hidden" name="iduser" value="<?php echo $_SESSION['id']; ?>">
+                    <input type="hidden" name="idprod" value="<?php echo $rowNew['ID_produk']; ?>">
+                    <input type="hidden" name="harga" value="<?php echo $rowNew['harga']; ?>">
+                    <input type="hidden" name="total_harga" value="<?php echo $rowNew['harga']; ?>">
+                    <button class="w-full py-3" type="submit">Add to Cart</button>
+                </form>
             </div>
-
-            <!-- Product 3 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
-                <img src="./photo/hoodie.jpg" alt="Product" class="object-cover w-full h-48">
-                <div class="p-4">
-                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
-                    <h1 class="text-lg font-semibold">McLaren Hoodie</h1>
-                    <p class="text-sm font-semibold text-gray-600">Rp. 2.700.000</p>
-                    <p class="text-sm text-gray-600">The McLaren Hoodie is not simply a form of clothing that one puts on; it is a proclamation of passion</p>
-                </div>
-                <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
-                <img src="./photo/hoodie.jpg" alt="Product" class="object-cover w-full h-48">
-                <div class="p-4">
-                    <span class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white bg-red-500 rounded-full">Clothes</span>
-                    <h1 class="text-lg font-semibold">McLaren Hoodie</h1>
-                    <p class="text-sm font-semibold text-gray-600">Rp. 2.700.000</p>
-                    <p class="text-sm text-gray-600">The McLaren Hoodie is not simply a form of clothing that one puts on; it is a proclamation of passion</p>
-                </div>
-                <a href="#checkout" class="py-3 mt-auto font-semibold text-center text-white bg-black hover:opacity-75">Add to Cart</a>
-            </div>
+        <?php } ?>
         </div>
     </div>
 
@@ -231,16 +225,29 @@ if (!empty($_POST)) {
             <!-- Product Card 1 -->
             <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
                 data-category="<?php echo $row["nama_kategori"]; ?>">
-                <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48" onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
+                <img src="./products/<?php echo $row["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
+                    onclick="window.location.href = 'detailprod.php?idprod=<?php echo $row['ID_produk']; ?>';">
                 <div class="p-4">
                     <span
                         class="inline-block px-3 py-1 mb-2 text-xs font-semibold text-white <?php echo $pallete[$palnum]; ?> rounded-full">
                         <?php echo $row["nama_kategori"]; ?>
                     </span>
                     <h1 class="text-lg font-semibold"><?php echo $row["nama"]; ?></h1>
-                    <p class="text-sm font-semibold text-gray-600">Rp.
-                        <?php echo number_format($row['harga'], 0, ',', '.'); ?>
-                    </p>
+                    <?php if ($row['ID_discount'] == 0) { ?>
+                        <p class="text-sm font-semibold text-gray-600">Rp.
+                            <?php echo number_format($row['harga'], 0, ',', '.'); ?>
+                        </p>
+                    <?php } else { ?>
+                        <div class="flex items-center space-x-2">
+                            <p class="text-sm font-semibold text-gray-600 line-through">Rp.
+                                <?php echo number_format($row['harga'], 0, ',', '.'); ?>
+                            </p>
+                            <p class="text-sm font-semibold text-red-500">Rp.
+                                <?php echo number_format($row['discountprice'], 0, ',', '.'); ?>
+                            </p>
+                        </div>
+                    <?php } ?>
+
                     <p class="text-sm text-gray-600"><?php echo $row['deskripsi']; ?></p>
                 </div>
                 <form class="w-full mt-auto font-semibold text-center text-white bg-black hover:opacity-75 formatc"

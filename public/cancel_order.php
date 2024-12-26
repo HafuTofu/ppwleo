@@ -10,7 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare('UPDATE transactions SET order_status = ? WHERE ID_transaksi = ?');
         $status = 'Canceled';
         $stmt->bind_param('si', $status, $orderId);
-
+        $stmtsearch = $conn->query("SELECT * FROM (transaction_details NATURAL JOIN (cart NATURAL JOIN produk)) WHERE ID_transaksi = $orderId");
+        while ($row = $stmtsearch->fetch_assoc()) {
+            $idprod = $row['ID_produk'];
+            $qty = $row['qty'];
+            $stmtup = $conn->prepare("UPDATE produk SET stok = stok + ? WHERE ID_produk = ?");
+            $stmtup->bind_param("ii", $qty, $idprod);
+            $stmtup->execute();
+        }
         if ($stmt->execute()) {
             echo json_encode(['success' => true]);
         } else {

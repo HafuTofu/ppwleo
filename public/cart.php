@@ -6,7 +6,7 @@ if ($_SESSION['login'] === 'false') {
 }
 
 $iduser = $_SESSION['id'];
-$query = "SELECT * FROM cart NATURAL JOIN produk WHERE ID_user = ? AND checkorno = 'unchecked'";
+$query = "SELECT * FROM (cart NATURAL JOIN ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori)) WHERE ID_user = ? AND checkorno = 'unchecked'";
 
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $iduser);
@@ -106,12 +106,13 @@ $stmt->execute();
           $stmtwl->execute();
           $resultwl = $stmtwl->get_result();
           $inwl = $resultwl->num_rows > 0;
+          $price = $value['ID_discount'] > 0 ? $value['discountprice'] : $value['harga'];
           echo "
           <div class='bg-white shadow-md rounded-md p-4 flex items-center gap-4 mb-4'>
             <input type='checkbox' class='itemCheckbox self-start' value='$idcart'>
             <input type='hidden' class='idprod' value='$idprod'>
             <input type='hidden' id='iduser' value='$iduser'>
-            <img src='./products/$value[foto]' alt='Jacket' class='w-28 h-28 rounded-md object-cover'>
+            <img src='./products/$value[foto]' alt='Jacket' class='w-28 h-28 rounded-md object-cover cursor-pointer' onclick='window.location.href = `detailprod.php?idprod=$value[ID_produk]`'>
             <div class='flex-1'>
               <h2 class='font-semibold'> $value[nama]</h2>
               <div class='flex items-center mt-2 gap-4 py-4'>
@@ -128,7 +129,8 @@ $stmt->execute();
   <i id='heartIcon$sr' class='" . ($inwl ? 'fas' : 'far') . " fa-heart text-red-600  '></i>
 </button>
 
-              <p class='font-semibold price'>Rp. " . number_format($value['harga'], 0, ',', '.') . "<input type='hidden' class='iprice' id='iprice' value='$value[harga]'></p>
+              <p class='font-semibold price'>Rp. " . number_format($value['ID_discount'] > 0 ? $value['discountprice'] : $value['harga'], 0, ',', '.') . "
+              <input type='hidden' class='iprice' id='iprice' value='$price'></p>
             </div>
           </div>";
         } ?>
@@ -380,7 +382,7 @@ $stmt->execute();
 
         const input = document.createElement("input");
         input.type = "hidden";
-        input.name = "selected_cart_ids"; 
+        input.name = "selected_cart_ids";
         input.value = JSON.stringify(selectedItems);
 
         form.appendChild(input);

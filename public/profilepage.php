@@ -45,7 +45,7 @@ $row = mysqli_fetch_assoc($result);
 
         <!-- User and Cart Icons -->
         <div class="flex items-center mr-6 space-x-6">
-            <a href="#"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
+            <a href="./cart.php"><img src="./photo/cart.png" class="w-12 cursor-pointer"></a>
             <div class="relative">
                 <img src="./photouser/<?php echo $_SESSION['fotouser']; ?>"
                     class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">

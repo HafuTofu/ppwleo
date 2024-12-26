@@ -1,13 +1,11 @@
 <?php
 require 'sess.php';
 
-// Check if the user is logged in
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
   header('Location: login.php');
   exit;
 }
 
-// Handle POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!isset($_POST['selected_cart_ids'])) {
     header('Location: cart.php');
@@ -21,14 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
   }
 
-  // Fetch user data
   $iduser = $_SESSION['id'];
   $stmtuser = $conn->prepare('SELECT * FROM userdata WHERE ID_user = ?');
   $stmtuser->bind_param('i', $iduser);
   $stmtuser->execute();
   $rowuser = $stmtuser->get_result()->fetch_assoc();
 
-  // Process payment and transaction details
   if (isset($_POST['payment_method'])) {
     $totalItems = $_POST['total_items'];
     $totalPrice = $_POST['total_price'];
@@ -38,23 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $shippingOption = $_POST['shipping_option'];
     $paymentMethod = $_POST['payment_method'];
 
-    // Insert transaction
     $stmttransaction = $conn->prepare(
       'INSERT INTO transactions (ID_user, timestamp, total_pembelian, pengiriman, hargaongkir, payment) VALUES (?, NOW(), ?, ?, ?, ?)'
     );
     $stmttransaction->bind_param('iisis', $iduser, $totalPrice, $shippingOption, $shippingCost, $paymentMethod);
 
     if ($stmttransaction->execute()) {
-      // Fetch last transaction ID
       $transactionId = $conn->insert_id;
 
-      // Insert transaction details
       foreach ($selectedCartIds as $cartId) {
         $stmttd = $conn->prepare('INSERT INTO transaction_details (ID_transaksi, ID_cart) VALUES (?, ?)');
         $stmttd->bind_param('ii', $transactionId, $cartId);
         $stmttd->execute();
 
-        // Update cart and stock
         $stmtcart = $conn->prepare('SELECT * FROM cart NATURAL JOIN produk WHERE ID_cart = ?');
         $stmtcart->bind_param('i', $cartId);
         $stmtcart->execute();
@@ -67,6 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtUpdateStock = $conn->prepare('UPDATE produk SET stok = stok - ?, terjual = terjual + ? WHERE ID_produk = ?');
         $stmtUpdateStock->bind_param('iii', $rowc['qty'], $rowc['qty'], $rowc['ID_produk']);
         $stmtUpdateStock->execute();
+
+        $stmtStockCheck = $conn->prepare('UPDATE produk SET statusproduk = "unavailable" WHERE stok = 0, ID_produk =  ?');
+        $stmtStockCheck->bind_param('i', $rowc['ID_produk']);
+        $stmtStockCheck->execute();
       }
 
       header('Location: orderlist.html');
@@ -153,13 +149,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php $totalItems = 0;
         $totalPrice = 0;
         foreach ($selectedCartIds as $cartId) {
-          $querycart = "SELECT * FROM cart NATURAL JOIN produk WHERE ID_cart = ?";
+          $querycart = "SELECT * FROM (cart NATURAL JOIN ((produk LEFT JOIN discounts ON produk.ID_discount = discounts.ID_discount) NATURAL JOIN kategori)) WHERE ID_cart = ?";
           $stmtcart = $conn->prepare($querycart);
           $stmtcart->bind_param("i", $cartId);
           $stmtcart->execute();
           $rowcart = $stmtcart->get_result()->fetch_assoc();
+          $price = $rowcart["ID_discount"] > 0 ? $rowcart["discountprice"] : $rowcart["harga"];
           $totalItems += $rowcart['qty'];
-          $totalPrice += $rowcart['harga'] * $rowcart['qty'];
+          $totalPrice += $price * $rowcart['qty'];
           ?>
           <!-- Product 1 -->
           <div class="flex mb-4">
@@ -168,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="flex justify-between items-center">
                 <h3 class="font-bold text-gray-700"><?php echo $rowcart['nama'] ?></h3>
                 <span class="font-bold text-gray-900">Rp.
-                  <?php echo number_format($rowcart['harga'], 0, ',', '.'); ?></span>
+                  <?php echo number_format($price, 0, ',', '.'); ?></span>
               </div>
               <p class="text-gray-500 text-sm">QTY: <?php echo $rowcart['qty']; ?></p>
             </div>

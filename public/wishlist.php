@@ -147,7 +147,7 @@ $resultCategories = $conn->query($queryCategories);
                             <input type="hidden" name="harga" value=<?php echo $row['harga']; ?>>
                             <input type="hidden" name="total_harga" value=<?php echo $row['harga']; ?>>
                             <button type="submit"
-                                class="w-full px-3 py-3">Add
+                                class="w-full px-3 py-3" <?php echo $isAvailable ? '' : 'disabled' ;?>>Add
                                 to Cart</button>
                         </form>
                     </div>

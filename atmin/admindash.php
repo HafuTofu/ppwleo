@@ -49,8 +49,7 @@ if (!empty($_POST['insert'])) {
             $filepath = '../public/products/' . $filename;
         }
 
-        $query = "INSERT INTO produk (nama, deskripsi, harga, stok, terjual, ID_kategori, foto) 
-                  VALUES ($nama, $deskripsi, $harga, $stok, 0, $idkat, $filename)";
+        $query = "INSERT INTO produk (nama, deskripsi, harga, stok, terjual, ID_kategori, foto) VALUES ( '{$nama}' , '{$deskripsi}', '{$harga}', '{$stok}', 0, '{$idkat}', '{$filename}')";
         mysqli_query($conn, $query);
         move_uploaded_file($_FILES['inputfoto']['tmp_name'], $filepath);
         header("Location: admindash.php");
@@ -129,7 +128,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style7.css">
     <style>
-        .register-box {
+        .product-box {
             position: relative;
             width: 90%;
             max-width: 400px;
@@ -141,18 +140,18 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             text-align: center;
         }
 
-        .register-box form {
+        .product-box form {
             display: flex;
             flex-direction: column;
         }
 
-        .register-box h2 {
+        .product-box h2 {
             font-size: 1.5rem;
             color: black;
             margin-bottom: 1rem;
         }
 
-        .register-box label {
+        .product-box label {
             display: block;
             font-size: 14.4px;
             color: black;
@@ -160,10 +159,10 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             margin-bottom: 0.5rem;
         }
 
-        .register-box input[type="text"],
-        .register-box input[type="number"],
-        .register-box select,
-        .register-box textarea{
+        .product-box input[type="text"],
+        .product-box input[type="number"],
+        .product-box select,
+        .product-box textarea{
             margin-bottom: 1rem;
             width: 100%;
             padding: 10px;
@@ -174,7 +173,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             color: white;
         }
 
-        .register-box button {
+        .product-box button {
             width: 100%;
             padding: 10px;
             border: none;
@@ -185,7 +184,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
             cursor: pointer;
         }
 
-        .register-box button:hover {
+        .product-box button:hover {
             background-color: rgba(80, 7, 18, 0.5);
         }
 
@@ -209,7 +208,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
 
 <body class="font-sans bg-yellow-50">
     <!-- Navbar -->
-    <div class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
+    <header class="sticky top-0 flex items-center justify-between p-4 bg-yellow-200">
         <a href="atmindashboard.html">
             <img src="../public/photo/ciG.png" alt="ciGCentral" class="w-32 h-20 ml-10">
         </a>
@@ -245,7 +244,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
                 <a href="logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
             </div>
         </div>
-    </div>
+    </header>
 
     <!-- Title and Action Buttons -->
     <div class="flex items-center justify-between mx-16 mt-8 mb-4">
@@ -258,7 +257,7 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
 
     <!-- add/edit product -->
     <div class="modal" id="addCatModal">
-        <div class="register-box">
+        <div class="product-box">
             <h2 id="modalTitle">Add Product</h2>
             <form id="addCatForm" action="" method="POST" enctype="multipart/form-data">
                 <input type="hidden" id="prod_id" name="idprod">
@@ -414,8 +413,6 @@ if (isset($_POST['hapus']) && !empty($_POST['hapus'])) {
               addCatModal.classList.remove('show');
           }
         });
-
-
 
         const editButtons = document.querySelectorAll('.edit-cat-btn');
         editButtons.forEach((button) => {
