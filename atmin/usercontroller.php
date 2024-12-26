@@ -147,7 +147,6 @@ $resU = $conn->query($userQ);
             const username = row.querySelector('td:nth-child(1)').innerText.trim();
             const currentAction = button.querySelector('span').innerText.trim();
 
-            // Determine the action based on the button text
             const newAction = currentAction === 'Ban' ? 'blocked' : 'active';
 
             fetch('update_status.php', {
@@ -158,7 +157,6 @@ $resU = $conn->query($userQ);
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Update the button UI
                         if (newAction === 'blocked') {
                             button.innerHTML = `<i class="mr-2 fa-solid fa-lock"></i> Unban`;
                             button.classList.remove("text-white", "bg-red-500", "hover:bg-red-600");
@@ -168,7 +166,7 @@ $resU = $conn->query($userQ);
                             button.classList.remove("text-teal-700", "bg-teal-200", "hover:bg-teal-300");
                             button.classList.add("text-white", "bg-red-500", "hover:bg-red-600");
                         }
-                        alert(data.message); // Notify the user of the successful update
+                        alert(data.message);
                     } else {
                         alert('Failed to update status: ' + (data.message || 'Unknown error'));
                     }

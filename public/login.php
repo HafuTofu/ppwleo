@@ -1,83 +1,83 @@
 <?php
-    include '../connect.php';
-    include "./functions.php";
+include '../connect.php';
+include "./functions.php";
 
-    if(!isset($_SESSION['login'])){
-        $_SESSION['login'] = 'false';
-    }else if($_SESSION['login'] === 'trueguess'){
-        header('Location: dashboard.php');
-    }else if($_SESSION['login'] === 'trueadmin'){
-        header('Location: ../atmin/atmindashboard.html');
+if (!isset($_SESSION['login'])) {
+    $_SESSION['login'] = 'false';
+} else if ($_SESSION['login'] === 'trueguess') {
+    header('Location: dashboard.php');
+} else if ($_SESSION['login'] === 'trueadmin') {
+    header('Location: ../atmin/atmindashboard.php');
+}
+
+$source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+$generator = str_shuffle($source);
+$simplifier = substr($generator, 0, 6);
+$captchacheck = "";
+$error = '';
+if (!empty($_POST)) {
+    $logses = $_POST['logses'];
+    $password = $_POST['password'];
+    $captchaguess = $_POST['captchaguess'];
+    $captchacheck = $_POST['captchacheck'];
+    $result1 = $conn->query("SELECT * FROM userdata WHERE Email = '$logses' AND status = 'active'");
+    $result2 = $conn->query("SELECT * FROM userdata WHERE Username = '$logses' AND status = 'active'");
+
+    if (!$result1 || !$result2) {
+        die("Connection failed: " . mysqli_connect_error());
     }
 
-    $source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    $generator = str_shuffle($source);
-    $simplifier = substr($generator,0,6);    
-    $captchacheck = "";
-    $error = '';
-    if(!empty($_POST)){
-        $logses = $_POST['logses'];
-        $password = $_POST['password'];
-        $captchaguess = $_POST['captchaguess'];
-        $captchacheck = $_POST['captchacheck'];
-        $result1 = $conn->query("SELECT * FROM userdata WHERE Email = '$logses' AND status = 'active'");
-        $result2 = $conn->query("SELECT * FROM userdata WHERE Username = '$logses' AND status = 'active'");
-        
-        if(!$result1 || !$result2){
-            die("Connection failed: " . mysqli_connect_error());
-        } 
-            
-        try{
-            if($captchacheck != $captchaguess){
-                throw new Exception('Kode Captcha Salah.');
-            }else if($captchacheck == $captchaguess){ 
-                $row1 = mysqli_fetch_assoc($result1);
-                $row2 = mysqli_fetch_assoc($result2);
-                if($row1!= null){
-                    $mail = $row1['Email'];
-                    $pass = $row1['Password'];
-                    if($logses == $mail && $password == $pass){
-                        if($row1['Username'] == "admin"){
-                            $_SESSION['login'] = 'trueadmin';
-                            $_SESSION['id'] = $row1['ID_user'];
-                            $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: ../atmin/admindash.php");
-                        }else{
-                            $_SESSION['login'] = 'trueguess';
-                            $_SESSION['id'] = $row1['ID_user'];
-                            $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: dashboard.php");
-                        }
+    try {
+        if ($captchacheck != $captchaguess) {
+            throw new Exception('Kode Captcha Salah.');
+        } else if ($captchacheck == $captchaguess) {
+            $row1 = mysqli_fetch_assoc($result1);
+            $row2 = mysqli_fetch_assoc($result2);
+            if ($row1 != null) {
+                $mail = $row1['Email'];
+                $pass = $row1['Password'];
+                if ($logses == $mail && $password == $pass) {
+                    if ($row1['Username'] == "admin") {
+                        $_SESSION['login'] = 'trueadmin';
+                        $_SESSION['id'] = $row1['ID_user'];
+                        $_SESSION['fotouser'] = $row2['fotouser'];
+                        header("Location: ../atmin/atmindashboard.php");
                     } else {
-                        throw new Exception('Password Salah.');
+                        $_SESSION['login'] = 'trueguess';
+                        $_SESSION['id'] = $row1['ID_user'];
+                        $_SESSION['fotouser'] = $row2['fotouser'];
+                        header("Location: dashboard.php");
                     }
-                }else if($row2!=null){
-                    $username = $row2['Username'];
-                    $pass = $row2['Password'];
-                    if($logses == $username && $password == $pass){
-                        if($row2['Username'] == "admin"){
-                            $_SESSION['login'] = 'trueadmin';
-                            $_SESSION['id'] = $row2['ID_user'];
-                            $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: ../atmin/admindash.php");
-                        }else{
-                            $_SESSION['login'] = 'trueguess';
-                            $_SESSION['id'] = $row2['ID_user'];
-                            $_SESSION['fotouser'] = $row2['fotouser'];
-                            header("Location: dashboard.php");
-                        }
-                    } else {
-                        throw new Exception('Password Salah.');
-                    }
-                }else{
-                    throw new Exception('Email atau Username Tidak DitemuGan.');
+                } else {
+                    throw new Exception('Password Salah.');
                 }
+            } else if ($row2 != null) {
+                $username = $row2['Username'];
+                $pass = $row2['Password'];
+                if ($logses == $username && $password == $pass) {
+                    if ($row2['Username'] == "admin") {
+                        $_SESSION['login'] = 'trueadmin';
+                        $_SESSION['id'] = $row2['ID_user'];
+                        $_SESSION['fotouser'] = $row2['fotouser'];
+                        header("Location: ../atmin/atmindashboard.php");
+                    } else {
+                        $_SESSION['login'] = 'trueguess';
+                        $_SESSION['id'] = $row2['ID_user'];
+                        $_SESSION['fotouser'] = $row2['fotouser'];
+                        header("Location: dashboard.php");
+                    }
+                } else {
+                    throw new Exception('Password Salah.');
+                }
+            } else {
+                throw new Exception('Email atau Username Tidak DitemuGan.');
             }
-            exit;
-        }catch(Exception $e){
-            $error = $e->getMessage();
         }
+        exit;
+    } catch (Exception $e) {
+        $error = $e->getMessage();
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -92,6 +92,53 @@
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-[#fdf3e4]">
+    <?php
+    require_once '../vendor/autoload.php';
+
+    // init configuration
+    $clientID = '179112429877-t7qjpub0jitoc496kq2bnl7jqsb2uq8r.apps.googleusercontent.com';
+    $clientSecret = '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';
+    $redirectUri = 'http://localhost/ppwleo/public/login.php';
+
+    // create Client Request to access Google API
+    $client = new Google_Client();
+    $client->setClientId($clientID);
+    $client->setClientSecret($clientSecret);
+    $client->setRedirectUri($redirectUri);
+    $client->addScope("email");
+    $client->addScope("profile");
+
+    if (isset($_GET['code'])) {
+        $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+        $client->setAccessToken($token['access_token']);
+
+        $google_oauth = new Google_Service_Oauth2($client);
+        $googleUser = $google_oauth->userinfo->get();
+
+        $email = $googleUser['email'];
+        $name = $googleUser['name'];
+        $googleId = $googleUser['id'];
+        $profilePicture = $googleUser['picture'];
+
+        $checkUQ = "SELECT * FROM userdata WHERE ID_user = $googleId";
+        $stmtUQ = $conn->query($checkUQ);
+        if( $row = $stmtUQ->fetch_assoc()) {
+            $_SESSION['login'] = 'trueguess';
+            $_SESSION['id'] = $row['ID_user'];
+            $_SESSION['fotouser'] = $row['fotouser'];
+            header("Location: dashboard.php");
+            exit;
+        } else {
+            $insertUQ = "INSERT INTO userdata (ID_user, Username, Email, fotouser) VALUE ($googleId, '$name', '$email', '$profilePicture')";
+            $_SESSION['login'] = 'trueguess';
+            $_SESSION['id'] = $row['ID_user'];
+            $_SESSION['fotouser'] = $row['fotouser'];
+            header("Location: dashboard.php");
+            exit;
+        }
+
+    }
+    ?>
     <div class="relative w-full max-w-sm mx-auto">
         <!-- Background Logo -->
         <div class="absolute inset-0 flex items-center justify-center -z-10">
@@ -102,7 +149,7 @@
         <div class="relative px-8 py-6 bg-[#ecdab7] bg-opacity-85 rounded-lg shadow-md text-left">
             <h1 class="mb-4 text-2xl font-bold text-center text-black">Login</h1>
             <p class="mb-6 text-sm text-center text-black">
-                Belum punya akun? 
+                Belum punya akun?
                 <a href="register.php" class="text-red-600 hover:underline">Register</a>
             </p>
 
@@ -110,16 +157,15 @@
                 <!-- Email/Username -->
                 <div>
                     <label for="logses" class="mb-1 text-sm text-black">Email / Username:</label>
-                    <input type="text" id="logses" name="logses" required 
-                    value = "<?php echo $_POST['logses'] ?? '';?>"
-                           class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
+                    <input type="text" id="logses" name="logses" required value="<?php echo $_POST['logses'] ?? ''; ?>"
+                        class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
                 </div>
 
                 <!-- Password -->
                 <div>
                     <label for="password" class="mb-1 text-sm text-black">Password:</label>
-                    <input type="password" id="password" name="password" required 
-                           class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
                     <div class="flex items-center mt-2">
                         <input type="checkbox" id="togglePassword" class="mr-2" onclick="showpassword('password')">
                         <label for="togglePassword" class="text-sm text-black">Show Password</label>
@@ -128,29 +174,39 @@
 
                 <!-- Captcha -->
                 <div>
-                    <label for="captcha" class="mb-1 text-sm text-black select-none">Captcha: <strong><?php echo $simplifier;?></strong></label>
-                    <input type="hidden" name = "captchacheck" value = <?php echo $simplifier;?>>
-                    <input type="text" id="captcha" name="captchaguess" required 
-                           class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
+                    <label for="captcha" class="mb-1 text-sm text-black select-none">Captcha:
+                        <strong><?php echo $simplifier; ?></strong></label>
+                    <input type="hidden" name="captchacheck" value=<?php echo $simplifier; ?>>
+                    <input type="text" id="captcha" name="captchaguess" required
+                        class="w-full px-4 py-3 text-base text-white bg-opacity-50 border border-red-600 rounded-lg bg-red-950 focus:outline-none focus:ring-2 focus:ring-red-400">
                     <?php
-                        if ($error){
-                            echo '<p class="alert">'.$error.'</p>';
-                        }
+                    if ($error) {
+                        echo '<p class="alert">' . $error . '</p>';
+                    }
                     ?>
                 </div>
 
                 <!-- Login Button -->
-                <button type="submit" class="w-full px-4 py-3 text-base font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
+                <button type="submit"
+                    class="w-full px-4 py-3 text-base font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
                     Login
                 </button>
-
-                <!-- Google Login -->
-                <button class="flex items-center justify-center w-full px-4 py-3 text-base bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
-                    <img src="./photo/google-logo.png" alt="Google Logo" class="w-5 h-5 mr-2">Login with Google
-                </button>
             </form>
+
+            <button
+                class="flex items-center justify-center w-full px-4 py-3 mt-2 text-base bg-white border border-gray-300 rounded-lg hover:bg-gray-100" id="tombolgugel" onclick="window.location.href= '<?php echo $client->createAuthUrl();?>';">
+                <img src="./photo/google-logo.png" alt="Google Logo" class="w-5 h-5 mr-2">Login with Google
+            </button>
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('tombolgugel').addEventListener('click', function () {
+                redirect('<?php $client->createAuthUrl() ;?>');
+            });
+        });
+    </script>
 </body>
+
 </html>
