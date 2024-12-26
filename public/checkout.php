@@ -1,5 +1,5 @@
 <?php
-require '../public/sess.php';
+require '.../public/controller/sess.php';
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
   header('Location: login.php');
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtStockCheck->execute();
       }
 
-      header('Location: public/view/orderlist.php');
+      header('Location: .../public/view/orderlist.php');
       exit;
     } else {
       die('Transaction error: ' . $stmttransaction->error);
@@ -273,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         newPassword: password
       };
 
-      fetch('public/update_profile.php', {
+      fetch('.../public/controller/update_profile.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
