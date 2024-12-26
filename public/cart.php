@@ -65,7 +65,7 @@ $stmt->execute();
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
           <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-            <a href="../atmin/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+            <a href="../atmin/atmindashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
               Admin Dashboard</a>
             <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
               Managing Page</a>
