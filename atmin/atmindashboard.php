@@ -1,3 +1,30 @@
+<?php
+require "../public/sess.php";
+
+$totalRQ = "SELECT SUM(total_pembelian) AS totalrev FROM transactions WHERE order_status = 'Need Rate' OR order_status = 'Delivered' OR order_status = 'Done'";
+$stmtTR = $conn->query($totalRQ);
+$totalR = $stmtTR->fetch_assoc();
+
+$totalOQ = "SELECT COUNT(ID_transaksi) AS totalorder FROM transactions";
+$stmtTO = $conn->query($totalOQ);
+$totalO = $stmtTO->fetch_assoc();
+
+$totalCQ = "SELECT COUNT(ID_user) AS totalcust FROM userdata WHERE Username != 'admin'";
+$stmtTC = $conn->query($totalCQ);
+$totalC = $stmtTC->fetch_assoc();
+
+$totalPQ = "SELECT COUNT(ID_produk) AS totalprod FROM produk";
+$stmtTP = $conn->query($totalPQ);
+$totalP = $stmtTP->fetch_assoc();
+
+$recentOQ = "SELECT ID_transaksi, Username, total_pembelian, order_status FROM transactions NATURAL JOIN userdata ORDER BY ID_transaksi DESC LIMIT 6";
+$stmtRO = $conn->query($recentOQ);
+
+$topSPQ = "SELECT nama, terjual, harga, foto FROM produk ORDER BY terjual DESC LIMIT 3";
+$stmtTSP = $conn->query($topSPQ);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,28 +87,28 @@
       <i class="fas fa-money-bill-wave text-3xl"></i>
       <div>
         <p class="text-sm">Total Revenue</p>
-        <p class="text-xl font-bold">Rp. 17.500.000</p>
+        <p class="text-xl font-bold">Rp. <?php echo number_format($totalR['totalrev'], 0, ',', '.'); ?></p>
       </div>
     </div>
     <div class="bg-white p-6 rounded-lg shadow flex items-center space-x-4">
       <i class="fas fa-shopping-cart text-3xl"></i>
       <div>
         <p class="text-sm">Total Orders</p>
-        <p class="text-xl font-bold">47</p>
+        <p class="text-xl font-bold"><?php echo $totalO['totalorder']; ?></p>
       </div>
     </div>
     <div class="bg-white p-6 rounded-lg shadow flex items-center space-x-4">
       <i class="fas fa-users text-3xl"></i>
       <div>
         <p class="text-sm">Total Customers</p>
-        <p class="text-xl font-bold">12</p>
+        <p class="text-xl font-bold"><?php echo $totalC['totalcust']; ?></p>
       </div>
     </div>
     <div class="bg-white p-6 rounded-lg shadow flex items-center space-x-4">
       <i class="fa-solid fa-box text-3xl"></i>
       <div>
         <p class="text-sm">Total Products</p>
-        <p class="text-xl font-bold">12</p>
+        <p class="text-xl font-bold"><?php echo $totalP['totalprod']; ?></p>
       </div>
     </div>
   </div>
@@ -101,48 +128,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="border-b">
-            <td class="py-2 text-center">#1</td>
-            <td class="py-2 text-center">Pham Hanni</td>
-            <td class="py-2 text-center">Rp. 1.700.000</td>
-            <td class="py-2 text-center"><span
-                class="bg-green-200 text-green-700 px-3 py-1 rounded-full">Completed</span></td>
-          </tr>
-          <tr class="border-b">
-            <td class="py-2 text-center">#2</td>
-            <td class="py-2 text-center">Heru Budi</td>
-            <td class="py-2 text-center">Rp. 1.700.000</td>
-            <td class="py-2 text-center"><span
-                class="bg-orange-200 text-orange-700 px-3 py-1 rounded-full">Pending</span></td>
-          </tr>
-          <tr class="border-b">
-            <td class="py-2 text-center">#3</td>
-            <td class="py-2 text-center">Pham Minji</td>
-            <td class="py-2 text-center">Rp. 1.700.000</td>
-            <td class="py-2 text-center"><span
-                class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full">Processing</span></td>
-          </tr>
-          <tr class="border-b">
-            <td class="py-2 text-center">#4</td>
-            <td class="py-2 text-center">Pham Uri</td>
-            <td class="py-2 text-center">Rp. 1.700.000</td>
-            <td class="py-2 text-center"><span
-                class="bg-orange-200 text-orange-700 px-3 py-1 rounded-full">Pending</span></td>
-          </tr>
-          <tr class="border-b">
-            <td class="py-2 text-center">#5</td>
-            <td class="py-2 text-center">Pham Haerin</td>
-            <td class="py-2 text-center">Rp. 1.700.000</td>
-            <td class="py-2 text-center"><span
-                class="bg-green-200 text-green-700 px-3 py-1 rounded-full">Completed</span></td>
-          </tr>
-          <tr class="border-b">
-            <td class="py-2 text-center">#6</td>
-            <td class="py-2 text-center">Ban Heesoo</td>
-            <td class="py-2 text-center">Rp. 1.700.000</td>
-            <td class="py-2 text-center"><span
-                class="bg-green-200 text-green-700 px-3 py-1 rounded-full">Completed</span></td>
-          </tr>
+          <?php $ordid = 1;
+          $pallete = ['Confirmed' => 'bg-green-200 text-green-700', 'Packing Process' => 'bg-blue-200 text-blue-700', 'Need Rate' => 'bg-yellow-200 text-yellow-700', 'Delivered' => 'bg-orange-200 text-orange-700', 'Done' => 'bg-green-200 text-green-700', 'Canceled' => 'bg-orange-200 text-white'];
+          while ($recentO = $stmtRO->fetch_assoc()) { ?>
+            <tr class="border-b">
+              <td class="py-2 text-center">#<?php echo $ordid; ?></td>
+              <td class="py-2 text-center"><?php echo $recentO['Username']; ?></td>
+              <td class="py-2 text-center">Rp. <?php echo number_format($recentO['total_pembelian'], 0, ',', '.'); ?></td>
+              <td class="py-2 text-center"><span
+                  class="<?php echo $pallete[$recentO['order_status']]; ?> px-3 py-1 rounded-full"><?php echo $recentO['order_status']; ?></span>
+              </td>
+            </tr>
+            <?php $ordid++;
+          } ?>
         </tbody>
       </table>
     </div>
@@ -151,30 +149,16 @@
     <div class="bg-white p-6 rounded-lg shadow">
       <h2 class="text-xl font-bold mb-4">Top Selling Products</h2>
       <div class="space-y-4">
-        <div class="flex items-center space-x-4 border-b pb-4">
-          <img src="./photo/hoodie.jpg" alt="Hoodie" class="w-16 h-16 rounded">
-          <div>
-            <p class="font-bold">Mclaren F1 Hoodie</p>
-            <p>Sold: 10 Units</p>
-            <p class="font-bold">Rp. 27.000.000</p>
+        <?php while ($rowTSP = $stmtTSP->fetch_assoc()) { ?>
+          <div class="flex items-center space-x-4 border-b pb-4">
+            <img src="../public/products/<?php echo $rowTSP['foto']; ?>" alt="Hoodie" class="w-16 h-16 rounded">
+            <div>
+              <p class="font-bold"><?php echo $rowTSP['nama']; ?></p>
+              <p>Sold: <?php echo $rowTSP['terjual']; ?> Units</p>
+              <p class="font-bold">Rp. <?php echo number_format($rowTSP['harga'],0,',','.') ;?></p>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center space-x-4 border-b pb-4">
-          <img src="./photo/JACKET.png" alt="Jacket" class="w-16 h-16 rounded">
-          <div>
-            <p class="font-bold">T1 Worlds Jacket 2024</p>
-            <p>Sold: 10 Units</p>
-            <p class="font-bold">Rp. 17.000.000</p>
-          </div>
-        </div>
-        <div class="flex items-center space-x-4">
-          <img src="./photo/superlight.jpeg" alt="Mouse" class="w-16 h-16 rounded">
-          <div>
-            <p class="font-bold">Logitech Superlight 2</p>
-            <p>Sold: 10 Units</p>
-            <p class="font-bold">Rp. 20.000.000</p>
-          </div>
-        </div>
+        <?php } ?>
       </div>
     </div>
   </div>
@@ -197,7 +181,7 @@
       });
 
       dropdownMenu.addEventListener('mouseleave', function () {
-        dropdownMenu.classList.add('hidden'); 
+        dropdownMenu.classList.add('hidden');
       });
     });
   </script>
