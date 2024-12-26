@@ -115,34 +115,26 @@ if (!empty($_POST)) {
                     class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-                        <a href="../atmin/atmindashboard.html"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                        <a href="../atmin/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                             Admin Dashboard</a>
-                        <a href="../atmin/admindash.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+                        <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
                             Managing Page</a>
-                        <a href="../atmin/discount.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+                        <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
                             Managing Page</a>
-                        <a href="../atmin/orderadmin.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                        <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                             Managing Page</a>
-                        <a href="../atmin/usercontroller.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+                        <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
                             Managing Page</a>
-                        <a href="../atmin/admincat.php"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+                        <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
                             Managing Page</a>
                     <?php } ?>
                     <a href="../public/profilepage.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
                     <a href="../public/wishlist.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                    <a href="../public/orderlist.php"
-                        class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                    <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                         List</a>
-                    <a href="../public/clogout.php"
-                        class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                    <a href="../public/clogout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>
@@ -180,7 +172,7 @@ if (!empty($_POST)) {
             while ($rowNew = $stmtNew->fetch_assoc()) {
                 $palnum = ($rowNew['ID_kategori'] - 1) % 4; ?>
                 <div class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md product-card cursor-pointer"
-                    data-category="<?php echo $rowNew["nama_kategori"]; ?>">
+                    data-category="All">
                     <img src="./products/<?php echo $rowNew["foto"]; ?>" alt="Product" class="object-cover w-full h-48"
                         onclick="window.location.href = 'detailprod.php?idprod=<?php echo $rowNew['ID_produk']; ?>';">
                     <div class="p-4">
@@ -221,7 +213,7 @@ if (!empty($_POST)) {
 
     <!-- Categories -->
     <div class="flex justify-center my-4 space-x-4" id="category-buttons">
-        <button class="px-6 py-2 text-white bg-gray-400 rounded-lg category-button" data-category="all">All</button>
+        <button class="px-6 py-2 text-white bg-gray-400 rounded-lg category-button" data-category="All">All</button>
         <?php
         $categoriesResult = $conn->query("SELECT * FROM kategori");
         $categories = [];
@@ -233,9 +225,6 @@ if (!empty($_POST)) {
         }
         ?>
     </div>
-    <script>
-        const categories = <?php echo json_encode($categories); ?>;
-    </script>
 
     <!-- Category Label -->
     <div id="category-label" class="my-4 text-2xl font-bold text-center">Category: All</div>
@@ -280,7 +269,7 @@ if (!empty($_POST)) {
                     <input type="hidden" name="idprod" value="<?php echo $row['ID_produk']; ?>">
                     <input type="hidden" name="harga" value="<?php echo $row['harga']; ?>">
                     <input type="hidden" name="total_harga" value="<?php echo $row['harga']; ?>">
-                    <button class="w-full py-3" type="submit">Add to Cart</button>
+                    <button class="w-full py-3 mt-auto" type="submit">Add to Cart</button>
                 </form>
 
             </div>
@@ -309,18 +298,15 @@ if (!empty($_POST)) {
             }
 
             document.addEventListener('DOMContentLoaded', function () {
-                // Handle form submission with AJAX
-                const forms = document.querySelectorAll('formatc');
+                const forms = document.querySelectorAll('.formatc');
 
                 forms.forEach(form => {
                     form.addEventListener('submit', async function (event) {
-                        event.preventDefault(); // Prevent default form submission
+                        event.preventDefault();
 
-                        // Collect form data
                         const formData = new FormData(this);
 
                         try {
-                            // Send data to server using fetch
                             const response = await fetch(this.action, {
                                 method: 'POST',
                                 body: formData,
@@ -337,9 +323,7 @@ if (!empty($_POST)) {
                         }
                     });
                 });
-            });
 
-            document.addEventListener('DOMContentLoaded', function () {
                 const profileIcon = document.getElementById('profileIcon');
                 const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -358,74 +342,67 @@ if (!empty($_POST)) {
                 dropdownMenu.addEventListener('mouseleave', function () {
                     dropdownMenu.classList.add('hidden');
                 });
-            });
 
-            document.addEventListener('DOMContentLoaded', function () {
                 const categoryLabel = document.getElementById('category-label');
                 const products = document.querySelectorAll('.product-card');
-
-                const categoryMap = categories.reduce((map, category) => {
-                    map[category.toLowerCase()] = category;
-                    return map;
-                }, { all: 'All' });
-
-                // Function to filter products
-                function filterProducts(category) {
-                    const categoryName = categoryMap[category.toLowerCase()] || 'Unknown';
-                    categoryLabel.textContent = `Category: ${categoryName}`;
-
-                    products.forEach(product => {
-                        if (category === 'all' || product.getAttribute('data-category').toLowerCase() === category.toLowerCase()) {
-                            product.style.display = 'flex';
-                        } else {
-                            product.style.display = 'none';
-                        }
-                    });
-
-                    if (category !== 'all' && [..products].every(product => product.style.display === 'none')) {
-                        categoryLabel.textContent += ' (No products available)';
-                    }
-                }
-
                 const categoryButtons = document.querySelectorAll('.category-button');
-                categoryButtons.forEach(button => {
-                    button.addEventListener('click', () => filterProducts(button.getAttribute('data-category')));
-                });
-            });
 
-            document.addEventListener('DOMContentLoaded', function () {
+                const categoryMap = <?php echo json_encode($categories); ?>;
+
+                categoryButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const selectedCategory = button.getAttribute('data-category');
+                        categoryLabel.textContent = `Category: ${selectedCategory}`;
+
+                        products.forEach(product => {
+                            const productCategory = product.getAttribute('data-category');
+                            product.style.display = (selectedCategory === 'All' || productCategory === selectedCategory) ? 'block' : 'none';
+                        });
+                    });
+                });
+
                 const track = document.querySelector('.carousel-track');
                 const slides = document.querySelectorAll('.carousel-slide');
-                const slideCount = slides.length;
-                let index = 1; // Start at the first real slide
+                let index = 1; 
                 const slideWidth = slides[0].clientWidth;
-
-                // Set initial position
-                track.style.transform = `translateX(-${index * slideWidth}px)`;
 
                 function moveCarousel() {
                     index++;
 
-                    // Move to the next slide with transition
                     track.style.transition = 'transform 0.5s ease-in-out';
                     track.style.transform = `translateX(-${index * slideWidth}px)`;
 
-                    // Reset position without transition for infinite loop effect
                     setTimeout(() => {
-                        if (index === slideCount - 1) { // Last duplicate slide
-                            track.style.transition = 'none'; // Disable transition
-                            index = 1; // Jump to the first real slide
-                            track.style.transform = `translateX(-${index * slideWidth}px)`;
-                        } else if (index === 0) { // First duplicate slide
-                            track.style.transition = 'none'; // Disable transition
-                            index = slideCount - 2; // Jump to the last real slide
+                        if (index >= slides.length - 1) {
+                            index = 1;
+                            track.style.transition = 'none';
                             track.style.transform = `translateX(-${index * slideWidth}px)`;
                         }
-                    }, 500); // Match the transition time
+                    }, 500);
                 }
 
                 setInterval(moveCarousel, 4000);
+
+                function showPopup(message) {
+                    const popup = document.createElement('div');
+                    popup.innerHTML = message;
+                    popup.style.position = 'fixed';
+                    popup.style.bottom = '20px';
+                    popup.style.right = '20px';
+                    popup.style.background = '#4caf50';
+                    popup.style.color = 'white';
+                    popup.style.padding = '10px 20px';
+                    popup.style.borderRadius = '5px';
+                    popup.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+                    popup.style.zIndex = '1000';
+
+                    document.body.appendChild(popup);
+
+                    setTimeout(() => popup.remove(), 2000);
+                }
             });
+
         </script>
 </body>
+
 </html>

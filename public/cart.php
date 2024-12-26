@@ -65,24 +65,24 @@ $stmt->execute();
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
           <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-            <a href="../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+            <a href="../atmin/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
               Admin Dashboard</a>
-            <a href="../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+            <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
               Managing Page</a>
-            <a href="../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+            <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
               Managing Page</a>
-            <a href="../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+            <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
               Managing Page</a>
-            <a href="../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+            <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
               Managing Page</a>
-            <a href="../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+            <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
               Managing Page</a>
           <?php } ?>
-          <a href="../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-          <a href="../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+          <a href="../public/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+          <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
             Dashboard</a>
-          <a href="../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-          <a href="../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+          <a href="../public/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+          <a href="../public/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
             List</a>
           <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
         </div>
@@ -292,7 +292,7 @@ $stmt->execute();
         for (let i = 0; i < itemCheckboxes.length; i++) {
           if (itemCheckboxes[i].checked) {
             total += parseInt(iprice[i].value, 10) * parseInt(iquantity[i].value, 10);
-            fetch("update_qty.php", {
+            fetch("../public/update_qty.php", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
@@ -305,7 +305,7 @@ $stmt->execute();
               }),
             });
           } else {
-            fetch("update_qty.php", {
+            fetch("../public/update_qty.php", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"

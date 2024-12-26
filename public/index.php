@@ -142,14 +142,12 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
     <div class="flex justify-center my-4 space-x-4" id="category-buttons">
         <button class="px-6 py-2 text-white bg-gray-400 rounded-lg category-button" data-category="all">All</button>
         <?php
-        $categoriesResult = $conn->query("SELECT nama_kategori FROM kategori");
+        $categoriesResult = $conn->query("SELECT * FROM kategori");
         $categories = [];
-        $idx=0;
         while ($categoryRow = $categoriesResult->fetch_assoc()) {
             $categories[] = $categoryRow['nama_kategori'];
             $categoryName = $categoryRow['nama_kategori'];
-            $categoryColor = $pallete[($idx % 4)];
-            $idx ++;
+            $categoryColor = $pallete[(($categoryRow['ID_kategori'] - 1) % 4)];
             echo "<button class='px-6 py-2 text-white {$categoryColor} rounded-lg category-button' data-category='{$categoryName}'>{$categoryName}</button>";
         }
         ?>
@@ -202,7 +200,7 @@ $pallete = ['bg-orange-400', 'bg-teal-500', 'bg-yellow-400', 'bg-red-500'];
                     categoryLabel.textContent = `Category: ${categoryName}`;
 
                     products.forEach(product => {
-                        if (category === 'all' || product.getAttribute('data-category').toLowerCase() === category.toLowerCase()) {
+                        if (category === 'all' || product.getAttribute('data-category') === category) {
                             product.style.display = 'flex';
                         } else {
                             product.style.display = 'none';

@@ -1,5 +1,5 @@
 <?php
-require '.../public/controller/sess.php';
+require '../public/sess.php';
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
   header('Location: login.php');
@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtUpdateStock->bind_param('iii', $rowc['qty'], $rowc['qty'], $rowc['ID_produk']);
         $stmtUpdateStock->execute();
 
-        $stmtStockCheck = $conn->prepare('UPDATE produk SET statusproduk = "unavailable" WHERE stok = 0, ID_produk =  ?');
+        $stmtStockCheck = $conn->prepare('UPDATE produk SET statusproduk = "unavailable" WHERE stok = 0 AND ID_produk =  ?');
         $stmtStockCheck->bind_param('i', $rowc['ID_produk']);
         $stmtStockCheck->execute();
       }
 
-      header('Location: .../public/view/orderlist.php');
+      header('Location: ../public/orderlist.php');
       exit;
     } else {
       die('Transaction error: ' . $stmttransaction->error);
@@ -273,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         newPassword: password
       };
 
-      fetch('.../public/controller/update_profile.php', {
+      fetch('public/update_profile.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -19,6 +19,9 @@ $stmtwl->execute();
 $resultwl = $stmtwl->get_result();
 $inwl = $resultwl->num_rows > 0;
 $price = $row['ID_discount'] > 0 ? $row['discountprice'] : $row['harga'];
+
+$ratingQ = "SELECT * FROM ((rating NATURAL JOIN userdata) NATURAL JOIN produk) WHERE ID_produk = $idprod";
+$stmtRQ = $conn->query($ratingQ);
 ?>
 
 <!DOCTYPE html>
@@ -130,7 +133,7 @@ $price = $row['ID_discount'] > 0 ? $row['discountprice'] : $row['harga'];
 
         <div>
           <p class="text-lg font-semibold text-green-600 mt-2">Rp.
-            <?php echo number_format( $price, 0, ',', '.'); ?>
+            <?php echo number_format($price, 0, ',', '.'); ?>
           </p>
           <p class="mt-4 text-gray-700 leading-relaxed">
             <?php echo $row['deskripsi']; ?>
@@ -175,56 +178,28 @@ $price = $row['ID_discount'] > 0 ? $row['discountprice'] : $row['harga'];
   <section class="px-6 py-10">
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-2xl font-bold text-gray-800 mb-6">Review Product</h2>
-      <!-- Review 1 -->
-      <div class="flex items-start mb-6">
-        <img src="./photo/Herbud.jpg" alt="Herbud" class="w-12 h-12 rounded-full mr-2">
-        <div class="ml-4 flex-grow">
-          <h3 class="font-semibold text-gray-800">Heru Budi</h3>
-          <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, sudah pasti original, rasanya seperti pemenang,
-            rekomended.</p>
+
+      <?php while ($rowRQ = $stmtRQ->fetch_assoc()) { ?>
+        <div class="flex items-start mb-6">
+          <img src="./photouser/<?php echo $rowRQ['fotouser']; ?>" alt="Herbud" class="w-12 h-12 rounded-full mr-2">
+          <div class="ml-4 flex-grow">
+            <h3 class="font-semibold text-gray-800"><?php echo $rowRQ['Username']; ?></h3>
+            <p class="text-sm text-gray-500"><?php echo $rowRQ['nama']; ?></p>
+            <p class="mt-2 text-gray-700"><?php echo $rowRQ['komentar']; ?></p>
+          </div>
+          <div class="flex items-center">
+            <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
+            <span class="ml-1 text-gray-800"><?php echo $rowRQ['rate']; ?></span>
+          </div>
         </div>
-        <div class="flex items-center">
-          <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
-          <span class="ml-1 text-gray-800">5</span>
-        </div>
-      </div>
-      <hr class="border-gray-300 mb-6">
-      <!-- Review 2 -->
-      <div class="flex items-start mb-6">
-        <img src="./photo/Pham.jpg" alt="Pham" class="w-12 h-12 rounded-full mr-2">
-        <div class="ml-4 flex-grow">
-          <h3 class="font-semibold text-gray-800">Pham Hanni</h3>
-          <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.
-          </p>
-        </div>
-        <div class="flex items-center">
-          <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
-          <span class="ml-1 text-gray-800">5</span>
-        </div>
-      </div>
-      <hr class="border-gray-300 mb-6">
-      <!-- Review 3 -->
-      <div class="flex items-start mb-6">
-        <img src="./photo/foto1.png" alt="Demogorgon" class="w-12 h-12 rounded-full mr-2">
-        <div class="ml-4 flex-grow">
-          <h3 class="font-semibold text-gray-800">Demogorgon</h3>
-          <p class="text-sm text-gray-500">T1 Worlds Jacket 2024</p>
-          <p class="mt-2 text-gray-700">Pesanan sudah sampai, barang yang sangat bagus sesuai dengan gambar, rekomended.
-          </p>
-        </div>
-        <div class="flex items-center">
-          <i class="fa fa-star" style="color: gold; margin-right: 5px;"></i>
-          <span class="ml-1 text-gray-800">5</span>
-        </div>
-      </div>
+        <hr class="border-gray-300 mb-6">
+      <?php } ?>
     </div>
   </section>
 
   <script>
     var hearttoggled = true;
-    const productPrice = <?php echo $row['harga']; ?>;
+    const productPrice = <?php echo $price; ?>;
     const stock = <?php echo $row['stok']; ?>;
     let quantity = 1;
 
@@ -240,7 +215,7 @@ $price = $row['ID_discount'] > 0 ? $row['discountprice'] : $row['harga'];
           idprod: "<?php echo $row['ID_produk']; ?>",
           iduser: "<?php echo $_SESSION['id']; ?>",
           qty: finalqty,
-          harga: "<?php echo $row['harga']; ?>"
+          harga: "<?php echo $price; ?>"
         }),
       });
     }
