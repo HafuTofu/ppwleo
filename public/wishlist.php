@@ -1,5 +1,5 @@
 <?php
-require '.../public/controller/sess.php';
+require '../public/sess.php';
 if (!isset($_SESSION['id'])) {
     header('Location: login.php');
 }
@@ -52,25 +52,25 @@ $resultCategories = $conn->query($queryCategories);
                     class="w-12 h-12 rounded-full cursor-pointer" alt="User profile" id="profileIcon">
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                 <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-                    <a href=".../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                    <a href="../atmin/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                     Admin Dashboard</a>
-                    <a href=".../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+                    <a href="../atmin/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
                     Managing Page</a>
-                    <a href=".../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+                    <a href="../atmin/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
                     Managing Page</a>
-                    <a href=".../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                    <a href="../atmin/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     Managing Page</a>
-                    <a href=".../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+                    <a href="../atmin/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
                     Managing Page</a>
-                    <a href=".../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+                    <a href="../atmin/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
                     Managing Page</a>
                 <?php } ?>
-                <a href=".../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                <a href="../publin/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+                <a href="../publin/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                     User Dashboard</a>
-                <a href=".../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+                <a href="../publin/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                     List</a>
-                <a href=".../public/controller/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+                <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>
         </div>

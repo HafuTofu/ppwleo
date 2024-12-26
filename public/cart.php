@@ -1,5 +1,5 @@
 <?php
-require '.../public/controller/sess.php';
+require '../public/sess.php';
 
 if ($_SESSION['login'] === 'false') {
   header('Location: login.php');
@@ -65,26 +65,26 @@ $stmt->execute();
         <!-- Dropdown menu -->
         <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg">
           <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-            <a href=".../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+            <a href="../atmin/view/atmindashboard.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
               Admin Dashboard</a>
-            <a href=".../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
+            <a href="../atmin/view/admindash.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
               Managing Page</a>
-            <a href=".../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
+            <a href="../atmin/view/discount.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
               Managing Page</a>
-            <a href=".../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+            <a href="../atmin/view/orderadmin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
               Managing Page</a>
-            <a href=".../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
+            <a href="../atmin/view/usercontroller.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
               Managing Page</a>
-            <a href=".../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
+            <a href="../atmin/view/admincat.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
               Managing Page</a>
           <?php } ?>
-          <a href=".../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-          <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+          <a href="../public/view/profilepage.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
+          <a href="../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
             Dashboard</a>
-          <a href=".../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-          <a href=".../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
+          <a href="../public/view/wishlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
+          <a href="../public/view/orderlist.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
             List</a>
-          <a href=".../public/controller/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
+          <a href="../public/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
         </div>
       </div>
     </div>
@@ -183,7 +183,7 @@ $stmt->execute();
     });
 
     function toggleHeart(idprodd) {
-      fetch('.../public/controller/add_to_wishlist.php', {
+      fetch('../public/add_to_wishlist.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -196,7 +196,7 @@ $stmt->execute();
 
     function deleteCart(cartID) {
 
-      fetch('.../public/controller/delete_cart.php', {
+      fetch('../public/delete_cart.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -240,7 +240,7 @@ $stmt->execute();
           .map((checkbox) => parseInt(checkbox.value, 10));
 
         if (selectedItems.length > 0) {
-          fetch(".../public/controller/delete_cart.php", {
+          fetch("../public/delete_cart.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

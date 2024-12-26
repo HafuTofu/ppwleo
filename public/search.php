@@ -1,5 +1,5 @@
 <?php
-require ".../public/controller/sess.php";
+require "../public/sess.php";
 if (!isset($_SESSION['login']) || $_SESSION['login'] === 'false') {
     header('Location: login.php');
 }
@@ -84,35 +84,35 @@ if (!empty($_POST)) {
                 <!-- Dropdown menu -->
                 <div id="dropdownMenu" class="absolute right-0 hidden w-40 mt-2 bg-white rounded-md shadow-lg">
                     <?php if ($_SESSION['login'] === 'trueadmin') { ?>
-                        <a href=".../atmin/view/atmindashboard.html"
+                        <a href="../atmin/atmindashboard.html"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                             Admin Dashboard</a>
-                        <a href=".../atmin/view/admindash.php"
+                        <a href="../atmin/admindash.php"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Product
                             Managing Page</a>
-                        <a href=".../atmin/view/discount.php"
+                        <a href="../atmin/discount.php"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Discount
                             Managing Page</a>
-                        <a href=".../atmin/view/orderadmin.php"
+                        <a href="../atmin/orderadmin.php"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                             Managing Page</a>
-                        <a href=".../atmin/view/usercontroller.php"
+                        <a href="../atmin/usercontroller.php"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-200">User
                             Managing Page</a>
-                        <a href=".../atmin/view/admincat.php"
+                        <a href="../atmin/admincat.php"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Category
                             Managing Page</a>
                     <?php } ?>
-                    <a href=".../public/view/profilepage.php"
+                    <a href="../public/profilepage.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profile</a>
-                    <a href=".../public/view/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
+                    <a href="../public/dashboard.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-200">
                         Dashboard</a>
-                    <a href=".../public/view/wishlist.php"
+                    <a href="../public/wishlist.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Wishlist</a>
-                    <a href=".../public/view/orderlist.php"
+                    <a href="../public/orderlist.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Order
                         List</a>
-                    <a href=".../public/controller/logout.php"
+                    <a href="../public/logout.php"
                         class="block px-4 py-2 text-gray-700 hover:bg-gray-200">Logout</a>
                 </div>
             </div>

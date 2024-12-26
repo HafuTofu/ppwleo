@@ -1,5 +1,5 @@
 <?php
-require ".../public/controller/sess.php";
+require "../public/sess.php";
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

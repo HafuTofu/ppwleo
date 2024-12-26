@@ -1,9 +1,9 @@
 <?php
-require ".../public/controller/sess.php";
+require "../public/sess.php";
 
 $_SESSION['login'] = 'false';
 session_destroy(); 
 
 
-header('Location: .../public/view/index.php');
+header('Location: ../public/index.php');
 ?>

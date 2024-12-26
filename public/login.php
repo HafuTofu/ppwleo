@@ -1,13 +1,13 @@
 <?php
-    include '.../connect.php';
-    include "../controller/functions.php";
+    include '../connect.php';
+    include "../functions.php";
 
     if(!isset($_SESSION['login'])){
         $_SESSION['login'] = 'false';
     }else if($_SESSION['login'] === 'trueguess'){
         header('Location: dashboard.php');
     }else if($_SESSION['login'] === 'trueadmin'){
-        header('Location: .../atmin/view/atmindashboard.html');
+        header('Location: ../atmin/atmindashboard.html');
     }
 
     $source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
